@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GLOBAL EFFECTS — оборудование для спецэффектов и расходные материалы</title>
+    <meta name="description" content="Производитель оборудования для спецэффектов и крупнейший поставщик конфетти, серпантина и искусственного снега на российском рынке с 2007 года." />
+    <link rel="preload" as="image" href="/media/scenes/hero-cryo-stadium.webp" imagesrcset="/media/scenes/hero-cryo-stadium-sm.webp 720w, /media/scenes/hero-cryo-stadium.webp 1280w" imagesizes="100vw" fetchpriority="high" />
+    <!-- @include head.html -->
+    <link rel="stylesheet" href="/src/styles/sections/home.css" />
+  </head>
+  <body data-page="home">
+    <!-- @include icons.html -->
+    <!-- @include header.html -->
+
+    <main id="main">
+      <!-- ============================== HERO ============================== -->
+      <section class="hero" data-hero data-chapter="Главная" aria-labelledby="hero-title">
+        <div class="hero__stage" data-hero-stage>
+          <div class="hero__sticky">
+            <div class="hero__media" aria-hidden="true">
+              <!-- Real video goes here: public/media/hero-global-effects.mp4 (see README) -->
+              <video class="hero__video" data-hero-video muted playsinline loop preload="none"
+                poster="/media/scenes/hero-cryo-stadium.webp"
+                data-src="/media/hero-global-effects.mp4"></video>
+              <div class="hero__reel">
+                <figure class="hero__frame is-active" data-hero-frame>
+                  <img src="/media/scenes/hero-cryo-stadium.webp" srcset="/media/scenes/hero-cryo-stadium-sm.webp 720w, /media/scenes/hero-cryo-stadium.webp 1280w" sizes="100vw" width="1280" height="720" alt="" fetchpriority="high" decoding="async" />
+                </figure>
+                <figure class="hero__frame" data-hero-frame>
+                  <img src="/media/scenes/hero-confetti-crowd.webp" srcset="/media/scenes/hero-confetti-crowd-sm.webp 720w, /media/scenes/hero-confetti-crowd.webp 1280w" sizes="100vw" width="1280" height="720" alt="" loading="lazy" decoding="async" />
+                </figure>
+                <figure class="hero__frame" data-hero-frame>
+                  <img src="/media/scenes/hero-cryo-columns.webp" srcset="/media/scenes/hero-cryo-columns-sm.webp 720w, /media/scenes/hero-cryo-columns.webp 1280w" sizes="100vw" width="1280" height="720" alt="" loading="lazy" decoding="async" />
+                </figure>
+                <figure class="hero__frame" data-hero-frame>
+                  <img src="/media/scenes/hero-confetti-arena.webp" srcset="/media/scenes/hero-confetti-arena-sm.webp 720w, /media/scenes/hero-confetti-arena.webp 1000w" sizes="100vw" width="1000" height="668" alt="" loading="lazy" decoding="async" />
+                </figure>
+              </div>
+              <div class="hero__shade grain"></div>
+              <div class="hero__darken"></div>
+            </div>
+
+            <div class="hero__content container">
+              <div class="hero__copy">
+              <p class="eyebrow hero__eyebrow" data-reveal="fade">Производитель оборудования для спецэффектов · с&nbsp;2007&nbsp;года</p>
+              <h1 class="hero__title" id="hero-title" data-reveal="mask">
+                <span class="line"><span>Создаём</span></span>
+                <span class="line line--accent"><span>эффекты</span></span>
+              </h1>
+              <p class="hero__lead" data-reveal style="--delay: 260ms">
+                Оборудование собственного производства и&nbsp;расходные материалы для концертов, театров, шоу и&nbsp;мероприятий.
+              </p>
+              <div class="hero__actions" data-reveal style="--delay: 380ms">
+                <a class="btn btn--primary btn--lg" href="/catalog.html?c=konfetti-masiny" data-route="category" data-slug="konfetti-masiny">
+                  <span class="btn__label">Перейти в каталог</span>
+                  <span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg><svg width="20" height="20"><use href="#i-arrow" /></svg></span>
+                </a>
+                <a class="btn btn--ghost btn--ghost-lg" href="#effects">
+                  <span class="btn__label">Смотреть эффекты</span>
+                  <span class="btn__arrow" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg></span>
+                </a>
+              </div>
+              </div>
+            </div>
+
+            <div class="hero__index" role="group" aria-label="Кадры фоновой съёмки">
+              <button type="button" class="hero__dot is-active" data-hero-dot aria-label="Кадр 1: криоэффекты на стадионе">01</button>
+              <button type="button" class="hero__dot" data-hero-dot aria-label="Кадр 2: конфетти над залом">02</button>
+              <button type="button" class="hero__dot" data-hero-dot aria-label="Кадр 3: столбы криоэффектов">03</button>
+              <button type="button" class="hero__dot" data-hero-dot aria-label="Кадр 4: конфетти на арене">04</button>
+              <button type="button" class="hero__pause" data-hero-pause aria-pressed="false" aria-label="Остановить смену кадров">
+                <svg width="14" height="14" aria-hidden="true"><use href="#i-pause" /></svg>
+              </button>
+            </div>
+
+            <div class="hero__bar">
+              <div class="hero__bar-inner container">
+                <p class="hero__scroll" aria-hidden="true"><span class="hero__scroll-line"></span>Scroll</p>
+                <nav class="hero__fx" aria-label="Эффекты">
+                  <p class="hero__fx-label"><b>Эффекты</b><span>Выберите нужный эффект</span></p>
+                  <ul class="hero__fx-list" role="list">
+                    <li><a class="fxlink" href="#fx-confetti"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-confetti" /></svg></span>Конфетти</a></li>
+                    <li><a class="fxlink" href="#fx-cryo"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-cryo" /></svg></span>Криоэффекты</a></li>
+                    <li><a class="fxlink" href="#fx-smoke"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-smoke" /></svg></span>Тяжелый дым</a></li>
+                    <li><a class="fxlink" href="#fx-foam"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-foam" /></svg></span>Пена</a></li>
+                    <li><a class="fxlink" href="#fx-flame"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-flame" /></svg></span>Пламя</a></li>
+                    <li><a class="fxlink" href="#fx-snow"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-snow" /></svg></span>Снег</a></li>
+                  </ul>
+                </nav>
+                <ul class="hero__promises" role="list">
+                  <li>Сделано в России</li>
+                  <li>Гарантия 3 года</li>
+                  <li>Всегда в наличии</li>
+                </ul>
+              </div>
+            </div>
+            <span class="hero__travel" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ MANIFESTO =========================== -->
+      <section class="manifesto" data-manifesto aria-labelledby="manifesto-title">
+        <div class="container">
+          <h2 class="visually-hidden" id="manifesto-title">О GLOBAL EFFECTS</h2>
+          <p class="manifesto__eyebrow eyebrow">GLOBAL EFFECTS</p>
+          <p class="manifesto__text" data-words>Мы делаем спецэффекты, которые остаются в&nbsp;памяти.</p>
+          <div class="manifesto__grid">
+            <p class="manifesto__lead lead" data-reveal>
+              Собственные разработки, своё производство и&nbsp;качественные комплектующие делают нас надёжным поставщиком оборудования для любого мероприятия.
+            </p>
+            <dl class="facts" data-reveal-group>
+              <div class="fact"><dt class="fact__label">на российском рынке</dt><dd class="fact__value"><span class="fact__pre">с</span> 2007</dd></div>
+              <div class="fact"><dt class="fact__label">гарантия на оборудование</dt><dd class="fact__value"><span data-count-up data-to="3">3</span> <span class="fact__unit">года</span></dd></div>
+              <div class="fact"><dt class="fact__label" data-fact-label>позиций в каталоге</dt><dd class="fact__value tabular"><span data-count-up data-fact="products">316</span></dd></div>
+              <div class="fact"><dt class="fact__label" data-fact-label>городов с шоу-румами и дилерами</dt><dd class="fact__value tabular"><span data-count-up data-fact="cities">5</span></dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= EFFECTS ============================ -->
+      <section class="fx" id="effects" data-effects data-chapter="Эффекты" aria-labelledby="fx-title">
+        <div class="container">
+          <div class="chapter"><span>Эффекты</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="section-head section-head--split">
+            <h2 class="display" id="fx-title" data-reveal="mask"><span class="line"><span>Шесть эффектов —</span></span><span class="line"><span class="accent">один каталог</span></span></h2>
+            <p class="lead" data-reveal>Конфетти, криоэффекты, тяжелый дым, пена, пламя и&nbsp;снег. Для каждого эффекта — оборудование и&nbsp;расходные материалы, которые работают вместе.</p>
+          </div>
+        </div>
+        <div class="fx__stage" data-fx-stage>
+          <div class="fx__sticky">
+            <div class="fx__track container" data-fx-track></div>
+            <ol class="fx-nav" data-fx-nav role="list" aria-label="Эффекты"></ol>
+            <span class="fx__progress" aria-hidden="true"><span></span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== STORY ============================= -->
+      <section class="story" data-story data-chapter="Как это работает" data-rail-hide aria-labelledby="story-title">
+        <div class="story__stage" data-story-stage>
+          <div class="story__sticky">
+            <div class="story__head container">
+              <div class="chapter"><span>Как это работает</span><span class="chapter__num" data-chapter-num></span></div>
+              <div class="story__bar">
+                <h2 class="h2" id="story-title">Как рождается эффект</h2>
+                <div class="tabs" role="tablist" aria-label="Выберите эффект">
+                  <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="story-track" id="story-tab-0">Конфетти</button>
+                  <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="story-track" id="story-tab-1" tabindex="-1">Криоэффекты</button>
+                </div>
+              </div>
+              <ol class="story-steps" data-story-steps role="list" aria-hidden="true"></ol>
+            </div>
+            <div class="story__track" id="story-track" role="tabpanel" aria-labelledby="story-tab-0" data-story-track></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= CATALOG ============================ -->
+      <section class="section cindex" data-catalog-index data-chapter="Каталог" aria-labelledby="catalog-title">
+        <div class="container">
+          <div class="chapter"><span>Каталог</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="section-head section-head--split">
+            <h2 class="display" id="catalog-title" data-reveal="mask"><span class="line"><span>Всё для эффекта</span></span><span class="line"><span>в одном <span class="accent">каталоге</span></span></span></h2>
+            <p class="lead" data-reveal>Оборудование собственного производства и&nbsp;сотни видов расходных материалов в&nbsp;наличии.</p>
+          </div>
+          <div class="cindex__cols" data-cindex-cols></div>
+        </div>
+      </section>
+
+      <!-- ============================= CTA BAND =========================== -->
+      <aside class="band" aria-label="Материалы для скачивания">
+        <div class="container band__inner" data-reveal>
+          <p class="band__title">Каталог и&nbsp;прайс-лист всегда под рукой</p>
+          <div class="band__actions">
+            <a class="btn btn--secondary btn--md" href="https://globaleffects.ru/catalog/catalog.pdf" data-route="doc" data-path="/catalog/catalog.pdf" target="_blank" rel="noopener">
+              <span class="btn__label">Каталог, PDF</span><span class="btn__icon" aria-hidden="true"><svg width="18" height="18"><use href="#i-download" /></svg></span>
+            </a>
+            <a class="btn btn--secondary btn--md" href="https://globaleffects.ru/price/price.pdf" data-route="doc" data-path="/price/price.pdf" target="_blank" rel="noopener">
+              <span class="btn__label">Прайс-лист, PDF</span><span class="btn__icon" aria-hidden="true"><svg width="18" height="18"><use href="#i-download" /></svg></span>
+            </a>
+            <a class="btn btn--ghost" href="/offers.html#free-samples-snow" data-route="page" data-path="/offers/free-samples">
+              <span class="btn__label">Бесплатные образцы снега и конфетти</span><span class="btn__arrow" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow" /></svg></span>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ============================ FLAGSHIP ============================ -->
+      <section class="section flagship" data-flagship data-chapter="Оборудование" aria-labelledby="flagship-title">
+        <div class="container">
+          <div class="chapter"><span>Оборудование</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="flagship__head">
+            <h2 class="h1" id="flagship-title" data-reveal="mask"><span class="line"><span>Сделано</span></span><span class="line"><span>GLOBAL EFFECTS</span></span></h2>
+            <div class="rail-controls">
+              <button type="button" class="icon-btn icon-btn--line" data-rail-prev aria-label="Предыдущие товары"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>
+              <button type="button" class="icon-btn icon-btn--line" data-rail-next aria-label="Следующие товары"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
+          </div>
+        </div>
+        <ul class="rail-track" data-rail-track role="list" aria-label="Оборудование GLOBAL EFFECTS"></ul>
+        <div class="container"><span class="rail-progress" aria-hidden="true"><span data-rail-progress></span></span></div>
+      </section>
+
+      <!-- ============================ PROJECTS ============================ -->
+      <section class="section projects" data-projects data-chapter="Проекты" aria-labelledby="projects-title">
+        <div class="container">
+          <div class="chapter"><span>Проекты и галерея</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="projects__head">
+            <h2 class="display" id="projects-title" data-reveal="mask"><span class="line"><span>Сцены, где</span></span><span class="line"><span>работают <span class="accent">наши эффекты</span></span></span></h2>
+            <div class="projects__clients" data-reveal>
+              <p class="label">В числе наших постоянных клиентов</p>
+              <ul class="clients" data-clients role="list"></ul>
+              <p class="text-3 projects__more">…а также сотни других компаний, работающих в&nbsp;сфере шоу-бизнеса.</p>
+            </div>
+          </div>
+        </div>
+        <div class="drift" data-drift aria-label="Фотографии из галереи">
+          <ul class="drift__row drift__row--a" data-drift-a role="list"></ul>
+          <ul class="drift__row drift__row--b" data-drift-b role="list"></ul>
+        </div>
+        <div class="container projects__foot">
+          <a class="btn btn--secondary btn--lg" href="/gallery.html" data-route="gallery">
+            <span class="btn__label">Вся фотогалерея</span><span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============================== VIDEO ============================= -->
+      <section class="section videos" data-videos data-chapter="Видео" aria-labelledby="video-title">
+        <div class="container">
+          <div class="chapter"><span>Видео</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="section-head section-head--split">
+            <h2 class="h1" id="video-title" data-reveal="mask"><span class="line"><span>Эффекты в работе</span></span></h2>
+            <p class="lead" data-reveal>Записи с концертов, выставок и&nbsp;шоу-рума. Видео загружается только по нажатию.</p>
+          </div>
+          <ul class="vgrid" data-video-grid role="list"></ul>
+          <p class="videos__foot">
+            <a class="btn btn--ghost" href="https://www.youtube.com/@GLOBALEFFECTS" target="_blank" rel="noopener"><span class="btn__label">Канал GLOBAL EFFECTS на YouTube</span><span class="btn__arrow" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow-up-right" /></svg></span></a>
+          </p>
+        </div>
+      </section>
+
+      <!-- =============================== NEWS ============================= -->
+      <section class="section news" data-news data-chapter="Новости" aria-labelledby="news-title">
+        <div class="container">
+          <div class="chapter"><span>Новости</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="news__head">
+            <h2 class="h1" id="news-title" data-reveal="mask"><span class="line"><span>Новости</span></span></h2>
+            <a class="btn btn--ghost" href="/news.html" data-route="page" data-path="/news"><span class="btn__label">Все новости</span><span class="btn__arrow" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow" /></svg></span></a>
+          </div>
+          <div class="news__grid" data-news-list></div>
+        </div>
+      </section>
+
+      <!-- ================================ CTA ============================= -->
+      <section class="cta" data-chapter="Контакты" aria-labelledby="cta-title">
+        <div class="cta__media" aria-hidden="true">
+          <img src="/media/scenes/cta-cryo.webp" srcset="/media/scenes/cta-cryo-sm.webp 720w, /media/scenes/cta-cryo.webp 1000w" sizes="100vw" width="1000" height="666" alt="" loading="lazy" decoding="async" />
+        </div>
+        <div class="container cta__inner">
+          <p class="eyebrow" data-reveal="fade">Шоу-рум в Москве · Пн–Пт 9:00–18:00</p>
+          <h2 class="cta__title" id="cta-title" data-reveal="mask"><span class="line"><span>Готовы создать</span></span><span class="line line--accent"><span>эффект?</span></span></h2>
+          <p class="lead" data-reveal>Подберём оборудование и&nbsp;расходные материалы под вашу площадку. Посмотреть технику в&nbsp;работе можно в&nbsp;шоу-руме: Москва, ул.&nbsp;Генерала Белова, д.&nbsp;16, стр.&nbsp;2.</p>
+          <div class="cta__actions" data-reveal>
+            <a class="btn btn--primary btn--lg" href="tel:+74996505078">
+              <span class="btn__label">+7 (499) 650-50-78</span>
+              <span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-phone" /></svg><svg width="20" height="20"><use href="#i-phone" /></svg></span>
+            </a>
+            <a class="btn btn--secondary btn--lg" href="mailto:info@globaleffects.ru">
+              <span class="btn__label">info@globaleffects.ru</span>
+              <span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-mail" /></svg></span>
+            </a>
+            <a class="btn btn--ghost btn--ghost-lg" href="/about.html#contacts" data-route="contacts">
+              <span class="btn__label">Дилеры в регионах</span>
+              <span class="btn__arrow" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg></span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer.html -->
+    <script type="module" src="/src/js/pages/home.js"></script>
+  </body>
+</html>

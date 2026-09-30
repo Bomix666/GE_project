@@ -1,0 +1,119 @@
+# GLOBAL EFFECTS — premium cinematic frontend
+
+Редизайн презентационного слоя сайта **globaleffects.ru**: чёрный + красный + off-white,
+сторителлинг на скролле, sticky-сцены, каталог и карточка товара.
+Backend, API, база данных, заказы и авторизация **не затронуты**.
+
+```bash
+npm install
+npm run dev      # http://127.0.0.1:5173
+npm run build    # dist/
+npm run preview  # http://127.0.0.1:4173
+```
+
+Runtime-зависимостей нет: Vite используется только для сборки, шрифты — самохостинг `@fontsource-variable`.
+Стили подключены через `<link>` в `<head>` (`src/partials/head.html`), поэтому страница никогда не показывается без оформления.
+Запуск в Windows: двойной клик по `start.cmd`. В PowerShell 5.1 команды пишутся по одной строке (там нет `&&`).
+Сборка: JS приложения ≈ 11 КБ gzip, плюс чанки страниц по 1–4 КБ.
+
+---
+
+## 1. Что существует и как это связано
+
+Исходников существующего сайта в проекте не было, поэтому «существующей системой» стал живой сайт:
+**Yii2 (PHP, серверный рендер) + jQuery + AngularJS 1.x (`shop.cart`) + Bootstrap 3 + Swiper**.
+Редизайн повторяет его маршруты, контент и контракты, а на Yii-шаблоны переносится один к одному.
+
+| Прототип | Yii-маршрут (production) | Что заменить в шаблоне |
+|---|---|---|
+| `src/partials/header.html` | layout: header, меню | шапка + mega menu + мобильное меню |
+| `src/partials/footer.html` | layout: footer | подвал |
+| `src/partials/icons.html` | layout, сразу после `<body>` | SVG-спрайт |
+| `index.html` | `/` | главная |
+| `catalog.html?c=<slug>` | `/category/<slug>` | листинг категории |
+| `product.html?p=<slug>` | `/product/<slug>` | карточка товара |
+| `gallery.html?cat=<slug>` | `/gallery/images/<slug>`, `/gallery/videos/<slug>` | галерея |
+| `about.html` (+ `#contacts`) | `/page/about`, `/contacts` | о компании, дилеры |
+| `cart.html` | `/cart/index` | список корзины; **форма оформления остаётся существующей** |
+| `offers.html` (+ `#slug`) | `/offers`, `/offers/<slug>` | акции; форма образцов = `/offers/free-samples` |
+| `news.html`, `news.html?id=<id>` | `/news`, `/news/view?news_id=<id>` | новости (49, полные тексты) |
+| `blog.html`, `blog.html?p=<slug>` | `/blog`, `/blog/<slug>` | блог (19 статей) |
+| `page.html?p=<slug>` | `/page/delivery`, `/page/politika-konfidencialnosti`, `/page/pravila-prodazi-tovarov` | текстовые страницы |
+
+Все ссылки, включая ссылки внутри текстов из CMS, проходят через `resolve()` в `routes.js`.
+Поэтому в прототипе они ведут на новые страницы, а в production — на прежние адреса.
+На живой сайт в прототипе остаются только файлы и функции backend:
+PDF каталога и прайса, документы `/document/get`, квиз «Подбор конфетти-машины».
+Переключатель **EN** в прототипе показывает пояснение: английские тексты отдаёт существующий backend (`/site/set-locale`).
+
+Переключение окружения — `src/js/core/env.js`: на `*.globaleffects.ru` или при `<html data-env="production">`
+все ссылки идут через `src/js/core/routes.js` на реальные маршруты. Разметка partials содержит
+`data-route`, поэтому одни и те же файлы работают в обоих режимах.
+
+### Используемые контракты backend (без изменений)
+| Функция | Контракт | Где в коде |
+|---|---|---|
+| Корзина | `POST /cart/add {product_id, qty}`, `/cart/update {position_id, qty}`, `/cart/remove {position_id}`, `/cart/clear` → `{data:{items,count,cost,cost_full}, message}` | `src/js/services/cart.js` (`YiiDriver`) |
+| Начальное состояние корзины | то, что сейчас печатается как `shopCart.setData({...})` → `window.GE_CART_INITIAL` или `<script type="application/json" id="ge-cart-initial">` | там же |
+| Купить в 1 клик | как `one_click()`: добавить → перейти на `/cart` | `services/actions.js` |
+| Поиск (полные результаты) | `POST /search/results`, поле `ProductSearch[query]` + CSRF | `components/search-overlay.js` |
+| Под заказ | `POST /product/demand`, `DemandProductForm[...]`, капча `/site/demand-captcha` | `components/request-form.js` |
+| Запросить цену | `POST /product/price-request`, `PriceRequestForm[...]`, капча `/site/price-request-captcha` | там же |
+| Язык | `/site/set-locale?locale=en-US` | partials |
+| Документы | `/document/get?id=…`, `/catalog/catalog.pdf`, `/price/price.pdf` | карточка, footer |
+
+В прототипе `LocalDriver` эмулирует ответы корзины в `localStorage` (та же форма данных),
+а формы проходят валидацию и честно сообщают, что не отправлены.
+
+## 2. Контент — только реальный
+Снимок globaleffects.ru от **25.09.2026** (`tools/`): 17 категорий, 316 товаров с ценами,
+наличием, характеристиками, документами, фото и «Рекомендуемыми товарами»; 86 фото галереи,
+44 видео YouTube, новости, тексты «О компании», клиенты, 11 дилеров и шоу-румов.
+Каждый факт в `src/js/data/content.js` подписан страницей-источником. Выдуманных цифр,
+клиентов и сертификатов нет; счётчики на главной (позиции, города) вычисляются из данных.
+
+### Плейсхолдеры (явно)
+| Что | Статус | Как заменить |
+|---|---|---|
+| **Видео hero** `public/media/hero-global-effects.mp4` | файла нет, пока показывается фото-reel из реальных фото | положить MP4 по этому пути; рекомендуем H.264, 1920×1080, 10–20 с, цикл, без звука, ≤ 6 МБ; для телефонов — `data-src-mobile` (720p) |
+| Логотип | используется реальный `logo.png` 190×61 (растр); вектора на сайте нет | заменить на SVG от владельца бренда |
+| Капча в прототипе | заглушка «Код с сайта» | в production подгружается реальная капча |
+| `catalog.html?q=` | поиск прототипа по снимку | в production «Показать все» уходит в `/search/results` |
+
+## 3. Структура
+```
+index.html catalog.html product.html gallery.html about.html cart.html
+src/partials/        header, footer, icons (подключаются через <!-- @include -->)
+src/styles/          tokens → base → components → sections → pages (CSS страниц грузится отдельно)
+src/js/app.js        shell: header, mega menu, мобильное меню, поиск, корзина, reveal
+src/js/core/         env, routes, dom-хелперы, motion (reveal + scene engine), video
+src/js/data/         api (JSON), content (редакционный контент с источниками)
+src/js/services/     cart (Yii/Local драйверы), search, actions (делегированные действия)
+src/js/components/   product-card, cart-drawer, dialog, toast, search-overlay, quick-view,
+                     request-form, lightbox, youtube, rail, chapter-rail, header, mega-menu
+src/js/sections/     hero, manifesto, effects, story, home-extra
+src/js/pages/        точки входа страниц
+public/data/         снимок каталога / галереи / новостей
+public/media/        тонированные сцены, галерея (WebP 1200 + 520), превью видео, бренд
+design-system/       MASTER.md — дизайн-система
+tools/               скрипты снимка и тонирования
+```
+
+## 4. Главная — «фильм» из сцен
+1. **Hero:** полноэкранное видео (или reel реальных фото с паузой) → при скролле медиа темнеет и приближается, заголовок уходит вверх, красная линия «доезжает» до следующей сцены.
+2. **Манифест** наплывает поверх hero; фраза компании проявляется по словам; ключевые факты.
+3. **Эффекты 01–06** (pinned): фото меняется «шторкой», текст синхронно, справа навигация, оборудование с реальными ценами, ссылки в каталог и галерею. На мобильных — обычный список.
+4. **Как рождается эффект:** вертикальный скролл двигает горизонтальную линию «эффект → как создаётся → оборудование → расходники → результат» (вкладки: конфетти, криоэффекты).
+5. Индекс каталога с превью у курсора → полоса PDF/образцов → rail оборудования → клиенты и дрейфующие ряды фото → видео (загружаются по клику) → новости → CTA → footer.
+
+## 5. Проверки
+- **Функции:** mega menu (hover-intent, клавиатура, Esc), мобильное меню, поиск (`/`, Ctrl/⌘+K, стрелки, Enter), фильтры/сортировка/наличие с состоянием в URL и back/forward, шторка фильтров, «Показать ещё», быстрый просмотр, добавление в корзину с подтверждением, drawer с изменением количества, «Купить в 1 клик», страница товара (галерея, лайтбокс, разделы, рекомендуемые и расходники, липкая панель покупки), галерея с фильтром и лайтбоксом, deep links `/#fx-cryo`.
+- **Responsive:** 375 / 768 / 1024 / 1440 / 2100+; горизонтального скролла нет.
+- **Доступность (WCAG 2.1/2.2 AA):** автоматическая проверка всех страниц (alt, имена, подписи, заголовки, дубликаты id), расчёт контраста токенов (все пары ≥ 4.5:1 для текста, ≥ 3:1 для границ полей), `prefers-reduced-motion`.
+- **Производительность:** анимации только через transform/opacity, один rAF-цикл без чтения layout, тонирование заранее, lazy-изображения, видео только рядом с viewport и с паузой вне экрана, YouTube — фасад без запросов до клика, CSS и JS разбиты по страницам.
+
+## 6. Что дальше
+- Получить реальное видео hero и векторный логотип.
+- Перенести partials и страницы в Yii-views, выводить данные серверным рендером, вместо `shopCart.setData` печатать `window.GE_CART_INITIAL`.
+- Сверить формат позиции корзины на живом ответе `/cart/add` (поля `slug`/`url` для ссылки на товар).
+- Прогнать ручную проверку с NVDA/VoiceOver и в Safari iOS.

@@ -1,0 +1,736 @@
+/* ==========================================================================
+   Buttons & small controls
+   Primary: red body + separate light arrow block (arrow swaps on hover).
+   Secondary: hairline outline. Ghost: text + underline + arrow.
+   ========================================================================== */
+
+.btn {
+  --h: var(--btn-h-md);
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  min-height: var(--h);
+  border-radius: var(--r-2);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  white-space: nowrap;
+  isolation: isolate;
+  transition:
+    background-color var(--dur-micro) var(--ease-out),
+    border-color var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn__label {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 1.5rem;
+  transition: padding var(--dur-ui) var(--ease-out);
+}
+
+.btn__icon {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--h);
+  flex: none;
+  overflow: hidden;
+  border-radius: 0 var(--r-2) var(--r-2) 0;
+}
+
+.btn__icon svg {
+  grid-area: 1 / 1;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+/* the duplicated arrow waits outside, then slides in */
+.btn__icon svg + svg {
+  transform: translateX(calc(var(--h) * -1));
+}
+
+.btn:hover .btn__icon svg:first-child:not(:only-child),
+.btn:focus-visible .btn__icon svg:first-child:not(:only-child) {
+  transform: translateX(var(--h));
+}
+
+.btn:hover .btn__icon svg + svg,
+.btn:focus-visible .btn__icon svg + svg {
+  transform: none;
+}
+
+.btn:hover .btn__icon svg:only-child {
+  transform: translateX(3px);
+}
+
+.btn--lg {
+  --h: var(--btn-h-lg);
+  font-size: 1rem;
+}
+
+.btn--lg .btn__label {
+  padding-inline: 1.75rem;
+}
+
+.btn--md {
+  --h: var(--btn-h-md);
+}
+
+.btn--sm {
+  --h: var(--btn-h-sm);
+  font-size: 0.875rem;
+}
+
+.btn--sm .btn__label {
+  padding-inline: 1rem;
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.btn--block .btn__label {
+  flex: 1;
+}
+
+/* Primary */
+.btn--primary {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+.btn--primary .btn__icon {
+  background: var(--c-white);
+  color: var(--text-inverse);
+}
+
+.btn--primary:hover {
+  background: var(--accent-fill-hover);
+  box-shadow: 0 12px 40px -12px var(--accent-glow);
+}
+
+.btn--primary:hover .btn__label {
+  padding-inline: 1.5rem 1.85rem;
+}
+
+.btn--lg.btn--primary:hover .btn__label {
+  padding-inline: 1.75rem 2.1rem;
+}
+
+/* Secondary */
+.btn--secondary {
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line-3);
+  background: rgb(244 242 239 / 0.02);
+}
+
+.btn--secondary .btn__icon {
+  box-shadow: inset 1px 0 0 var(--line-3);
+}
+
+.btn--secondary:hover {
+  box-shadow: inset 0 0 0 1px var(--text);
+  background: rgb(244 242 239 / 0.06);
+}
+
+.btn--secondary:hover .btn__icon {
+  color: var(--accent-text);
+}
+
+/* Ghost */
+.btn--ghost {
+  --h: var(--tap);
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.btn--ghost .btn__label {
+  position: relative;
+  padding: 0.35rem 0;
+}
+
+.btn--ghost .btn__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line-3);
+  transform-origin: left;
+  transition: background-color var(--dur-micro) var(--ease-out);
+}
+
+.btn--ghost .btn__label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-ui) var(--ease-out);
+  z-index: 1;
+}
+
+.btn--ghost:hover .btn__label::before,
+.btn--ghost:focus-visible .btn__label::before {
+  transform: scaleX(1);
+}
+
+.btn--ghost .btn__arrow {
+  display: inline-flex;
+  color: var(--accent-text);
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.btn--ghost:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+.btn--ghost-lg {
+  font-size: 1rem;
+}
+
+.btn--center {
+  justify-content: center;
+  width: 100%;
+}
+
+/* Loading / done states for async actions */
+.btn.is-loading {
+  pointer-events: none;
+}
+
+.btn.is-loading .btn__icon svg {
+  opacity: 0;
+}
+
+.btn.is-loading .btn__icon::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: spin 0.7s linear infinite;
+}
+
+.btn.is-done {
+  background: var(--c-white);
+  color: var(--text-inverse);
+}
+
+.btn.is-done .btn__icon {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Icon button ---------- */
+.icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: var(--r-2);
+  color: var(--text);
+  transition:
+    background-color var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) var(--ease-out),
+    box-shadow var(--dur-micro) var(--ease-out);
+}
+
+.icon-btn:hover {
+  background: rgb(244 242 239 / 0.07);
+}
+
+.icon-btn--line {
+  width: 52px;
+  height: 52px;
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+.icon-btn--line:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--text);
+  background: transparent;
+  color: var(--accent-text);
+}
+
+.icon-btn:disabled {
+  opacity: 0.35;
+}
+
+/* ---------- Badge ---------- */
+.badge {
+  position: absolute;
+  top: 3px;
+  right: 1px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-round);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  transition: transform var(--dur-micro) var(--ease-out), opacity var(--dur-micro);
+}
+
+.badge.is-empty {
+  background: var(--surface-4);
+  color: var(--text-2);
+}
+
+.badge.is-bump {
+  animation: bump 520ms var(--ease-out);
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.45);
+    box-shadow: 0 0 0 6px var(--accent-glow);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* ---------- Chips & tabs ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--r-2);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  transition: color var(--dur-micro), box-shadow var(--dur-micro), background-color var(--dur-micro);
+}
+
+.chip span {
+  color: var(--text-3);
+}
+
+.chip:hover {
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line-3);
+}
+
+.chip[aria-pressed="true"],
+.chip.is-active {
+  color: var(--text);
+  background: rgb(236 28 35 / 0.12);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.tabs {
+  display: inline-flex;
+  padding: 4px;
+  gap: 4px;
+  border-radius: var(--r-3);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+.tab {
+  min-height: 40px;
+  padding: 0 1.1rem;
+  border-radius: var(--r-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-2);
+  transition: color var(--dur-micro), background-color var(--dur-ui) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--c-white);
+  color: var(--text-inverse);
+}
+
+/* ---------- Quantity stepper ---------- */
+.qty {
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--btn-h-sm);
+  border-radius: var(--r-2);
+  box-shadow: inset 0 0 0 1px var(--line-ui);
+}
+
+.qty__btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  color: var(--text-2);
+  transition: color var(--dur-micro);
+}
+
+.qty__btn:hover {
+  color: var(--accent-text);
+}
+
+.qty__input {
+  width: 38px;
+  border: 0;
+  background: none;
+  text-align: center;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.qty__input::-webkit-outer-spin-button,
+.qty__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty__input:focus-visible {
+  outline-offset: -2px;
+}
+
+.qty--sm {
+  height: 34px;
+}
+
+.qty--sm .qty__btn {
+  width: 30px;
+}
+
+.qty--lg {
+  height: var(--btn-h-lg);
+}
+
+.qty--lg .qty__btn {
+  width: 48px;
+}
+
+.qty--lg .qty__input {
+  width: 48px;
+  font-size: 1rem;
+}
+
+/* ---------- Checkbox (custom box, native input stays focusable) ---------- */
+.check {
+  position: relative;
+  display: grid;
+  grid-template-columns: 20px auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 36px;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.check:not(:has(.swatch)) {
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+}
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.check__box {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-1);
+  box-shadow: inset 0 0 0 1px var(--line-ui);
+  transition:
+    background-color var(--dur-micro),
+    box-shadow var(--dur-micro);
+}
+
+.check__box::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--on-accent);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+
+.check input:checked + .check__box {
+  background: var(--accent-fill);
+  box-shadow: none;
+}
+
+.check input:checked + .check__box::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.check input:focus-visible + .check__box {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.check:hover {
+  color: var(--text);
+}
+
+.check:hover .check__box {
+  box-shadow: inset 0 0 0 1px var(--text);
+}
+
+.check input:checked ~ .check__label {
+  color: var(--text);
+}
+
+.check em {
+  font-style: normal;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+
+.check.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.check--form {
+  align-items: start;
+  min-height: 0;
+  padding-block: var(--s-1);
+  line-height: 1.45;
+}
+
+.check--form .check__box {
+  margin-top: 2px;
+}
+
+/* ---------- Availability (text + shape, never colour alone) ---------- */
+.avail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  color: var(--text-2);
+}
+
+.avail__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-white);
+  box-shadow: 0 0 0 3px rgb(244 242 239 / 0.12);
+}
+
+.avail--on_order .avail__dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--text-2);
+}
+
+.avail--request .avail__dot {
+  border-radius: 1px;
+  background: var(--accent);
+  box-shadow: none;
+}
+
+/* ---------- Specs list ---------- */
+.specs {
+  display: grid;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.specs > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-4);
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.specs dt {
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+
+.specs dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.specs--compact > div {
+  padding: 0.55rem 0;
+}
+
+/* ---------- Language switch ---------- */
+.lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.lang__item {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  min-height: 32px;
+  color: var(--text-3);
+}
+
+a.lang__item:hover {
+  color: var(--text);
+}
+
+.lang__item.is-active {
+  color: var(--accent-text);
+}
+
+.lang__sep {
+  color: var(--line-3);
+}
+
+/* ---------- Breadcrumbs ---------- */
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.6rem;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+
+.crumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.crumbs li + li::before {
+  content: "/";
+  color: var(--line-3);
+}
+
+.crumbs a:hover {
+  color: var(--text);
+}
+
+.crumbs [aria-current] {
+  color: var(--text-2);
+}
+
+/* ---------- Mini product row ---------- */
+.mini-list {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border-block: 1px solid var(--line);
+}
+
+.mini {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-4);
+  padding: 0.55rem 0;
+  background: var(--bg);
+  transition: background-color var(--dur-micro);
+}
+
+.mini img {
+  width: 44px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--r-1);
+}
+
+.mini__name {
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  color: var(--text-2);
+  transition: color var(--dur-micro);
+}
+
+.mini__price {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.mini:hover .mini__name {
+  color: var(--text);
+}
+
+.mini:hover .mini__price {
+  color: var(--accent-text);
+}
+
+/* ---------- Prototype note (visible only in prototype mode) ---------- */
+.proto-note {
+  margin-top: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-left: 2px solid var(--accent);
+  background: var(--surface-2);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.proto-note code {
+  font-size: 0.95em;
+  color: var(--text);
+}
+
+kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: var(--r-1);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--text-3);
+}

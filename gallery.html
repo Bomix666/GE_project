@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Галерея — эффекты GLOBAL EFFECTS в работе</title>
+    <meta name="description" content="Фото и видео спецэффектов GLOBAL EFFECTS: конфетти, серпантин, криоэффекты, тяжелый дым, пена, имитация пламени, искусственный снег." />
+    <!-- @include head.html -->
+    <link rel="stylesheet" href="/src/styles/pages/gallery.css" />
+  </head>
+  <body data-page="gallery">
+    <!-- @include icons.html -->
+    <!-- @include header.html -->
+
+    <main id="main" class="gallery" data-gallery-page>
+      <section class="gal-hero" aria-labelledby="gal-title">
+        <div class="container">
+          <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="/">Главная</a></li><li><span aria-current="page">Галерея</span></li></ol></nav>
+          <div class="gal-hero__grid">
+            <h1 class="gal-hero__title" id="gal-title" data-reveal="mask"><span class="line"><span>Эффекты</span></span><span class="line line--accent"><span>в работе</span></span></h1>
+            <p class="lead" data-reveal>Концерты, спектакли, выставки и&nbsp;шоу-рум — фотографии и&nbsp;видео из галереи GLOBAL EFFECTS.</p>
+          </div>
+          <div class="gal-filter" role="group" aria-label="Фильтр по эффекту" data-gal-filter></div>
+        </div>
+      </section>
+
+      <section class="section gal-photos" aria-labelledby="photos-title">
+        <div class="container">
+          <div class="gal-head">
+            <h2 class="h2" id="photos-title">Фото <span class="tabular accent" data-photo-count></span></h2>
+            <a class="btn btn--ghost" data-gal-catalog hidden><span class="btn__label" data-gal-catalog-label>Оборудование для эффекта</span><span class="btn__arrow" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow" /></svg></span></a>
+          </div>
+          <ul class="mosaic" role="list" data-mosaic aria-live="polite"></ul>
+        </div>
+      </section>
+
+      <section class="section gal-videos" id="videos" aria-labelledby="videos-title">
+        <div class="container">
+          <div class="gal-head">
+            <h2 class="h2" id="videos-title">Видео <span class="tabular accent" data-video-count></span></h2>
+            <a class="btn btn--ghost" href="https://www.youtube.com/@GLOBALEFFECTS" target="_blank" rel="noopener"><span class="btn__label">Канал на YouTube</span><span class="btn__arrow" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow-up-right" /></svg></span></a>
+          </div>
+          <ul class="vlist" role="list" data-vlist></ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer.html -->
+    <script type="module" src="/src/js/pages/gallery.js"></script>
+  </body>
+</html>

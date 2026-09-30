@@ -1,0 +1,156 @@
+/* ==========================================================================
+   GLOBAL EFFECTS — Design tokens
+   Three layers: primitive → semantic → component.
+   Components must reference semantic tokens only (never raw hex).
+   Contrast notes are measured against --bg (#050505).
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---------- Primitive: neutrals ---------- */
+  --c-black-950: #050505;
+  --c-black-900: #0a0a0b;
+  --c-black-850: #0e0e10;
+  --c-black-800: #131315;
+  --c-black-700: #1b1b1e;
+  --c-black-600: #252528;
+  --c-black-500: #34343a;
+  --c-white: #f4f2ef;            /* off-white, warm */
+  --c-pure-white: #ffffff;
+
+  /* ---------- Primitive: brand red ---------- */
+  --c-red-brand: #ec1c23;        /* sampled from the GLOBAL EFFECTS logo */
+  --c-red-600: #d9141b;          /* fills behind white text: 5.2:1 */
+  --c-red-550: #e3161e;          /* hover fill behind white text: 4.8:1 */
+  --c-red-400: #ff3a40;          /* red text on black: 5.8:1 */
+  --c-red-900: #3a0507;          /* deep atmosphere */
+
+  /* ---------- Semantic: surfaces ---------- */
+  --bg: var(--c-black-950);
+  --surface-1: var(--c-black-900);
+  --surface-2: var(--c-black-800);
+  --surface-3: var(--c-black-700);
+  --surface-4: var(--c-black-600);
+  --overlay: rgb(3 3 3 / 0.72);
+
+  /* ---------- Semantic: text ---------- */
+  --text: var(--c-white);                      /* 18.6:1 */
+  --text-2: rgb(244 242 239 / 0.7);            /* ≈ 9:1 */
+  --text-3: rgb(244 242 239 / 0.56);           /* ≈ 5:1 on surfaces up to --surface-2 */
+  --text-inverse: var(--c-black-950);
+
+  /* ---------- Semantic: lines ---------- */
+  --line: rgb(244 242 239 / 0.09);
+  --line-2: rgb(244 242 239 / 0.16);
+  --line-3: rgb(244 242 239 / 0.3);
+  --line-ui: rgb(244 242 239 / 0.42);          /* boundaries of inputs/checkboxes: ≥3:1 (WCAG 1.4.11) */
+
+  /* ---------- Semantic: accent ---------- */
+  --accent: var(--c-red-brand);                /* lines, dots, progress, highlights (non-text) */
+  --accent-fill: var(--c-red-600);             /* button fills */
+  --accent-fill-hover: var(--c-red-550);
+  --accent-text: var(--c-red-400);             /* red text */
+  --accent-glow: rgb(236 28 35 / 0.22);
+  --on-accent: var(--c-pure-white);
+
+  --focus-ring: var(--c-pure-white);
+
+  /* ---------- Typography ---------- */
+  --font-display: "Unbounded Variable", "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-body: "Onest Variable", "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fs-hero: clamp(3rem, 1rem + 7.4vw, 8.75rem);
+  --fs-display: clamp(2.2rem, 0.9rem + 4.8vw, 5.75rem);
+  --fs-h1: clamp(1.9rem, 1.15rem + 3vw, 4rem);
+  --fs-h2: clamp(1.6rem, 1.1rem + 2vw, 2.9rem);
+  --fs-h3: clamp(1.2rem, 1rem + 0.8vw, 1.65rem);
+  --fs-h4: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+  --fs-lead: clamp(1.05rem, 0.97rem + 0.35vw, 1.3rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+
+  --lh-tight: 1.02;
+  --lh-heading: 1.12;
+  --lh-body: 1.6;
+
+  --tracking-display: -0.02em;
+  --tracking-label: 0.14em;
+
+  /* ---------- Spacing (4pt) ---------- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+  --section-y: clamp(5.5rem, 3rem + 9vw, 11rem);
+  --gutter: clamp(1rem, 0.4rem + 3vw, 3.5rem);
+  --container: 1520px;
+
+  /* ---------- Radius: industrial, precise ---------- */
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 6px;
+  --r-round: 999px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-pop: 0 30px 80px -24px rgb(0 0 0 / 0.85);
+  --shadow-drawer: -40px 0 120px -20px rgb(0 0 0 / 0.9);
+
+  /* ---------- Layers ---------- */
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-rail: 60;
+  --z-header: 100;
+  --z-mega: 90;
+  --z-overlay: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* ---------- Motion system ----------
+     micro   150–250ms  hover, press, toggles
+     ui      250–450ms  menus, drawers, dialogs
+     content 500–900ms  reveals, crossfades
+     cine    900–1600ms scene changes, hero
+     Exit durations ≈ 65% of enter.                                        */
+  --dur-micro: 180ms;
+  --dur-ui: 340ms;
+  --dur-ui-exit: 220ms;
+  --dur-content: 760ms;
+  --dur-cine: 1250ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);      /* arriving: expo-out */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);  /* travelling */
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);      /* leaving */
+
+  /* ---------- Component tokens ---------- */
+  --header-h: 72px;
+  --btn-h-lg: 58px;
+  --btn-h-md: 48px;
+  --btn-h-sm: 40px;
+  --input-h: 48px;
+  --tap: 44px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-h: 60px;
+    --btn-h-lg: 54px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-micro: 1ms;
+    --dur-ui: 1ms;
+    --dur-ui-exit: 1ms;
+    --dur-content: 1ms;
+    --dur-cine: 1ms;
+  }
+}

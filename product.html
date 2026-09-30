@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Товар — GLOBAL EFFECTS</title>
+    <meta name="description" content="Оборудование для спецэффектов и расходные материалы GLOBAL EFFECTS." />
+    <!-- @include head.html -->
+    <link rel="stylesheet" href="/src/styles/pages/product.css" />
+  </head>
+  <body data-page="catalog">
+    <!-- @include icons.html -->
+    <!-- @include header.html -->
+
+    <main id="main" class="product" data-product aria-busy="true">
+      <section class="pd-hero" aria-labelledby="pd-title">
+        <div class="container">
+          <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list" data-crumbs><li><a href="/">Главная</a></li></ol></nav>
+          <div class="pd-grid">
+            <div class="pd-gallery" data-gallery>
+              <div class="pd-stage">
+                <img class="pd-stage__img" data-stage-img alt="" width="570" height="500" fetchpriority="high" />
+                <span class="pd-stage__glow" aria-hidden="true"></span>
+                <button type="button" class="pd-zoom icon-btn" data-zoom aria-label="Открыть фото на весь экран">
+                  <svg width="20" height="20" aria-hidden="true"><use href="#i-plus" /></svg>
+                </button>
+                <p class="pd-stage__count tabular" data-stage-count aria-hidden="true"></p>
+              </div>
+              <ul class="pd-thumbs" role="list" data-thumbs aria-label="Фотографии товара"></ul>
+            </div>
+
+            <div class="pd-info">
+              <p class="eyebrow" data-pd-type></p>
+              <h1 class="pd-title" id="pd-title" data-pd-title>Загрузка…</h1>
+              <div class="pd-price-row">
+                <p class="pd-price tabular" data-pd-price></p>
+                <div data-pd-avail></div>
+              </div>
+              <div class="pd-buy" data-qty-scope data-pd-buy></div>
+              <ul class="pd-badges" role="list" data-pd-badges></ul>
+              <dl class="specs pd-keyspecs" data-pd-keyspecs></dl>
+              <ul class="pd-service" role="list">
+                <li><svg width="18" height="18" aria-hidden="true"><use href="#i-pin" /></svg><span>Посмотреть в работе можно в шоу-руме: Москва, ул. Генерала Белова, д. 16, стр. 2</span></li>
+                <li><svg width="18" height="18" aria-hidden="true"><use href="#i-box" /></svg><a href="/page.html?p=delivery" data-route="page" data-path="/page/delivery">Условия доставки</a></li>
+                <li><svg width="18" height="18" aria-hidden="true"><use href="#i-phone" /></svg><a href="tel:+74996505078">Консультация: +7 (499) 650-50-78</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section pd-details" aria-label="Подробная информация о товаре">
+        <div class="container pd-details__grid">
+          <nav class="pd-toc" aria-label="Разделы описания" data-toc></nav>
+          <div class="pd-sections" data-sections></div>
+        </div>
+      </section>
+
+      <section class="section pd-rail" data-related hidden aria-labelledby="related-title">
+        <div class="container">
+          <div class="flagship__head">
+            <h2 class="h2" id="related-title">Рекомендуемые товары</h2>
+            <div class="rail-controls">
+              <button type="button" class="icon-btn icon-btn--line" data-rail-prev aria-label="Предыдущие товары"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>
+              <button type="button" class="icon-btn icon-btn--line" data-rail-next aria-label="Следующие товары"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
+          </div>
+        </div>
+        <ul class="rail-track" data-rail-track role="list"></ul>
+      </section>
+
+      <section class="section pd-rail" data-consumables hidden aria-labelledby="cons-title">
+        <div class="container">
+          <div class="flagship__head">
+            <div>
+              <p class="eyebrow">Эффект → оборудование → расходники</p>
+              <h2 class="h2" id="cons-title" data-cons-title>Расходные материалы</h2>
+            </div>
+            <div class="rail-controls">
+              <button type="button" class="icon-btn icon-btn--line" data-rail-prev aria-label="Предыдущие товары"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>
+              <button type="button" class="icon-btn icon-btn--line" data-rail-next aria-label="Следующие товары"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
+          </div>
+        </div>
+        <ul class="rail-track" data-rail-track role="list"></ul>
+      </section>
+
+      <div class="buybar" data-buybar hidden>
+        <div class="container buybar__inner">
+          <img class="buybar__img" data-buybar-img alt="" width="48" height="54" />
+          <p class="buybar__name" data-buybar-name></p>
+          <p class="buybar__price tabular" data-buybar-price></p>
+          <div class="buybar__action" data-qty-scope data-buybar-action></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- @include footer.html -->
+    <script type="module" src="/src/js/pages/product.js"></script>
+  </body>
+</html>

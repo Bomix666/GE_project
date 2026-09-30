@@ -1,0 +1,461 @@
+/* ==========================================================================
+   About — editorial storytelling, no three-column boilerplate.
+   ========================================================================== */
+
+.ab-hero {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: 100svh;
+  padding: calc(var(--header-h) + var(--s-5)) 0 clamp(3rem, 8vw, 6rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ab-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.ab-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  animation: ab-drift 18s var(--ease-in-out) infinite alternate;
+}
+
+.ab-hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, var(--bg) 0%, rgb(5 5 5 / 0.7) 40%, rgb(5 5 5 / 0.35) 100%),
+    linear-gradient(90deg, rgb(5 5 5 / 0.85), transparent 70%);
+}
+
+@keyframes ab-drift {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+.reduce-motion .ab-hero__media img {
+  animation: none;
+}
+
+.ab-hero__inner {
+  display: grid;
+  gap: var(--s-5);
+}
+
+.ab-hero__inner .crumbs {
+  margin-bottom: auto;
+}
+
+.ab-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 0.9rem + 5.6vw, 7rem);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.ab-hero__title .line--accent {
+  color: var(--accent);
+}
+
+.ab-hero__lead {
+  max-width: 44rem;
+}
+
+/* Sticky story */
+.ab-story__grid {
+  display: grid;
+  gap: var(--s-7);
+}
+
+.ab-story__visual {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--r-3);
+  overflow: hidden;
+  background: var(--surface-1);
+}
+
+.ab-story__frame {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity var(--dur-cine) var(--ease-in-out),
+    transform var(--dur-cine) var(--ease-out);
+}
+
+.ab-story__frame.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.ab-story__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ab-story__num {
+  position: absolute;
+  right: var(--s-5);
+  bottom: -0.1em;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 12vw, 11rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(244 242 239 / 0.4);
+}
+
+.ab-step {
+  padding-block: var(--s-7);
+  border-top: 1px solid var(--line);
+  opacity: 0.35;
+  transition: opacity var(--dur-content) var(--ease-out);
+}
+
+.ab-step.is-active {
+  opacity: 1;
+}
+
+.ab-step__num {
+  display: flex;
+  gap: var(--s-3);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.ab-step__num b {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent-text);
+}
+
+.ab-step__title {
+  margin-top: var(--s-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.ab-step__text {
+  margin-top: var(--s-4);
+  max-width: 36rem;
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+@media (min-width: 1024px) {
+  .ab-story__grid {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: start;
+  }
+  .ab-story__visual {
+    position: sticky;
+    top: calc(var(--header-h) + 5vh);
+    aspect-ratio: auto;
+    height: calc(100svh - var(--header-h) - 10vh);
+  }
+  .ab-step {
+    min-height: 70svh;
+    display: grid;
+    align-content: center;
+  }
+}
+
+@media (max-width: 1023px) {
+  .ab-step {
+    opacity: 1;
+  }
+}
+
+/* Clients */
+.ab-clients__grid {
+  display: grid;
+  gap: var(--s-7);
+}
+
+@media (min-width: 1024px) {
+  .ab-clients__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 6rem);
+  }
+}
+
+.ab-tasks__label {
+  margin-top: var(--s-7);
+}
+
+.ab-tasks {
+  display: grid;
+  gap: var(--s-2);
+  margin: var(--s-4) 0 0;
+}
+
+.ab-tasks li {
+  position: relative;
+  padding-left: 1.4rem;
+  color: var(--text-2);
+}
+
+.ab-tasks li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent-text);
+}
+
+/* Offers */
+.offers {
+  display: grid;
+  gap: 1px;
+  margin: clamp(2rem, 4vw, 3.5rem) 0 0;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .offers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .offers {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.offer {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: var(--s-4);
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  background: var(--bg);
+  transition: background-color var(--dur-ui);
+}
+
+.offer:hover {
+  background: var(--surface-1);
+}
+
+.offer__num {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--accent-text);
+}
+
+.offer__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.offer__list {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.offer__list li {
+  padding-left: 1rem;
+  position: relative;
+}
+
+.offer__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+}
+
+/* Values */
+.values {
+  display: grid;
+  gap: var(--s-6);
+  margin: clamp(2rem, 4vw, 3.5rem) 0 0;
+}
+
+@media (min-width: 900px) {
+  .values {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.value {
+  display: grid;
+  gap: var(--s-3);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line-2);
+}
+
+.value__icon {
+  color: var(--accent-text);
+}
+
+.value__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Geography */
+.ab-geo__head {
+  display: grid;
+  gap: var(--s-7);
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+@media (min-width: 1024px) {
+  .ab-geo__head {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+  }
+}
+
+.hq {
+  display: grid;
+  gap: var(--s-2);
+  font-style: normal;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.hq__phone {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+  color: var(--text);
+}
+
+.hq__mail {
+  color: var(--text);
+}
+
+.hq__phone:hover,
+.hq__mail:hover {
+  color: var(--accent-text);
+}
+
+.cities {
+  display: grid;
+  gap: var(--s-7);
+}
+
+.city__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--line-3);
+}
+
+.city__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.dealers {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  background: var(--line);
+}
+
+@media (min-width: 768px) {
+  .dealers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .dealers {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.dealer {
+  display: grid;
+  align-content: start;
+  gap: var(--s-1);
+  padding: var(--s-5) var(--s-5) var(--s-5) 0;
+  background: var(--bg);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 768px) {
+  .dealer {
+    padding-left: var(--s-5);
+  }
+}
+
+.dealer__name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.dealer__type {
+  margin-bottom: var(--s-2);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.dealer__addr {
+  color: var(--text-2);
+}
+
+.dealer__phone {
+  justify-self: start;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.dealer__phone:hover,
+.dealer__site:hover {
+  color: var(--accent-text);
+}
+
+.dealer__site {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: var(--text-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line-3);
+  text-underline-offset: 3px;
+}

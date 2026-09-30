@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Корзина — GLOBAL EFFECTS</title>
+    <meta name="robots" content="noindex" />
+    <!-- @include head.html -->
+    <link rel="stylesheet" href="/src/styles/pages/cart.css" />
+  </head>
+  <body data-page="cart">
+    <!-- @include icons.html -->
+    <!-- @include header.html -->
+
+    <main id="main" class="cart-page">
+      <div class="container">
+        <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="/">Главная</a></li><li><span aria-current="page">Корзина</span></li></ol></nav>
+        <h1 class="cart-page__title">Корзина <span class="tabular accent" data-cart-page-count></span></h1>
+        <div class="cart-page__grid">
+          <section aria-label="Товары в корзине">
+            <div class="cart-page__list" data-cart-page-list aria-live="polite"></div>
+          </section>
+          <aside class="cart-summary" aria-labelledby="summary-title" data-cart-summary>
+            <h2 class="cart-summary__title" id="summary-title">Ваш заказ</h2>
+            <div data-cart-summary-body></div>
+            <!--
+              INTEGRATION POINT: the existing Yii checkout form of /cart/index
+              (customer fields, delivery, promocode, submit) is rendered here
+              unchanged. The redesign only restyles it.
+            -->
+            <p class="proto-note" role="note" data-proto-only>Прототип: на сайте здесь выводится существующая форма оформления заказа со страницы <code>/cart/index</code> — поля, доставка и отправка обрабатываются текущим backend без изменений.</p>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <!-- @include footer.html -->
+    <script type="module" src="/src/js/pages/cart.js"></script>
+  </body>
+</html>

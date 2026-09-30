@@ -1,0 +1,12 @@
+/* GLOBAL EFFECTS — stylesheet entry. Order: tokens → base → components → sections → pages */
+/* self-hosted variable fonts (Cyrillic subsets load only when used) */
+@import '@fontsource-variable/unbounded';
+@import '@fontsource-variable/onest';
+@import './tokens.css';
+@import './base.css';
+@import './components/controls.css';
+@import './components/header.css';
+@import './components/overlays.css';
+@import './components/product-card.css';
+@import './components/footer.css';
+/* page styles are linked in each page <head> (code-split per route) */
