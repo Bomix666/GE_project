@@ -34,9 +34,10 @@ export function resolve(path) {
   if (p === '/') return '/';
   if ((m = p.match(/^\/category\/([^/]+)$/)) && CATEGORIES.has(m[1])) return `/catalog.html?c=${m[1]}`;
   if ((m = p.match(/^\/product\/([^/]+)$/))) return `/product.html?p=${encodeURIComponent(m[1])}`;
-  if (p === '/news' || p === '/news/index') return '/news.html';
+  // News and the blog are blocks of the single «О компании» page; articles keep their own URLs
+  if (p === '/news' || p === '/news/index') return '/about.html#news';
   if (p === '/news/view' && q.get('news_id')) return `/news.html?id=${q.get('news_id')}`;
-  if (p === '/blog') return '/blog.html';
+  if (p === '/blog') return '/about.html#blog';
   if ((m = p.match(/^\/blog\/([^/]+)$/))) return `/blog.html?p=${encodeURIComponent(m[1])}`;
   if (p === '/page/about') return '/about.html';
   if (p === '/contacts') return '/about.html#contacts';
@@ -67,10 +68,10 @@ export const routes = {
   contacts: () => resolve('/contacts'),
   effects: () => '/#effects',
   effect: (slug) => `/#fx-${slug}`,
-  newsList: () => resolve('/news'),
+  newsList: () => `${routes.about()}#news`,
   news: (path) => resolve(path),
   newsItem: (id) => resolve(`/news/view?news_id=${id}`),
-  blog: () => resolve('/blog'),
+  blog: () => `${routes.about()}#blog`,
   blogPost: (slug) => resolve(`/blog/${slug}`),
   page: (path) => resolve(path),
   doc: (path) => (PRODUCTION ? path : ORIGIN + path),

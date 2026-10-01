@@ -4,9 +4,9 @@
 }
 
 .cart-page__title {
-  margin: clamp(1.5rem, 4vw, 3rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  margin: clamp(1rem, 2.5vw, 2rem) 0 clamp(1.25rem, 2.5vw, 2rem);
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 1rem + 4vw, 4.5rem);
+  font-size: clamp(1.65rem, 0.65rem + 2.7vw, 3rem);
   font-weight: 400;
   letter-spacing: -0.04em;
   text-transform: uppercase;

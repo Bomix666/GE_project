@@ -33,15 +33,19 @@ Runtime-зависимостей нет: Vite используется толь�
 | `catalog.html?c=<slug>` | `/category/<slug>` | листинг категории |
 | `product.html?p=<slug>` | `/product/<slug>` | карточка товара |
 | `gallery.html?cat=<slug>` | `/gallery/images/<slug>`, `/gallery/videos/<slug>` | галерея |
-| `about.html` (+ `#contacts`) | `/page/about`, `/contacts` | о компании, дилеры |
+| `about.html` (+ `#news`, `#blog`, `#contacts`) | `/page/about`, `/contacts` | одна страница «О компании»: о компании, новости, блог, контакты и дилеры |
 | `cart.html` | `/cart/index` | список корзины; **форма оформления остаётся существующей** |
-| `news.html`, `news.html?id=<id>` | `/news`, `/news/view?news_id=<id>` | новости (49, полные тексты) |
-| `blog.html`, `blog.html?p=<slug>` | `/blog`, `/blog/<slug>` | «Наш блог» (19 материалов) |
+| `news.html?id=<id>` | `/news/view?news_id=<id>` | статья новости (49, полные тексты); `news.html` без id → `about.html#news` |
+| `blog.html?p=<slug>` | `/blog/<slug>` | материал «Нашего блога» (19); `blog.html` без slug → `about.html#blog` |
 | `page.html?p=<slug>` | `/page/delivery`, `/page/politika-konfidencialnosti`, `/page/pravila-prodazi-tovarov` | текстовые страницы |
 
-**Раздел «О компании»** объединяет три страницы: «О компании», «Новости» и «Наш блог».
-В шапке это один пункт с выпадающей панелью, на каждой из страниц есть общая навигация раздела
-(`components/section-nav.js`) и хлебные крошки «Главная / О компании / …». Новости и блог остаются разными типами контента.
+**«О компании» — одна страница** (`about.html`): 01 О компании → 02 Новости → 03 Наш блог → 04 Контакты и дилеры.
+Под первым экраном — липкая якорная навигация с подсветкой текущего блока. Ленты новостей и блога строятся
+из тех же реальных данных (`renderList` / `renderBlogList` в `components/editorial.js`), а у каждой статьи остаётся свой
+адрес (`/news/view?news_id=…`, `/blog/<slug>`) с хлебными крошками «Главная / О компании / Новости | Наш блог / …».
+Пункты меню, мобильного меню и footer ведут на якоря этой страницы (`routes.newsList()` → `…#news`, `routes.blog()` → `…#blog`).
+Со страницы убраны блоки «Сцены наших клиентов» и «Оборудование» (преимущества); их данные остаются в `data/content.js`.
+В production маршруты `/news` и `/blog` — это backend: их стоит перенаправить на `/page/about#news` и `/page/about#blog`.
 
 **Акции убраны из интерфейса** (страница, пункты меню, footer, ссылки). Ссылки на `/offers…` внутри текстов из CMS
 превращаются в обычный текст (`localizeLinks()`). Со стороны backend остаются: маршруты `/offers`, `/offers/<slug>`,
@@ -97,7 +101,8 @@ src/js/core/         env, routes, dom-хелперы, motion (reveal + scene eng
 src/js/data/         api (JSON), content (редакционный контент с источниками)
 src/js/services/     cart (Yii/Local драйверы), search, actions (делегированные действия)
 src/js/components/   product-card, cart-drawer, dialog, toast, search-overlay, quick-view,
-                     request-form, lightbox, youtube, rail, chapter-rail, header, mega-menu
+                     request-form, lightbox, youtube, rail, chapter-rail, header, mega-menu,
+                     editorial (ленты и статьи новостей/блога)
 src/js/sections/     hero, manifesto, effects, story, home-extra
 src/js/pages/        точки входа страниц
 public/data/         снимок каталога / галереи / новостей
@@ -105,6 +110,10 @@ public/media/        тонированные сцены, галерея (WebP 1
 design-system/       MASTER.md — дизайн-система
 tools/               скрипты снимка и тонирования
 ```
+
+**Типографика.** Одна шкала на весь сайт: токены `--fs-*`, `--section-y`, `--btn-h-lg` в `tokens.css` равны шкале главной,
+которую `sections/home.css` дополнительно закрепляет только для главной. Заголовки страниц (каталог, товар, корзина, галерея,
+статьи) уменьшены в тех же пропорциях; основной текст остаётся 16–17 px.
 
 ## 4. Главная — «фильм» из сцен
 1. **Hero:** полноэкранное видео (или reel реальных фото с паузой) → при скролле медиа темнеет и приближается, заголовок уходит вверх, красная линия «доезжает» до следующей сцены.

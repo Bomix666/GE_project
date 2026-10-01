@@ -78,7 +78,7 @@
 
 .btn--lg {
   --h: var(--btn-h-lg);
-  font-size: 1rem;
+  font-size: 0.9375rem;
 }
 
 .btn--lg .btn__label {
@@ -742,63 +742,4 @@ kbd {
   font-family: var(--font-body);
   font-size: 0.6875rem;
   color: var(--text-3);
-}
-
-/* ---------- Section navigation («О компании · Новости · Наш блог») ---------- */
-.secnav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s-2) var(--s-6);
-  padding-block: var(--s-3);
-  border-bottom: 1px solid var(--line);
-}
-
-.secnav__label {
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.secnav__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-1) var(--s-5);
-  margin: 0;
-}
-
-.secnav__link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--tap);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  color: var(--text-2);
-  transition: color var(--dur-micro);
-}
-
-.secnav__link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 6px;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--dur-ui) var(--ease-out);
-}
-
-.secnav__link:hover,
-.secnav__link[aria-current] {
-  color: var(--text);
-}
-
-.secnav__link:hover::after,
-.secnav__link[aria-current]::after {
-  transform: scaleX(1);
 }

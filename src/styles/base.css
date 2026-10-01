@@ -281,7 +281,7 @@ html {
   justify-content: space-between;
   gap: var(--s-5);
   padding-bottom: var(--s-4);
-  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   border-bottom: 1px solid var(--line);
   font-size: var(--fs-xs);
   letter-spacing: var(--tracking-label);
@@ -304,8 +304,8 @@ html {
 .section-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-5);
-  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  gap: var(--s-4);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 @media (min-width: 1024px) {

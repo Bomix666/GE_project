@@ -165,19 +165,6 @@
   text-underline-offset: 4px;
 }
 
-.footer__wordmark {
-  margin: clamp(2rem, 5vw, 4rem) 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(2.6rem, 9.6vw, 11.5rem);
-  font-weight: 600;
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--line-2);
-  user-select: none;
-}
-
 .footer__bottom {
   display: flex;
   flex-wrap: wrap;

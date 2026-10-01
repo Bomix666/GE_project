@@ -1,5 +1,6 @@
 /* ==========================================================================
-   Editorial pages: News, Blog, Offers, text pages (delivery, legal)
+   Editorial: news and blog feeds (inside «О компании»), articles,
+   text pages (delivery, legal)
    ========================================================================== */
 
 .ed-hero {
@@ -10,7 +11,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-5);
-  padding-block: clamp(2rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
   border-bottom: 1px solid var(--line);
 }
 
@@ -23,7 +24,7 @@
 
 .ed-hero__title {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 1rem + 6vw, 7rem);
+  font-size: clamp(1.8rem, 0.65rem + 4vw, 4.75rem);
   font-weight: 400;
   line-height: 0.94;
   letter-spacing: -0.045em;
@@ -36,14 +37,14 @@
 
 /* ---------------- Lists ---------------- */
 .ed-list {
-  padding-top: clamp(2rem, 4vw, 3.5rem);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .ed-lead {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6);
-  margin-bottom: clamp(3rem, 6vw, 5rem);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
 @media (min-width: 1024px) {
@@ -153,7 +154,7 @@
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: var(--s-3);
-  margin-top: clamp(3rem, 6vw, 5rem);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
 }
 
 /* ---------------- Article ---------------- */
@@ -166,12 +167,12 @@
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   max-width: 62rem;
-  padding-block: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
 }
 
 .art__title {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 1rem + 3vw, 4rem);
+  font-size: clamp(1.5rem, 0.7rem + 2vw, 2.75rem);
   font-weight: 400;
   line-height: 1.06;
   letter-spacing: -0.035em;
@@ -308,7 +309,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
-  padding-block: clamp(2rem, 5vw, 4rem) var(--section-y);
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) var(--section-y);
 }
 
 @media (min-width: 1024px) {
@@ -390,7 +391,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6);
-  margin-bottom: clamp(3rem, 6vw, 5rem);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
 @media (min-width: 1024px) {
@@ -459,7 +460,7 @@
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(2rem, 3vw, 3rem) clamp(1rem, 2vw, 2rem);
   margin: 0;
-  padding-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
   border-top: 1px solid var(--line);
 }
 
@@ -540,7 +541,7 @@
 
 /* Numbered index of every other material */
 .bl-index {
-  margin-top: clamp(4rem, 8vw, 6rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
 .bl-index__head {
@@ -667,10 +668,4 @@
     width: 72px;
     height: 54px;
   }
-}
-
-/* «О компании» section navigation inside editorial heroes */
-.ed-hero .secnav,
-.art .secnav {
-  margin-top: var(--s-4);
 }

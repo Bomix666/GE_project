@@ -1,16 +1,17 @@
-/** About: editorial story built only from the live site's about/contacts content. */
+/**
+ * «О компании» — one page: 01 О компании · 02 Новости · 03 Наш блог · 04 Контакты и дилеры.
+ * Built only from the live site's about/contacts content, news and blog.
+ */
 import { ready } from '../app.js';
 import { qs, qsa, esc, icon, toHTML, plural } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
+import { env } from '../core/env.js';
 import { routes } from '../core/routes.js';
-import { clients, clientTasks, services, equipmentValues, dealers } from '../data/content.js';
-import { mountSectionNav } from '../components/section-nav.js';
+import { getNews, getBlog } from '../data/api.js';
+import { services, dealers } from '../data/content.js';
+import { renderList, renderBlogList } from '../components/editorial.js';
 
 ready(() => {
-  mountSectionNav();
-  qs('[data-clients]').innerHTML = clients.map((c) => `<li>${esc(c)}</li>`).join('');
-  qs('[data-tasks]').innerHTML = clientTasks.map((t) => `<li>${esc(t)}</li>`).join('');
-
   qs('[data-services]').innerHTML = services
     .map(
       (o, i) => `<li class="service">
@@ -20,10 +21,6 @@ ready(() => {
         <a class="btn btn--ghost" href="${o.link.arg ? routes[o.link.route](o.link.arg) : routes[o.link.route]()}"><span class="btn__label">${esc(o.link.label)}</span><span class="btn__arrow" aria-hidden="true">${toHTML(icon('i-arrow', 18))}</span></a>
       </li>`,
     )
-    .join('');
-
-  qs('[data-values]').innerHTML = equipmentValues
-    .map((v) => `<li class="value"><span class="value__icon" aria-hidden="true">${toHTML(icon(v.icon, 28))}</span><h3 class="value__title">${esc(v.title)}</h3><p class="text-2">${esc(v.text)}</p></li>`)
     .join('');
 
   // Dealers grouped by city (real list from /contacts)
@@ -65,5 +62,66 @@ ready(() => {
   );
   steps.forEach((s) => io.observe(s));
 
+  initPageNav();
   reveal();
+  renderFeeds();
 });
+
+/** News and blog blocks: the same real data and article URLs as before, now inside this page. */
+async function renderFeeds() {
+  const newsRoot = qs('[data-ab-news]');
+  const blogRoot = qs('[data-ab-blog]');
+  const [news, posts] = await Promise.allSettled([getNews(), getBlog()]);
+
+  if (news.status === 'fulfilled') {
+    const n = news.value.length;
+    qs('[data-news-count]').textContent = `${n} ${plural(n, ['публикация', 'публикации', 'публикаций'])}.`;
+    renderList(newsRoot, news.value, { href: (x) => routes.newsItem(x.id), label: 'Все новости', pageSize: 8, level: 3 });
+  } else newsRoot.innerHTML = '<p class="text-2">Не удалось загрузить новости. Обновите страницу.</p>';
+
+  if (posts.status === 'fulfilled') renderBlogList(blogRoot, posts.value, { href: (x) => routes.blogPost(x.slug), level: 3, indexLimit: 4 });
+  else blogRoot.innerHTML = '<p class="text-2">Не удалось загрузить материалы блога. Обновите страницу.</p>';
+
+  newsRoot.removeAttribute('aria-busy');
+  blogRoot.removeAttribute('aria-busy');
+  reveal();
+
+  // The feeds changed the page height: land on the requested block again (/about.html#blog)
+  const target = location.hash && document.getElementById(location.hash.slice(1));
+  if (target && target.compareDocumentPosition(newsRoot) & Node.DOCUMENT_POSITION_PRECEDING) {
+    target.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+}
+
+/** Sticky anchor navigation that highlights the block being read. */
+function initPageNav() {
+  const nav = qs('[data-abnav]');
+  const list = qs('.abnav__list', nav);
+  const links = qsa('.abnav__link', nav);
+  const blocks = links.map((a) => document.getElementById(a.hash.slice(1)));
+  let current = -1;
+
+  const update = () => {
+    const line = Math.max(nav.getBoundingClientRect().bottom + 32, innerHeight * 0.3);
+    let i = 0;
+    blocks.forEach((b, k) => {
+      if (b && b.getBoundingClientRect().top <= line) i = k;
+    });
+    if (i === current) return;
+    current = i;
+    links.forEach((a, k) => (k === i ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+    // On phones the list scrolls sideways: keep the active item in view
+    const a = links[i];
+    if (list.scrollWidth > list.clientWidth) {
+      list.scrollTo({ left: a.offsetLeft - (list.clientWidth - a.offsetWidth) / 2, behavior: env.reducedMotion ? 'auto' : 'smooth' });
+    }
+  };
+
+  let frame = 0;
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(() => ((frame = 0), update()));
+  };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  update();
+}

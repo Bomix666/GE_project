@@ -5,11 +5,11 @@
 import { qs, html, raw, toHTML, icon, esc, plural } from '../core/dom.js';
 import { localizeLinks, routes } from '../core/routes.js';
 import { ytFacade, initYouTube } from './youtube.js';
-import { sectionNav } from './section-nav.js';
 
 const iso = (d) => (d ? d.split('.').reverse().join('-') : '');
 
-export function renderList(root, items, { href, label, pageSize = 12, emptyText = 'Материалов пока нет.' }) {
+/** `level` sets the heading level of item titles (3 when the list sits inside a page section). */
+export function renderList(root, items, { href, label, pageSize = 12, level = 2, emptyText = 'Материалов пока нет.' }) {
   if (!items.length) {
     root.innerHTML = `<p class="text-2">${esc(emptyText)}</p>`;
     return;
@@ -28,15 +28,15 @@ export function renderList(root, items, { href, label, pageSize = 12, emptyText 
   const draw = () => {
     root.innerHTML =
       toHTML(html`<article class="ed-lead">
-        <a class="ed-lead__link ed-lead__media" href="${href(lead)}" tabindex="-1" aria-hidden="true"><img src="${lead.image}" alt="" width="1200" height="750" decoding="async" /></a>
+        <a class="ed-lead__link ed-lead__media" href="${href(lead)}" tabindex="-1" aria-hidden="true"><img src="${lead.image}" alt="" width="1200" height="750" loading="lazy" decoding="async" /></a>
         <div class="ed-lead__body">
           ${lead.date ? html`<time class="ed-date tabular" datetime="${iso(lead.date)}">${lead.date}</time>` : ''}
-          <h2 class="ed-lead__title"><a class="ed-lead__link" href="${href(lead)}">${lead.title}</a></h2>
+          ${raw(`<h${level} class="ed-lead__title">`)}<a class="ed-lead__link" href="${href(lead)}">${lead.title}</a>${raw(`</h${level}>`)}
           ${lead.excerpt ? html`<p class="text-2">${lead.excerpt}</p>` : ''}
           <a class="btn btn--ghost" href="${href(lead)}"><span class="btn__label">Читать</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
         </div>
       </article>`) +
-      `<h2 class="visually-hidden">${esc(label)}</h2><ul class="ed-grid" role="list">${rest.slice(0, shown).map(card).join('')}</ul>` +
+      `<h${level} class="visually-hidden">${esc(label)}</h${level}><ul class="ed-grid" role="list">${rest.slice(0, shown).map(card).join('')}</ul>` +
       (rest.length > shown
         ? `<div class="ed-more"><p class="text-3 tabular">Показано ${shown + 1} из ${items.length}</p><button type="button" class="btn btn--secondary btn--lg" data-ed-more><span class="btn__label">Показать ещё</span><span class="btn__icon" aria-hidden="true">${toHTML(icon('i-plus', 18))}</span></button></div>`
         : '');
@@ -51,12 +51,11 @@ export function renderList(root, items, { href, label, pageSize = 12, emptyText 
   });
 }
 
-export function renderArticle(root, item, { eyebrow, back, section, siblings = [], siblingHref, cta }) {
+export function renderArticle(root, item, { eyebrow, back, siblings = [], siblingHref, cta }) {
   document.title = `${item.title} — GLOBAL EFFECTS`;
   root.innerHTML = toHTML(html`<article class="art" aria-labelledby="art-title">
     <div class="container">
       <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="/">Главная</a></li><li><a href="${routes.about()}">О компании</a></li><li><a href="${back.href}">${back.label}</a></li><li><span aria-current="page">${item.title}</span></li></ol></nav>
-      ${section ? raw(sectionNav(section)) : ''}
       <header class="art__head">
         <p class="eyebrow"><span>${eyebrow}${item.date ? html` · <time datetime="${iso(item.date)}">${item.date}</time>` : ''}</span></p>
         <h1 class="art__title" id="art-title" data-fit>${item.title}</h1>
@@ -101,27 +100,31 @@ const cleanExcerpt = (p) => {
   return t.toUpperCase().startsWith(head) ? t.slice(head.length).trim() : t;
 };
 
-export function renderBlogList(root, posts, { href }) {
+/** `level` sets the heading level; `indexLimit` folds the numbered index behind a «Показать все» button. */
+export function renderBlogList(root, posts, { href, level = 2, indexLimit = Infinity }) {
   const n = posts.length;
   const num = (i) => String(i + 1).padStart(2, '0');
+  const hOpen = (attrs) => raw(`<h${level} ${attrs}>`);
+  const hClose = raw(`</h${level}>`);
   const [lead, ...rest] = posts;
   const mosaic = rest.slice(0, 5);
   const index = rest.slice(5);
+  const folded = index.length - indexLimit;
 
   root.innerHTML = toHTML(html`
     <article class="bl-feature" aria-labelledby="bl-feature-title">
       <a class="bl-feature__media" href="${href(lead)}" tabindex="-1" aria-hidden="true">
-        <img src="${lead.image}" alt="" width="1600" height="900" decoding="async" fetchpriority="high" />
+        <img src="${lead.image}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
       </a>
       <div class="bl-feature__body">
         <p class="bl-num tabular"><b>${num(0)}</b> / ${String(n).padStart(2, '0')}</p>
-        <h2 class="bl-feature__title" id="bl-feature-title"><a href="${href(lead)}">${lead.title}</a></h2>
+        ${hOpen('class="bl-feature__title" id="bl-feature-title"')}<a href="${href(lead)}">${lead.title}</a>${hClose}
         <p class="bl-feature__excerpt">${cleanExcerpt(lead)}</p>
         <a class="btn btn--primary btn--md" href="${href(lead)}"><span class="btn__label">Читать материал</span><span class="btn__icon" aria-hidden="true">${icon('i-arrow', 18)}${icon('i-arrow', 18)}</span></a>
       </div>
     </article>
 
-    <h2 class="visually-hidden">Материалы блога</h2>
+    ${hOpen('class="visually-hidden"')}Материалы блога${hClose}
     <ul class="bl-mosaic" role="list">
       ${mosaic.map(
         (p, i) => html`<li class="bl-mosaic__item ${i === 0 ? 'bl-mosaic__item--wide' : ''}">
@@ -137,10 +140,10 @@ export function renderBlogList(root, posts, { href }) {
 
     ${index.length
       ? html`<section class="bl-index" aria-labelledby="bl-index-title">
-          <div class="bl-index__head"><h2 class="bl-index__title" id="bl-index-title">Все материалы</h2><span class="label tabular">${n} ${plural(n, ['материал', 'материала', 'материалов'])}</span></div>
-          <ol class="bl-index__list" role="list">
+          <div class="bl-index__head">${hOpen('class="bl-index__title" id="bl-index-title"')}Все материалы${hClose}<span class="label tabular">${n} ${plural(n, ['материал', 'материала', 'материалов'])}</span></div>
+          <ol class="bl-index__list" role="list" id="bl-index-list">
             ${index.map(
-              (p, i) => html`<li><a class="bl-row" href="${href(p)}">
+              (p, i) => html`<li ${raw(i >= indexLimit ? 'hidden data-bl-folded' : '')}><a class="bl-row" href="${href(p)}">
                 <span class="bl-row__num tabular">${num(i + 1 + mosaic.length)}</span>
                 <span class="bl-row__text"><span class="bl-row__title">${p.title}</span><span class="bl-row__excerpt">${cleanExcerpt(p)}</span></span>
                 <img class="bl-row__thumb" src="${p.thumb || p.image}" alt="" width="255" height="277" loading="lazy" decoding="async" />
@@ -148,8 +151,19 @@ export function renderBlogList(root, posts, { href }) {
               </a></li>`,
             )}
           </ol>
+          ${folded > 0
+            ? html`<div class="ed-more"><button type="button" class="btn btn--secondary btn--lg" aria-controls="bl-index-list" aria-expanded="false" data-bl-unfold><span class="btn__label">Показать ещё ${folded}</span><span class="btn__icon" aria-hidden="true">${icon('i-plus', 18)}</span></button></div>`
+            : ''}
         </section>`
       : ''}`);
+
+  const unfold = qs('[data-bl-unfold]', root);
+  unfold?.addEventListener('click', () => {
+    const rows = root.querySelectorAll('[data-bl-folded]');
+    rows.forEach((li) => (li.hidden = false));
+    rows[0]?.querySelector('a').focus({ preventScroll: true });
+    unfold.closest('.ed-more').remove();
+  });
 }
 
 export function renderMissing(root, { title, back }) {

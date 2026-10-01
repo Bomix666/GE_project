@@ -6,6 +6,7 @@
     <title>О компании — GLOBAL EFFECTS</title>
     <meta name="description" content="GLOBAL EFFECTS — производитель оборудования для спецэффектов и поставщик конфетти, серпантина и искусственного снега с 2007 года. Шоу-рум в Москве, дилеры в регионах." />
     <!-- @include head.html -->
+    <link rel="stylesheet" href="/src/styles/pages/editorial.css" />
     <link rel="stylesheet" href="/src/styles/pages/about.css" />
   </head>
   <body data-page="about">
@@ -20,7 +21,6 @@
         <div class="container ab-hero__inner">
           <div class="ab-hero__top">
             <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="/">Главная</a></li><li><span aria-current="page">О компании</span></li></ol></nav>
-            <div data-section-nav="about"></div>
           </div>
           <p class="eyebrow" data-reveal="fade">О компании · с 2007 года</p>
           <h1 class="ab-hero__title" id="ab-title" data-reveal="mask" data-fit><span class="line"><span>Мы делаем</span></span><span class="line"><span>спецэффекты,</span></span><span class="line"><span>которые остаются</span></span><span class="line line--accent"><span>в памяти</span></span></h1>
@@ -30,7 +30,21 @@
         </div>
       </section>
 
-      <section class="section ab-story" data-ab-story aria-label="Как устроена компания">
+      <nav class="abnav" aria-label="Разделы страницы «О компании»" data-abnav>
+        <div class="container">
+          <ol class="abnav__list" role="list">
+            <li><a class="abnav__link" href="#company"><span class="abnav__num tabular">01</span>О компании</a></li>
+            <li><a class="abnav__link" href="#news"><span class="abnav__num tabular">02</span>Новости</a></li>
+            <li><a class="abnav__link" href="#blog"><span class="abnav__num tabular">03</span>Наш блог</a></li>
+            <li><a class="abnav__link" href="#contacts"><span class="abnav__num tabular">04</span>Контакты и дилеры</a></li>
+          </ol>
+        </div>
+      </nav>
+
+      <section class="section ab-story" id="company" data-ab-story aria-labelledby="company-title">
+        <div class="container">
+          <div class="chapter"><span id="company-title">О компании</span><span class="chapter__num"><b>01</b> / 04</span></div>
+        </div>
         <div class="container ab-story__grid">
           <div class="ab-story__visual" aria-hidden="true">
             <figure class="ab-story__frame is-active" data-ab-frame><img src="/media/scenes/about-team.webp" width="1000" height="666" alt="" loading="lazy" /></figure>
@@ -64,21 +78,6 @@
         </div>
       </section>
 
-      <section class="section ab-clients" aria-labelledby="clients-title">
-        <div class="container">
-          <div class="chapter"><span>Клиенты</span></div>
-          <div class="ab-clients__grid">
-            <h2 class="display" id="clients-title" data-reveal="mask"><span class="line"><span>Сцены</span></span><span class="line"><span>наших</span></span><span class="line"><span class="accent">клиентов</span></span></h2>
-            <div>
-              <p class="label">В числе постоянных клиентов</p>
-              <ul class="clients" role="list" data-clients></ul>
-              <p class="label ab-tasks__label">У наших клиентов разные задачи</p>
-              <ul class="ab-tasks" role="list" data-tasks></ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="section ab-services" aria-labelledby="services-title">
         <div class="container">
           <div class="chapter"><span>Что мы предлагаем</span></div>
@@ -87,17 +86,31 @@
         </div>
       </section>
 
-      <section class="section ab-values" aria-labelledby="values-title">
+      <section class="section ab-news" id="news" aria-labelledby="news-title">
         <div class="container">
-          <div class="chapter"><span>Оборудование</span></div>
-          <h2 class="h1" id="values-title" data-reveal="mask"><span class="line"><span>Оборудование для спецэффектов</span></span><span class="line"><span class="accent">GLOBAL EFFECTS</span></span></h2>
-          <ul class="values" role="list" data-values data-reveal-group></ul>
+          <div class="chapter"><span>Новости</span><span class="chapter__num"><b>02</b> / 04</span></div>
+          <div class="section-head section-head--split">
+            <h2 class="h1" id="news-title" data-reveal="mask"><span class="line"><span>Новости</span></span></h2>
+            <p class="text-2" data-reveal>Официальные новости GLOBAL EFFECTS: новое оборудование, конфетти и снег, выставки. <span class="tabular" data-news-count></span></p>
+          </div>
+          <div data-ab-news aria-busy="true"></div>
+        </div>
+      </section>
+
+      <section class="section ab-blog" id="blog" aria-labelledby="blog-title">
+        <div class="container">
+          <div class="chapter"><span>Наш блог</span><span class="chapter__num"><b>03</b> / 04</span></div>
+          <div class="section-head section-head--split">
+            <h2 class="h1" id="blog-title" data-reveal="mask"><span class="line"><span>Наш <span class="accent">блог</span></span></span></h2>
+            <p class="text-2" data-reveal>Здесь мы рассказываем о нашей компании и делимся знаниями и опытом работы с нашим оборудованием для спецэффектов.</p>
+          </div>
+          <div data-ab-blog aria-busy="true"></div>
         </div>
       </section>
 
       <section class="section ab-geo" id="contacts" aria-labelledby="geo-title">
         <div class="container">
-          <div class="chapter"><span>Контакты и дилеры</span></div>
+          <div class="chapter"><span>Контакты и дилеры</span><span class="chapter__num"><b>04</b> / 04</span></div>
           <div class="ab-geo__head">
             <h2 class="display" id="geo-title" data-reveal="mask"><span class="line"><span>Где посмотреть</span></span><span class="line"><span>и <span class="accent">купить</span></span></span></h2>
             <address class="hq" data-reveal>

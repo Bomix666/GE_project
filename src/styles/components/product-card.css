@@ -92,6 +92,11 @@
   letter-spacing: 0;
 }
 
+/* Compact product names outside the home page (home keeps its approved scale) */
+body:not([data-page="home"]) .pcard__title {
+  font-size: 0.875rem;
+}
+
 /* Whole card is clickable via the title link; controls sit above it */
 .pcard__link::after {
   content: "";
