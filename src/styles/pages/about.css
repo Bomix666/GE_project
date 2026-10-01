@@ -5,9 +5,10 @@
 .ab-hero {
   position: relative;
   display: grid;
-  align-items: end;
-  min-height: 100svh;
-  padding: calc(var(--header-h) + var(--s-5)) 0 clamp(3rem, 8vw, 6rem);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  min-height: clamp(520px, 78svh, 820px);
+  padding: calc(var(--header-h) + var(--s-5)) 0 clamp(2rem, 5vw, 4rem);
   overflow: hidden;
   isolation: isolate;
 }
@@ -49,19 +50,28 @@
 }
 
 .ab-hero__inner {
-  display: grid;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   gap: var(--s-5);
+  align-self: stretch;
 }
 
-.ab-hero__inner .crumbs {
+/* crumbs stay at the top, title at the bottom */
+.ab-hero__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-2);
   margin-bottom: auto;
+  padding-bottom: var(--s-6);
 }
 
 .ab-hero__title {
   font-family: var(--font-display);
-  font-size: clamp(2.3rem, 0.9rem + 5.6vw, 7rem);
+  font-size: clamp(1.75rem, 0.6rem + 3.75vw, 4.75rem);
   font-weight: 400;
-  line-height: 0.96;
+  line-height: 0.98;
   letter-spacing: -0.045em;
   text-transform: uppercase;
 }
@@ -74,9 +84,107 @@
   max-width: 44rem;
 }
 
+/* ---------- One page: sticky anchor navigation ---------- */
+.abnav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: var(--z-sticky);
+  background: rgb(5 5 5 / 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-block: 1px solid var(--line);
+  transition: top var(--dur-ui) var(--ease-out);
+}
+
+/* the header slides away on scroll down — the page navigation takes its place */
+body:has(.header[data-hidden="true"]) .abnav {
+  top: 0;
+}
+
+.abnav__list {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  margin: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.abnav__list::-webkit-scrollbar {
+  display: none;
+}
+
+/* phones: the last items scroll in from a soft edge */
+@media (max-width: 767px) {
+  .abnav__list {
+    padding-right: 40px;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+  }
+}
+
+.abnav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 52px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-2);
+  transition: color var(--dur-micro);
+}
+
+.abnav__num {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  transition: color var(--dur-micro);
+}
+
+.abnav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.abnav__link:hover,
+.abnav__link[aria-current] {
+  color: var(--text);
+}
+
+.abnav__link[aria-current] .abnav__num {
+  color: var(--accent-text);
+}
+
+.abnav__link[aria-current]::after {
+  transform: scaleX(1);
+}
+
+/* an anchor jump lands the block's chapter line just below the page navigation
+   (html scroll-padding already reserves the header; the section padding is skipped) */
+.about section[id] {
+  scroll-margin-top: calc(70px - var(--section-y));
+}
+
+/* News and blog blocks reuse the editorial components */
+@media (min-width: 1100px) {
+  .ab-news .ed-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 /* Sticky story */
 .ab-story__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -115,14 +223,14 @@
   right: var(--s-5);
   bottom: -0.1em;
   font-family: var(--font-display);
-  font-size: clamp(5rem, 12vw, 11rem);
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
   line-height: 1;
   color: transparent;
   -webkit-text-stroke: 1px rgb(244 242 239 / 0.4);
 }
 
 .ab-step {
-  padding-block: var(--s-7);
+  padding-block: var(--s-6);
   border-top: 1px solid var(--line);
   opacity: 0.35;
   transition: opacity var(--dur-content) var(--ease-out);
@@ -174,13 +282,14 @@
   }
   .ab-story__visual {
     position: sticky;
-    top: calc(var(--header-h) + 5vh);
+    top: calc(var(--header-h) + 54px + 4vh); /* below header + page navigation */
     aspect-ratio: auto;
-    height: calc(100svh - var(--header-h) - 10vh);
+    height: calc(100svh - var(--header-h) - 54px - 8vh);
   }
   .ab-step {
-    min-height: 70svh;
+    min-height: 56svh;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-content: center;
   }
 }
@@ -191,45 +300,10 @@
   }
 }
 
-/* Clients */
-.ab-clients__grid {
+/* Services («Компания предлагает») */
+.services {
   display: grid;
-  gap: var(--s-7);
-}
-
-@media (min-width: 1024px) {
-  .ab-clients__grid {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(2rem, 5vw, 6rem);
-  }
-}
-
-.ab-tasks__label {
-  margin-top: var(--s-7);
-}
-
-.ab-tasks {
-  display: grid;
-  gap: var(--s-2);
-  margin: var(--s-4) 0 0;
-}
-
-.ab-tasks li {
-  position: relative;
-  padding-left: 1.4rem;
-  color: var(--text-2);
-}
-
-.ab-tasks li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-  color: var(--accent-text);
-}
-
-/* Offers */
-.offers {
-  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1px;
   margin: clamp(2rem, 4vw, 3.5rem) 0 0;
   background: var(--line);
@@ -237,19 +311,20 @@
 }
 
 @media (min-width: 900px) {
-  .offers {
+  .services {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1280px) {
-  .offers {
+  .services {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.offer {
+.service {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto auto 1fr auto;
   gap: var(--s-4);
   padding: clamp(1.5rem, 2.5vw, 2.25rem);
@@ -257,37 +332,38 @@
   transition: background-color var(--dur-ui);
 }
 
-.offer:hover {
+.service:hover {
   background: var(--surface-1);
 }
 
-.offer__num {
+.service__num {
   font-family: var(--font-display);
   font-size: var(--fs-sm);
   color: var(--accent-text);
 }
 
-.offer__title {
+.service__title {
   font-family: var(--font-display);
   font-size: var(--fs-h4);
   font-weight: 500;
   line-height: 1.25;
 }
 
-.offer__list {
+.service__list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   margin: 0;
   font-size: var(--fs-sm);
   color: var(--text-2);
 }
 
-.offer__list li {
+.service__list li {
   padding-left: 1rem;
   position: relative;
 }
 
-.offer__list li::before {
+.service__list li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -297,42 +373,12 @@
   background: var(--accent);
 }
 
-/* Values */
-.values {
-  display: grid;
-  gap: var(--s-6);
-  margin: clamp(2rem, 4vw, 3.5rem) 0 0;
-}
-
-@media (min-width: 900px) {
-  .values {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.value {
-  display: grid;
-  gap: var(--s-3);
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--line-2);
-}
-
-.value__icon {
-  color: var(--accent-text);
-}
-
-.value__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
-
 /* Geography */
 .ab-geo__head {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
-  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
 @media (min-width: 1024px) {
@@ -344,6 +390,7 @@
 
 .hq {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   font-style: normal;
   color: var(--text-2);
@@ -352,7 +399,7 @@
 
 .hq__phone {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+  font-size: clamp(1.25rem, 0.9rem + 0.9vw, 1.75rem);
   color: var(--text);
 }
 
@@ -367,6 +414,7 @@
 
 .cities {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -387,6 +435,7 @@
 
 .dealers {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1px;
   margin: 0;
   background: var(--line);
@@ -406,6 +455,7 @@
 
 .dealer {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--s-1);
   padding: var(--s-5) var(--s-5) var(--s-5) 0;

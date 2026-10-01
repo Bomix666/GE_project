@@ -60,13 +60,15 @@
   --font-display: "Unbounded Variable", "Unbounded", "Arial Black", system-ui, sans-serif;
   --font-body: "Onest Variable", "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --fs-hero: clamp(3rem, 1rem + 7.4vw, 8.75rem);
-  --fs-display: clamp(2.2rem, 0.9rem + 4.8vw, 5.75rem);
-  --fs-h1: clamp(1.9rem, 1.15rem + 3vw, 4rem);
-  --fs-h2: clamp(1.6rem, 1.1rem + 2vw, 2.9rem);
-  --fs-h3: clamp(1.2rem, 1rem + 0.8vw, 1.65rem);
+  /* Site-wide scale = the approved home scale (sections/home.css pins the
+     same values for the home page). Body copy stays at 16px.            */
+  --fs-hero: clamp(2.25rem, 0.75rem + 4.9vw, 5.75rem);
+  --fs-display: clamp(1.75rem, 0.6rem + 3.2vw, 3.75rem);
+  --fs-h1: clamp(1.6rem, 0.8rem + 2vw, 2.75rem);
+  --fs-h2: clamp(1.35rem, 0.8rem + 1.3vw, 2rem);
+  --fs-h3: clamp(1.1rem, 0.95rem + 0.45vw, 1.35rem);
   --fs-h4: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
-  --fs-lead: clamp(1.05rem, 0.97rem + 0.35vw, 1.3rem);
+  --fs-lead: clamp(1rem, 0.94rem + 0.18vw, 1.0625rem);
   --fs-body: 1rem;
   --fs-sm: 0.875rem;
   --fs-xs: 0.75rem;
@@ -89,7 +91,7 @@
   --s-8: 4rem;
   --s-9: 6rem;
   --s-10: 8rem;
-  --section-y: clamp(5.5rem, 3rem + 9vw, 11rem);
+  --section-y: clamp(4.5rem, 2rem + 6vw, 7.5rem);
   --gutter: clamp(1rem, 0.4rem + 3vw, 3.5rem);
   --container: 1520px;
 
@@ -131,7 +133,7 @@
 
   /* ---------- Component tokens ---------- */
   --header-h: 72px;
-  --btn-h-lg: 58px;
+  --btn-h-lg: 50px;
   --btn-h-md: 48px;
   --btn-h-sm: 40px;
   --input-h: 48px;
@@ -141,7 +143,6 @@
 @media (max-width: 767px) {
   :root {
     --header-h: 60px;
-    --btn-h-lg: 54px;
   }
 }
 

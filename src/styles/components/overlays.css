@@ -73,6 +73,7 @@
 
 .drawer {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   height: 100%;
   background: var(--surface-1);
@@ -112,6 +113,7 @@
 
 .drawer__foot {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-3);
   padding: var(--s-5) var(--s-6) var(--s-6);
   border-top: 1px solid var(--line);
@@ -142,12 +144,14 @@
 
 .drawer__empty {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-3);
   padding-block: var(--s-8);
 }
 
 .drawer__suggest {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   margin: var(--s-4) 0 0;
   border-top: 1px solid var(--line);
 }
@@ -338,6 +342,7 @@ a.line__name:hover {
 
 .search__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -349,6 +354,7 @@ a.line__name:hover {
 
 .search__side {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--s-6);
 }
@@ -395,6 +401,7 @@ a.line__name:hover {
 
 .sopt__main {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2px;
 }
 
@@ -444,6 +451,7 @@ a.line__name:hover {
 
 .search__empty {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   justify-items: start;
   max-width: 44rem;
@@ -469,6 +477,7 @@ a.line__name:hover {
   top: calc(var(--header-h) + 12px);
   z-index: var(--z-toast);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   width: min(380px, calc(100vw - 1.5rem));
   pointer-events: none;
@@ -554,6 +563,7 @@ a.line__name:hover {
 
 .toast__close {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   width: 32px;
   height: 32px;
@@ -614,6 +624,7 @@ a.line__name:hover {
 .lb {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   height: 100%;
   opacity: 0;
@@ -645,6 +656,7 @@ a.line__name:hover {
 
 .lb__stage {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: 0 clamp(0.5rem, 6vw, 6rem) var(--s-6);
   touch-action: pan-y;
@@ -693,11 +705,13 @@ a.line__name:hover {
 /* ---------------- Forms ---------------- */
 .form {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
 }
 
 .form__row {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
 }
 
@@ -709,6 +723,7 @@ a.line__name:hover {
 
 .field {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
 }
 
@@ -785,6 +800,7 @@ a.line__name:hover {
 
 .captcha__img--proto {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   background: var(--surface-3);
   color: var(--text-3);
@@ -828,6 +844,7 @@ a.line__name:hover {
 
 .form-done {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   justify-items: start;
 }
@@ -841,6 +858,7 @@ a.line__name:hover {
   width: min(1040px, calc(100vw - 2rem));
   padding: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden auto;
 }
 
@@ -853,6 +871,7 @@ a.line__name:hover {
 .qv__media {
   background: #000;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
 }
 
@@ -865,6 +884,7 @@ a.line__name:hover {
 
 .qv__body {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--s-4);
   padding: clamp(1.5rem, 3.5vw, 2.5rem);
@@ -949,6 +969,7 @@ a.line__name:hover {
   left: 50%;
   top: 50%;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   width: 72px;
   height: 72px;

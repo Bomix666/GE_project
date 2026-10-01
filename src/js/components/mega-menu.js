@@ -6,7 +6,7 @@
  */
 import { qs, qsa, formatPrice, plural } from '../core/dom.js';
 import { env } from '../core/env.js';
-import { getCatalog } from '../data/api.js';
+import { getCatalog, getNews, getBlog } from '../data/api.js';
 
 const OPEN_DELAY = 90;
 const CLOSE_DELAY = 220;
@@ -30,8 +30,10 @@ export function initMegaMenu() {
     triggers.forEach((t) => t.setAttribute('aria-expanded', String(t.dataset.megaTrigger === name)));
     panels.forEach((panel, key) => {
       if (key === name) {
+        if (key === 'about') hydrateAboutPanel(panel);
         // images load on first open only (menus are closed on most visits)
         qsa('img[data-src]', panel).forEach((img) => {
+          if (!img.dataset.src) return; // filled from data (about panel)
           img.src = img.dataset.src;
           img.removeAttribute('data-src');
         });
@@ -111,6 +113,29 @@ export function initMegaMenu() {
   );
 
   hydrateCatalogPanel(panels.get('catalog'));
+}
+
+/** «О компании» panel: latest real news / blog material, loaded on first open. */
+let aboutHydrated = false;
+async function hydrateAboutPanel(panel) {
+  if (aboutHydrated) return;
+  aboutHydrated = true;
+  try {
+    const [news, blog] = await Promise.all([getNews(), getBlog()]);
+    const fill = (key, list, label) => {
+      const img = qs(`[data-about-img="${key}"]`, panel);
+      const meta = qs(`[data-about-meta="${key}"]`, panel);
+      const first = list[0];
+      if (!first) return;
+      img.src = first.image || first.thumb;
+      img.removeAttribute('data-src');
+      meta.textContent = `${list.length} ${plural(list.length, label)}${first.date ? ` · последняя ${first.date}` : ''}`;
+    };
+    fill('news', news, ['публикация', 'публикации', 'публикаций']);
+    fill('blog', blog, ['материал', 'материала', 'материалов']);
+  } catch {
+    aboutHydrated = false;
+  }
 }
 
 /** Counts + live preview from real catalog data. */

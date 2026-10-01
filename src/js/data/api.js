@@ -52,7 +52,6 @@ export const getProduct = (slug) => fetchJSON(`/data/products/${encodeURICompone
 export const getGallery = () => fetchJSON('/data/gallery.json');
 export const getNews = () => fetchJSON('/data/news.json');
 export const getBlog = () => fetchJSON('/data/blog.json');
-export const getOffers = () => fetchJSON('/data/offers.json');
 export const getPages = () => fetchJSON('/data/pages.json');
 
 export const GROUP_TITLES = { equipment: 'Оборудование', consumables: 'Расходные материалы' };

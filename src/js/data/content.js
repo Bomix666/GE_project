@@ -59,8 +59,8 @@ export const equipmentValues = [
   { icon: 'i-box', title: 'Гарантия и сервис', text: 'Гарантия и сервисное обслуживание оборудования.' },
 ];
 
-/** /page/about — «Компания GLOBAL EFFECTS предлагает» */
-export const offers = [
+/** /page/about — «Компания GLOBAL EFFECTS предлагает» (services, not promotions) */
+export const services = [
   {
     title: 'Оборудование собственного производства',
     items: [

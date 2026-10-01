@@ -21,8 +21,12 @@
           </button>
         </li>
         <li class="nav__item"><a class="nav__link" href="/gallery.html" data-route="gallery" data-nav="gallery">Галерея</a></li>
-        <li class="nav__item"><a class="nav__link" href="/offers.html" data-route="offers" data-nav="offers">Акции</a></li>
-        <li class="nav__item"><a class="nav__link" href="/about.html" data-route="about" data-nav="about">О компании</a></li>
+        <li class="nav__item">
+          <button class="nav__link nav__link--menu" type="button" aria-expanded="false" aria-controls="mega-about" data-mega-trigger="about" data-nav="about">
+            О компании
+            <svg class="nav__chev" width="14" height="14" aria-hidden="true"><use href="#i-chevron-down" /></svg>
+          </button>
+        </li>
         <li class="nav__item"><a class="nav__link" href="/about.html#contacts" data-route="contacts" data-nav="contacts">Контакты</a></li>
       </ul>
     </nav>
@@ -123,6 +127,42 @@
       </div>
     </div>
   </div>
+
+  <!-- MEGA: ABOUT — anchors of the single «О компании» page: О компании · Новости · Наш блог -->
+  <div class="mega mega--about" id="mega-about" data-mega-panel="about" hidden>
+    <div class="mega__inner container">
+      <ul class="aboutmenu" role="list">
+        <li>
+          <a class="aboutmenu__item" href="/about.html" data-route="about">
+            <span class="aboutmenu__media"><img data-src="/media/scenes/about-team-sm.webp" alt="" width="720" height="479" /></span>
+            <span class="aboutmenu__num">01</span>
+            <span class="aboutmenu__name">О компании</span>
+            <span class="aboutmenu__meta">Производство, шоу-рум, контакты и дилеры</span>
+          </a>
+        </li>
+        <li>
+          <a class="aboutmenu__item" href="/about.html#news" data-route="newsList">
+            <span class="aboutmenu__media"><img data-src="" data-about-img="news" alt="" width="720" height="450" /></span>
+            <span class="aboutmenu__num">02</span>
+            <span class="aboutmenu__name">Новости</span>
+            <span class="aboutmenu__meta" data-about-meta="news">Официальные новости компании</span>
+          </a>
+        </li>
+        <li>
+          <a class="aboutmenu__item" href="/about.html#blog" data-route="blog">
+            <span class="aboutmenu__media"><img data-src="" data-about-img="blog" alt="" width="720" height="450" /></span>
+            <span class="aboutmenu__num">03</span>
+            <span class="aboutmenu__name">Наш блог</span>
+            <span class="aboutmenu__meta" data-about-meta="blog">Знания и опыт работы с оборудованием</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="mega__extra mega__extra--row" role="list">
+        <li><a href="/about.html#contacts" data-route="contacts"><svg width="18" height="18" aria-hidden="true"><use href="#i-pin" /></svg>Контакты и дилеры</a></li>
+        <li><a href="/page.html?p=delivery" data-route="page" data-path="/page/delivery"><svg width="18" height="18" aria-hidden="true"><use href="#i-box" /></svg>Доставка</a></li>
+      </ul>
+    </div>
+  </div>
 </header>
 <div class="mega-scrim" data-mega-scrim hidden></div>
 
@@ -158,8 +198,14 @@
     </details>
     <a class="mm-link" href="/#effects" data-route="effects">Эффекты</a>
     <a class="mm-link" href="/gallery.html" data-route="gallery">Галерея</a>
-    <a class="mm-link" href="/offers.html" data-route="offers">Акции</a>
-    <a class="mm-link" href="/about.html" data-route="about">О компании</a>
+    <details class="mm-group">
+      <summary class="mm-link">О компании <svg width="20" height="20" aria-hidden="true"><use href="#i-chevron-down" /></svg></summary>
+      <ul class="mm-sub" role="list">
+        <li><a href="/about.html" data-route="about">О компании</a></li>
+        <li><a href="/about.html#news" data-route="newsList">Новости</a></li>
+        <li><a href="/about.html#blog" data-route="blog">Наш блог</a></li>
+      </ul>
+    </details>
     <a class="mm-link" href="/about.html#contacts" data-route="contacts">Контакты</a>
 
     <div class="mobile-menu__foot">
