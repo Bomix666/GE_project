@@ -5,15 +5,21 @@
  * (see README → "Data"). In production the same shapes can be emitted by the
  * existing Yii views/export — no new backend endpoints are required.
  */
+import { BASE, withBase } from '../core/env.js';
+
 const cache = new Map();
 
-function fetchJSON(url) {
+// Local media paths inside the snapshot ("/media/…") follow the deploy base
+const mediaPaths = BASE === '/' ? undefined : (key, value) => (typeof value === 'string' && value.startsWith('/media/') ? withBase(value) : value);
+
+function fetchJSON(path) {
+  const url = withBase(path);
   if (!cache.has(url)) {
     cache.set(
       url,
       fetch(url, { credentials: 'same-origin' }).then((r) => {
         if (!r.ok) throw new Error(`${url} → ${r.status}`);
-        return r.json();
+        return r.text().then((text) => JSON.parse(text, mediaPaths));
       }),
     );
   }

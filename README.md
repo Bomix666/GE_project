@@ -11,6 +11,12 @@ npm run build    # dist/
 npm run preview  # http://127.0.0.1:4173
 ```
 
+**Онлайн-превью:** https://bomix666.github.io/GE_project/. Его собирает и публикует GitHub Actions
+(`.github/workflows/pages.yml`) при каждом пуше в `main`. Сборка идёт с `--base=/GE_project/`: ссылки, данные и
+медиа получают этот префикс через `withBase()` (`core/env.js`) и плагин `deployBase` в `vite.config.js`, а страницы —
+`noindex`, чтобы прототип не попадал в поиск рядом с globaleffects.ru. Локальная копия этого превью:
+`npx vite build --base=/GE_project/ --outDir dist-pages`, затем `npx vite preview --base=/GE_project/ --outDir dist-pages`.
+
 Runtime-зависимостей нет: Vite используется только для сборки, шрифты — самохостинг `@fontsource-variable`.
 Стили подключены через `<link>` в `<head>` (`src/partials/head.html`), поэтому страница никогда не показывается без оформления.
 Запуск в Windows: двойной клик по `start.cmd`. В PowerShell 5.1 команды пишутся по одной строке (там нет `&&`).

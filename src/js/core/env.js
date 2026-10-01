@@ -12,6 +12,13 @@ export const PRODUCTION =
 
 export const ORIGIN = 'https://globaleffects.ru';
 
+/**
+ * Where the prototype is served from: '/' locally, '/GE_project/' on GitHub Pages
+ * (vite build --base). Root-relative prototype URLs go through withBase().
+ */
+export const BASE = import.meta.env.BASE_URL;
+export const withBase = (path) => (BASE !== '/' && path.startsWith('/') && !path.startsWith('//') ? BASE + path.slice(1) : path);
+
 const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
 const desktopQuery = window.matchMedia('(min-width: 1024px)');
