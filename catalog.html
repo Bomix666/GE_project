@@ -19,7 +19,7 @@
           <div class="cat-hero__grid">
             <div class="cat-hero__copy">
               <p class="eyebrow" data-cat-group>Каталог</p>
-              <h1 class="cat-hero__title" id="cat-title" data-cat-title>Каталог</h1>
+              <h1 class="cat-hero__title" id="cat-title" data-cat-title data-fit>Каталог</h1>
               <p class="cat-hero__meta tabular" data-cat-meta></p>
               <form class="cat-search" role="search" data-cat-search hidden>
                 <label class="visually-hidden" for="cat-q">Искать в каталоге</label>
@@ -29,7 +29,11 @@
             </div>
             <figure class="cat-hero__media" data-cat-media aria-hidden="true"></figure>
           </div>
-          <nav class="cat-siblings" aria-label="Другие категории" data-cat-siblings></nav>
+          <nav class="cat-siblings chipscroll" aria-label="Категории этого раздела" data-chipscroll>
+            <button type="button" class="chipscroll__btn" data-rail-prev aria-label="Предыдущие категории"><svg width="18" height="18" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>
+            <ul class="cat-siblings__list" role="list" data-rail-track data-cat-siblings></ul>
+            <button type="button" class="chipscroll__btn" data-rail-next aria-label="Следующие категории"><svg width="18" height="18" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+          </nav>
         </div>
       </section>
 

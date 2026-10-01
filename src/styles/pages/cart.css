@@ -19,6 +19,7 @@
 
 .cart-page__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -56,6 +57,7 @@
 
 .cart-summary {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-3);
   padding: clamp(1.5rem, 2.5vw, 2rem);
   border-radius: var(--r-3);
@@ -72,11 +74,13 @@
 
 .cart-summary [data-cart-summary-body] {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-3);
 }
 
 .cart-empty {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   justify-items: start;
   padding-block: var(--s-7);

@@ -5,7 +5,8 @@
 .ab-hero {
   position: relative;
   display: grid;
-  align-items: end;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
   min-height: 100svh;
   padding: calc(var(--header-h) + var(--s-5)) 0 clamp(3rem, 8vw, 6rem);
   overflow: hidden;
@@ -49,12 +50,21 @@
 }
 
 .ab-hero__inner {
-  display: grid;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   gap: var(--s-5);
+  align-self: stretch;
 }
 
-.ab-hero__inner .crumbs {
+/* crumbs + «О компании · Новости · Наш блог» stay at the top, title at the bottom */
+.ab-hero__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-2);
   margin-bottom: auto;
+  padding-bottom: var(--s-6);
 }
 
 .ab-hero__title {
@@ -77,6 +87,7 @@
 /* Sticky story */
 .ab-story__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -181,6 +192,7 @@
   .ab-step {
     min-height: 70svh;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-content: center;
   }
 }
@@ -194,6 +206,7 @@
 /* Clients */
 .ab-clients__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -210,6 +223,7 @@
 
 .ab-tasks {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   margin: var(--s-4) 0 0;
 }
@@ -227,9 +241,10 @@
   color: var(--accent-text);
 }
 
-/* Offers */
-.offers {
+/* Services («Компания предлагает») */
+.services {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1px;
   margin: clamp(2rem, 4vw, 3.5rem) 0 0;
   background: var(--line);
@@ -237,19 +252,20 @@
 }
 
 @media (min-width: 900px) {
-  .offers {
+  .services {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1280px) {
-  .offers {
+  .services {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.offer {
+.service {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto auto 1fr auto;
   gap: var(--s-4);
   padding: clamp(1.5rem, 2.5vw, 2.25rem);
@@ -257,37 +273,38 @@
   transition: background-color var(--dur-ui);
 }
 
-.offer:hover {
+.service:hover {
   background: var(--surface-1);
 }
 
-.offer__num {
+.service__num {
   font-family: var(--font-display);
   font-size: var(--fs-sm);
   color: var(--accent-text);
 }
 
-.offer__title {
+.service__title {
   font-family: var(--font-display);
   font-size: var(--fs-h4);
   font-weight: 500;
   line-height: 1.25;
 }
 
-.offer__list {
+.service__list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   margin: 0;
   font-size: var(--fs-sm);
   color: var(--text-2);
 }
 
-.offer__list li {
+.service__list li {
   padding-left: 1rem;
   position: relative;
 }
 
-.offer__list li::before {
+.service__list li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -300,6 +317,7 @@
 /* Values */
 .values {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6);
   margin: clamp(2rem, 4vw, 3.5rem) 0 0;
 }
@@ -312,6 +330,7 @@
 
 .value {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-3);
   padding-top: var(--s-5);
   border-top: 1px solid var(--line-2);
@@ -331,6 +350,7 @@
 /* Geography */
 .ab-geo__head {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
   margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
 }
@@ -344,6 +364,7 @@
 
 .hq {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   font-style: normal;
   color: var(--text-2);
@@ -367,6 +388,7 @@
 
 .cities {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-7);
 }
 
@@ -387,6 +409,7 @@
 
 .dealers {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1px;
   margin: 0;
   background: var(--line);
@@ -406,6 +429,7 @@
 
 .dealer {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--s-1);
   padding: var(--s-5) var(--s-5) var(--s-5) 0;

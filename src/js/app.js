@@ -7,6 +7,7 @@ import './core/env.js';
 import { qsa } from './core/dom.js';
 import { applyRoutes } from './core/routes.js';
 import { reveal } from './core/motion.js';
+import { fitAll } from './core/fit.js';
 import { initHeader } from './components/header.js';
 import { initMegaMenu } from './components/mega-menu.js';
 import { initMobileMenu } from './components/mobile-menu.js';
@@ -71,4 +72,7 @@ export function ready(fn) {
   else fn();
 }
 
-ready(() => reveal());
+ready(() => {
+  reveal();
+  fitAll();
+});

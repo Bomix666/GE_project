@@ -1,11 +1,14 @@
 /**
  * Horizontal rail on native scroll (scroll-snap, trackpad, touch swipe),
  * with prev/next buttons and a progress bar. No scroll-jacking.
+ * Root gets .is-scrollable / .at-start / .at-end for edge fades and arrows.
+ *   step: 'items' — page by whole cards (product rails)
+ *         'view'  — page by 80% of the visible width (chip rows)
  */
 import { qs, rafThrottle } from '../core/dom.js';
 import { env } from '../core/env.js';
 
-export function initRail(root) {
+export function initRail(root, { step: stepMode = 'items' } = {}) {
   const track = qs('[data-rail-track]', root);
   const prev = qs('[data-rail-prev]', root);
   const next = qs('[data-rail-next]', root);
@@ -18,9 +21,16 @@ export function initRail(root) {
     if (bar) bar.style.transform = `scaleX(${Math.max(0.08, p)})`;
     if (prev) prev.disabled = track.scrollLeft < 4;
     if (next) next.disabled = track.scrollLeft > max - 4;
+    root.classList.toggle('is-scrollable', max > 4);
+    root.classList.toggle('at-start', track.scrollLeft < 4);
+    root.classList.toggle('at-end', track.scrollLeft > max - 4);
   });
 
   const page = (dir) => {
+    if (stepMode === 'view') {
+      track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: env.reducedMotion ? 'auto' : 'smooth' });
+      return;
+    }
     const item = track.firstElementChild;
     const step = item ? item.getBoundingClientRect().width + 16 : track.clientWidth * 0.8;
     const count = Math.max(1, Math.floor(track.clientWidth / step));
@@ -70,4 +80,5 @@ export function initRail(root) {
   );
 
   update();
+  return { update };
 }

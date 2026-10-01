@@ -11,6 +11,7 @@
 
 .pd-grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(2rem, 4vw, 4.5rem);
   margin-top: clamp(1.25rem, 3vw, 2.5rem);
 }
@@ -29,6 +30,7 @@
 /* Gallery */
 .pd-gallery {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-3);
 }
 
@@ -132,6 +134,7 @@
 /* Info */
 .pd-info {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--s-5);
 }
@@ -206,6 +209,7 @@
 
 .pd-service {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   margin: 0;
   font-size: var(--fs-sm);
@@ -243,6 +247,7 @@
 
 .pd-details__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6);
 }
 
@@ -260,6 +265,7 @@
 
 .pd-toc ul {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   margin: var(--s-3) 0 0;
 }
 
@@ -350,6 +356,7 @@
 
 .docs {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
   margin: 0;
   max-width: 760px;
@@ -382,6 +389,7 @@
 
 .pd-videos {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   margin: 0;
 }
@@ -425,6 +433,7 @@
 
 .pd-missing {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-5);
   justify-items: start;
   padding-block: calc(var(--header-h) + var(--s-9)) var(--section-y);

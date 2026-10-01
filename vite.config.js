@@ -21,7 +21,7 @@ function htmlPartials() {
   };
 }
 
-const PAGES = ['index', 'catalog', 'product', 'gallery', 'about', 'cart', 'offers', 'news', 'blog', 'page'];
+const PAGES = ['index', 'catalog', 'product', 'gallery', 'about', 'cart', 'news', 'blog', 'page'];
 
 export default defineConfig({
   plugins: [htmlPartials()],

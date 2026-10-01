@@ -9,6 +9,7 @@
 
 .gal-hero__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-5);
   padding-block: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2.5rem);
 }
@@ -190,6 +191,7 @@
 
 .vlist {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   margin: 0;
 }

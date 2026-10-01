@@ -43,8 +43,10 @@ export function initHeader() {
   header.addEventListener('focusin', () => (header.dataset.hidden = 'false'));
   update();
 
-  // Active section
-  const section = currentSection();
+  // Active section. News and «Наш блог» live inside «О компании».
+  const SECTION_OF = { news: 'about', blog: 'about' };
+  const page = currentSection();
+  const section = SECTION_OF[page] || page;
   qsa('[data-nav]', header).forEach((link) => {
     const active = link.dataset.nav === section;
     link.classList.toggle('is-active', active);

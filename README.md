@@ -35,10 +35,17 @@ Runtime-зависимостей нет: Vite используется толь�
 | `gallery.html?cat=<slug>` | `/gallery/images/<slug>`, `/gallery/videos/<slug>` | галерея |
 | `about.html` (+ `#contacts`) | `/page/about`, `/contacts` | о компании, дилеры |
 | `cart.html` | `/cart/index` | список корзины; **форма оформления остаётся существующей** |
-| `offers.html` (+ `#slug`) | `/offers`, `/offers/<slug>` | акции; форма образцов = `/offers/free-samples` |
 | `news.html`, `news.html?id=<id>` | `/news`, `/news/view?news_id=<id>` | новости (49, полные тексты) |
-| `blog.html`, `blog.html?p=<slug>` | `/blog`, `/blog/<slug>` | блог (19 статей) |
+| `blog.html`, `blog.html?p=<slug>` | `/blog`, `/blog/<slug>` | «Наш блог» (19 материалов) |
 | `page.html?p=<slug>` | `/page/delivery`, `/page/politika-konfidencialnosti`, `/page/pravila-prodazi-tovarov` | текстовые страницы |
+
+**Раздел «О компании»** объединяет три страницы: «О компании», «Новости» и «Наш блог».
+В шапке это один пункт с выпадающей панелью, на каждой из страниц есть общая навигация раздела
+(`components/section-nav.js`) и хлебные крошки «Главная / О компании / …». Новости и блог остаются разными типами контента.
+
+**Акции убраны из интерфейса** (страница, пункты меню, footer, ссылки). Ссылки на `/offers…` внутри текстов из CMS
+превращаются в обычный текст (`localizeLinks()`). Со стороны backend остаются: маршруты `/offers`, `/offers/<slug>`,
+форма `/offers/free-samples` и упоминания «бесплатных образцов» с адресом акции в описаниях 7 товаров снега и конфетти.
 
 Все ссылки, включая ссылки внутри текстов из CMS, проходят через `resolve()` в `routes.js`.
 Поэтому в прототипе они ведут на новые страницы, а в production — на прежние адреса.

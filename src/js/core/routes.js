@@ -38,8 +38,6 @@ export function resolve(path) {
   if (p === '/news/view' && q.get('news_id')) return `/news.html?id=${q.get('news_id')}`;
   if (p === '/blog') return '/blog.html';
   if ((m = p.match(/^\/blog\/([^/]+)$/))) return `/blog.html?p=${encodeURIComponent(m[1])}`;
-  if (p === '/offers') return '/offers.html';
-  if ((m = p.match(/^\/offers\/([^/]+)$/))) return `/offers.html#${m[1] === 'free-samples' ? 'free-samples-snow' : m[1]}`;
   if (p === '/page/about') return '/about.html';
   if (p === '/contacts') return '/about.html#contacts';
   if ((m = p.match(/^\/page\/([^/]+)$/)) && TEXT_PAGES.has(m[1])) return `/page.html?p=${m[1]}`;
@@ -69,8 +67,6 @@ export const routes = {
   contacts: () => resolve('/contacts'),
   effects: () => '/#effects',
   effect: (slug) => `/#fx-${slug}`,
-  offers: () => resolve('/offers'),
-  offer: (slug) => resolve(`/offers/${slug}`),
   newsList: () => resolve('/news'),
   news: (path) => resolve(path),
   newsItem: (id) => resolve(`/news/view?news_id=${id}`),
@@ -103,6 +99,8 @@ export function applyRoutes(root = document) {
 
 /** Rewrite links inside CMS text (news, blog, product descriptions). */
 export function localizeLinks(root) {
+  // Promotions («Акции») were removed from the frontend: links to them become plain text
+  qsa('a[href^="/offers"], a[href*="globaleffects.ru/offers"]', root).forEach((a) => a.replaceWith(...a.childNodes));
   qsa('a[href^="/"]', root).forEach((a) => {
     const href = resolve(a.getAttribute('href'));
     a.setAttribute('href', href);

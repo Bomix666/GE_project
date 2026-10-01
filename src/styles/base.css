@@ -303,6 +303,7 @@ html {
 
 .section-head {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-5);
   margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
 }
@@ -361,6 +362,13 @@ html {
   padding: var(--s-2) var(--s-3) var(--s-2) 0;
   text-align: left;
   vertical-align: top;
+}
+
+/* Fitted display headings (core/fit.js): never let a long word widen the
+   grid/flex track they sit in — the heading shrinks its font instead */
+[data-fit] {
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* ---------- Media ---------- */

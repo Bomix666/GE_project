@@ -13,6 +13,8 @@ import { getCatalog, GROUP_TITLES, specValue } from '../data/api.js';
 import { facetKeys, swatches } from '../data/content.js';
 import { productCard, productSkeleton } from '../components/product-card.js';
 import { createDialog } from '../components/dialog.js';
+import { initRail } from '../components/rail.js';
+import { fitHeading } from '../core/fit.js';
 
 const PAGE = 24;
 const keyToParam = facetKeys;
@@ -24,6 +26,7 @@ let limit = PAGE;
 let base = [];
 let facets = [];
 let sheet;
+let chips;
 
 ready(async () => {
   const grid = qs('[data-grid]');
@@ -95,12 +98,14 @@ function setupPage() {
       ? `<img src="${esc(cover.image)}" alt="" width="570" height="500" fetchpriority="high"><span class="cat-hero__glow"></span>`
       : '';
     const siblings = catalog.groups[cat.group];
-    qs('[data-cat-siblings]').innerHTML = `<ul class="cat-siblings__list" role="list">${siblings
+    qs('[data-chipscroll]').hidden = false;
+    qs('[data-cat-siblings]').innerHTML = siblings
       .map(
         (s) =>
           `<li><a class="chip ${s.slug === cat.slug ? 'is-active' : ''}" href="${routes.category(s.slug)}" ${s.slug === cat.slug ? 'aria-current="page"' : ''}>${esc(s.title)} <span>${s.count}</span></a></li>`,
       )
-      .join('')}</ul>`;
+      .join('');
+    mountChips();
     applyRouteClicks();
   } else {
     // prototype-only search results (production keeps /search/results)
@@ -120,7 +125,25 @@ function setupPage() {
     qs('input', form).value = state.q;
     qs('[data-cat-media]').innerHTML = '';
     qs('[data-cat-siblings]').innerHTML = '';
+    qs('[data-chipscroll]').hidden = true;
   }
+  fitHeading(qs('[data-cat-title]'));
+}
+
+/* Category chips: scrollable row with arrows; the current category is
+   always scrolled into view (it may be the 9th of 10). */
+function mountChips() {
+  const nav = qs('[data-chipscroll]');
+  const track = qs('[data-cat-siblings]');
+  chips ||= initRail(nav, { step: 'view' });
+  const active = qs('.chip.is-active', track);
+  if (active) {
+    const left = active.parentElement.offsetLeft - (track.clientWidth - active.offsetWidth) / 2;
+    track.style.scrollBehavior = 'auto'; // jump on load; arrows keep smooth scrolling
+    track.scrollLeft = Math.max(0, left);
+    track.style.scrollBehavior = '';
+  }
+  chips.update();
 }
 
 /* Category chips change the category but keep the page (no full reload) */

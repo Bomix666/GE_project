@@ -3,18 +3,20 @@ import { ready } from '../app.js';
 import { qs, qsa, esc, icon, toHTML, plural } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
 import { routes } from '../core/routes.js';
-import { clients, clientTasks, offers, equipmentValues, dealers } from '../data/content.js';
+import { clients, clientTasks, services, equipmentValues, dealers } from '../data/content.js';
+import { mountSectionNav } from '../components/section-nav.js';
 
 ready(() => {
+  mountSectionNav();
   qs('[data-clients]').innerHTML = clients.map((c) => `<li>${esc(c)}</li>`).join('');
   qs('[data-tasks]').innerHTML = clientTasks.map((t) => `<li>${esc(t)}</li>`).join('');
 
-  qs('[data-offers]').innerHTML = offers
+  qs('[data-services]').innerHTML = services
     .map(
-      (o, i) => `<li class="offer">
-        <p class="offer__num tabular">${String(i + 1).padStart(2, '0')}</p>
-        <h3 class="offer__title">${esc(o.title)}</h3>
-        <ul class="offer__list" role="list">${o.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+      (o, i) => `<li class="service">
+        <p class="service__num tabular">${String(i + 1).padStart(2, '0')}</p>
+        <h3 class="service__title">${esc(o.title)}</h3>
+        <ul class="service__list" role="list">${o.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
         <a class="btn btn--ghost" href="${o.link.arg ? routes[o.link.route](o.link.arg) : routes[o.link.route]()}"><span class="btn__label">${esc(o.link.label)}</span><span class="btn__arrow" aria-hidden="true">${toHTML(icon('i-arrow', 18))}</span></a>
       </li>`,
     )

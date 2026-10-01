@@ -26,6 +26,7 @@
 
 .cat-hero__grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never wider than the screen */
   gap: var(--s-6);
   align-items: end;
   padding-block: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
@@ -40,6 +41,8 @@
 
 .cat-hero__copy {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: var(--s-4);
   align-content: end;
 }
@@ -51,8 +54,7 @@
   line-height: 0.98;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  overflow-wrap: anywhere;
-  text-wrap: balance;
+  text-wrap: balance; /* long words are fitted by core/fit.js, never split */
 }
 
 .cat-hero__meta {
@@ -118,13 +120,91 @@
   padding-block: var(--s-4);
 }
 
+/* Scrollable chip row: arrows sit over faded edges, so the row keeps the
+   full width; an arrow disappears when there is nothing more that way */
+.chipscroll {
+  position: relative;
+}
+
 .cat-siblings__list {
+  --fade-l: 0px;
+  --fade-r: 0px;
+  flex: 1;
+  min-width: 0;
   display: flex;
   gap: var(--s-2);
   margin: 0;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
   scrollbar-width: none;
-  padding-bottom: 2px;
+  padding-block: 2px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+}
+
+.chipscroll.is-scrollable .cat-siblings__list {
+  --fade-r: 72px;
+  cursor: grab;
+}
+
+.chipscroll.is-scrollable:not(.at-start) .cat-siblings__list {
+  --fade-l: 72px;
+}
+
+.chipscroll.is-scrollable.at-end .cat-siblings__list {
+  --fade-r: 0px;
+}
+
+.cat-siblings__list.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.cat-siblings__list.is-dragging * {
+  pointer-events: none;
+}
+
+.chipscroll__btn {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-2);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  color: var(--text);
+  transform: translateY(-50%);
+  transition:
+    box-shadow var(--dur-micro),
+    color var(--dur-micro),
+    opacity var(--dur-micro);
+}
+
+.chipscroll__btn[data-rail-prev] {
+  left: 0;
+}
+
+.chipscroll__btn[data-rail-next] {
+  right: 0;
+}
+
+.chipscroll.is-scrollable .chipscroll__btn {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.chipscroll__btn:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--text);
+  color: var(--accent-text);
+}
+
+.chipscroll__btn:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .cat-siblings__list::-webkit-scrollbar {
@@ -138,6 +218,7 @@
 /* ---------- Layout ---------- */
 .cat-layout {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6);
   padding-top: var(--s-5);
   padding-bottom: var(--section-y);
@@ -299,6 +380,7 @@
 
 .fopts {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
   margin: 0;
 }
@@ -400,6 +482,10 @@ body:has(.header[data-hidden="false"]) .toolbar {
   color: var(--text);
 }
 
+.cat-results {
+  min-width: 0;
+}
+
 @media (max-width: 559px) {
   .sort__label {
     display: none;
@@ -407,6 +493,23 @@ body:has(.header[data-hidden="false"]) .toolbar {
   .toolbar__chips {
     order: 3;
     flex-basis: 100%;
+  }
+  /* «Фильтры» and sorting share the row equally on phones */
+  .toolbar__controls {
+    width: 100%;
+    margin-left: 0;
+  }
+  .toolbar__controls > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .sort,
+  .sort__select {
+    width: 100%;
+    min-width: 0;
+  }
+  .sort__select {
+    text-overflow: ellipsis;
   }
 }
 
@@ -424,6 +527,7 @@ body:has(.header[data-hidden="false"]) .toolbar {
 .empty {
   grid-column: 1 / -1;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
   justify-items: start;
   padding: var(--s-8) var(--s-5);
@@ -432,6 +536,7 @@ body:has(.header[data-hidden="false"]) .toolbar {
 
 .cat-more {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: var(--s-4);
   margin-top: var(--s-7);
@@ -462,6 +567,7 @@ body:has(.header[data-hidden="false"]) .toolbar {
 
 .sheet {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   max-height: 88dvh;
   border-radius: var(--r-3) var(--r-3) 0 0;
