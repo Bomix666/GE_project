@@ -55,7 +55,7 @@ export function renderArticle(root, item, { eyebrow, back, siblings = [], siblin
   document.title = `${item.title} — GLOBAL EFFECTS`;
   root.innerHTML = toHTML(html`<article class="art" aria-labelledby="art-title">
     <div class="container">
-      <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="/">Главная</a></li><li><a href="${routes.about()}">О компании</a></li><li><a href="${back.href}">${back.label}</a></li><li><span aria-current="page">${item.title}</span></li></ol></nav>
+      <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="${routes.home()}">Главная</a></li><li><a href="${routes.about()}">О компании</a></li><li><a href="${back.href}">${back.label}</a></li><li><span aria-current="page">${item.title}</span></li></ol></nav>
       <header class="art__head">
         <p class="eyebrow"><span>${eyebrow}${item.date ? html` · <time datetime="${iso(item.date)}">${item.date}</time>` : ''}</span></p>
         <h1 class="art__title" id="art-title" data-fit>${item.title}</h1>

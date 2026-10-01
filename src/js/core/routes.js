@@ -7,7 +7,7 @@
  *                                captcha, locale switch, the confetti-machine
  *                                quiz) still live on globaleffects.ru.
  */
-import { PRODUCTION, ORIGIN } from './env.js';
+import { PRODUCTION, ORIGIN, withBase } from './env.js';
 import { qsa } from './dom.js';
 
 const CATEGORIES = new Set([
@@ -27,10 +27,13 @@ export function resolve(path) {
   if (/^(https?:|mailto:|tel:|#)/.test(path) && !path.startsWith(ORIGIN)) return path;
 
   const url = new URL(path, ORIGIN);
-  const p = url.pathname.replace(/\/+$/, '') || '/';
-  const q = url.searchParams;
-  let m;
+  const local = localPage(url.pathname.replace(/\/+$/, '') || '/', url.searchParams);
+  return local ? withBase(local) : ORIGIN + url.pathname + url.search + url.hash;
+}
 
+/** Live-site path → redesigned prototype page (root-relative), or null when not covered. */
+function localPage(p, q) {
+  let m;
   if (p === '/') return '/';
   if ((m = p.match(/^\/category\/([^/]+)$/)) && CATEGORIES.has(m[1])) return `/catalog.html?c=${m[1]}`;
   if ((m = p.match(/^\/product\/([^/]+)$/))) return `/product.html?p=${encodeURIComponent(m[1])}`;
@@ -45,29 +48,29 @@ export function resolve(path) {
   if ((m = p.match(/^\/gallery\/images(?:\/([^/]+))?$/))) return `/gallery.html${m[1] ? `?cat=${m[1]}` : ''}`;
   if ((m = p.match(/^\/gallery\/videos(?:\/([^/]+))?$/))) return `/gallery.html${m[1] ? `?cat=${m[1]}` : ''}#videos`;
   if (p === '/cart' || p === '/cart/index') return '/cart.html';
-  return ORIGIN + url.pathname + url.search + url.hash;
+  return null;
 }
 
 /** True when a resolved URL leaves the redesign (opens the current live site). */
 export const isLive = (href) => !PRODUCTION && href.startsWith(ORIGIN);
 
 export const routes = {
-  home: () => '/',
-  category: (slug) => (PRODUCTION ? `/category/${slug}` : `/catalog.html?c=${encodeURIComponent(slug)}`),
+  home: () => withBase('/'),
+  category: (slug) => (PRODUCTION ? `/category/${slug}` : withBase(`/catalog.html?c=${encodeURIComponent(slug)}`)),
   /** Deep link with facet filters (prototype catalog). The live site filters via POST, so production links the category. */
   categoryFiltered: (slug, filters) => {
     if (PRODUCTION || !filters) return routes.category(slug);
     const q = new URLSearchParams({ c: slug, ...filters });
-    return `/catalog.html?${q}`;
+    return withBase(`/catalog.html?${q}`);
   },
-  product: (slug) => (PRODUCTION ? `/product/${slug}` : `/product.html?p=${encodeURIComponent(slug)}`),
-  cart: () => (PRODUCTION ? '/cart/index' : '/cart.html'),
+  product: (slug) => (PRODUCTION ? `/product/${slug}` : withBase(`/product.html?p=${encodeURIComponent(slug)}`)),
+  cart: () => (PRODUCTION ? '/cart/index' : withBase('/cart.html')),
   gallery: (cat) => resolve(`/gallery/images${cat ? `/${cat}` : ''}`),
   videos: (cat) => resolve(`/gallery/videos${cat ? `/${cat}` : ''}`),
   about: () => resolve('/page/about'),
   contacts: () => resolve('/contacts'),
-  effects: () => '/#effects',
-  effect: (slug) => `/#fx-${slug}`,
+  effects: () => withBase('/#effects'),
+  effect: (slug) => withBase(`/#fx-${slug}`),
   newsList: () => `${routes.about()}#news`,
   news: (path) => resolve(path),
   newsItem: (id) => resolve(`/news/view?news_id=${id}`),
@@ -80,7 +83,7 @@ export const routes = {
   searchResults: (q) =>
     PRODUCTION
       ? { method: 'post', action: '/search/results', field: 'ProductSearch[query]', value: q }
-      : { method: 'get', action: '/catalog.html', field: 'q', value: q },
+      : { method: 'get', action: withBase('/catalog.html'), field: 'q', value: q },
 };
 
 /**

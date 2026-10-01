@@ -5,6 +5,7 @@
  * The comment next to each block names the source page. Do not add numbers,
  * clients or claims that are not on the live site.
  */
+import { withBase as media } from '../core/env.js';
 
 export const company = {
   name: 'GLOBAL EFFECTS',
@@ -105,7 +106,7 @@ export const effects = [
     title: 'Конфетти и серпантин',
     short: 'Конфетти',
     icon: 'ifx-confetti',
-    image: { src: '/media/scenes/fx-confetti.webp', sm: '/media/scenes/fx-confetti-sm.webp', w: 1280, h: 720, alt: 'Залп конфетти над сценой концерта' },
+    image: { src: media('/media/scenes/fx-confetti.webp'), sm: media('/media/scenes/fx-confetti-sm.webp'), w: 1280, h: 720, alt: 'Залп конфетти над сценой концерта' },
     text: 'Конфетти-машины собственного производства — от компактных для небольшого торжества до больших стадионных пушек с управлением DMX.',
     facts: ['EASY Confetti — выдув до 8–10 м', 'Power-550 — до 15 м, площадь до 90 м²', 'Stadium Shot DMX — серпантин 10–20 м'],
     source: '/page/about, /product/…easy-confetti, /product/…power-550, /product/…stadium-shot-dmx',
@@ -120,7 +121,7 @@ export const effects = [
     title: 'Криоэффекты',
     short: 'Криоэффекты',
     icon: 'ifx-cryo',
-    image: { src: '/media/scenes/fx-cryo.webp', sm: '/media/scenes/fx-cryo-sm.webp', w: 1280, h: 720, alt: 'Столбы холодного белого дыма на концертной сцене' },
+    image: { src: media('/media/scenes/fx-cryo.webp'), sm: media('/media/scenes/fx-cryo-sm.webp'), w: 1280, h: 720, alt: 'Столбы холодного белого дыма на концертной сцене' },
     text: 'Плотные вертикальные столбы холодного белого дыма, которые быстро рассеиваются: не требуют уборки и не оставляют следов.',
     facts: ['CO2 GUN — ручная, столб до 8 м', 'CO2 JET — шлейф 8–10 м', 'CO2 JET DMX/POWER — синхронизация по DMX'],
     source: '/blog/kriopuski-global-effects, /product/…co2-gun, /product/…co2-jet',
@@ -136,7 +137,7 @@ export const effects = [
     title: 'Тяжелый дым',
     short: 'Тяжелый дым',
     icon: 'ifx-smoke',
-    image: { src: '/media/scenes/fx-smoke.webp', sm: '/media/scenes/fx-smoke-sm.webp', w: 660, h: 413, alt: 'Сцена спектакля в стелющемся тяжёлом дыме' },
+    image: { src: media('/media/scenes/fx-smoke.webp'), sm: media('/media/scenes/fx-smoke-sm.webp'), w: 660, h: 413, alt: 'Сцена спектакля в стелющемся тяжёлом дыме' },
     text: 'Плотный низкостелющийся дым, который остаётся у поверхности сцены и не поднимается сразу вверх.',
     facts: ['FreezeFog Pro — до 150 м² за 30 секунд', 'Всё необходимое — в одном кофре', 'FreezeFog II — сухой густой белый дым'],
     source: '/product/…freezefog-pro, /product/…freezefog-ii',
@@ -151,7 +152,7 @@ export const effects = [
     title: 'Пена',
     short: 'Пена',
     icon: 'ifx-foam',
-    image: { src: '/media/scenes/fx-foam.webp', sm: '/media/scenes/fx-foam-sm.webp', w: 1000, h: 667, alt: 'Пенная вечеринка под открытым небом' },
+    image: { src: media('/media/scenes/fx-foam.webp'), sm: media('/media/scenes/fx-foam-sm.webp'), w: 1000, h: 667, alt: 'Пенная вечеринка под открытым небом' },
     text: 'Генераторы пены для вечеринок в зале и пенных дискотек на открытом воздухе. Работают от 220 В, насос и шланг в комплекте.',
     facts: ['EASY Foam — 20–30 м² до пояса', 'Foam Eco — 50 м² до шеи', 'Foam Jet Power-550 — выброс до 7 м, 100 м²'],
     source: '/product/…easy-foam, /product/…foam-eco, /product/…foam-jet-power-550',
@@ -166,7 +167,7 @@ export const effects = [
     title: 'Имитация пламени',
     short: 'Пламя',
     icon: 'ifx-flame',
-    image: { src: '/media/scenes/fx-flame.webp', sm: '/media/scenes/fx-flame-sm.webp', w: 1280, h: 720, alt: 'Установки имитации пламени у сцены' },
+    image: { src: media('/media/scenes/fx-flame.webp'), sm: media('/media/scenes/fx-flame-sm.webp'), w: 1280, h: 720, alt: 'Установки имитации пламени у сцены' },
     text: 'Установки создают эффект настоящего огня, а фонарь DMX RGB позволяет менять его цвет по вашему желанию.',
     facts: ['EASY Flame DMX RGB — язык пламени 2,5 м', 'Power-550 Flame — пламя до 3,5 м', 'Подготовка к работе — 5 минут'],
     source: '/product/…easy-flame-dmx-rgb, /product/…power-550-flame-dmx-rgb',
@@ -181,7 +182,7 @@ export const effects = [
     title: 'Искусственный снег',
     short: 'Снег',
     icon: 'ifx-snow',
-    image: { src: '/media/scenes/fx-snow.webp', sm: '/media/scenes/fx-snow-sm.webp', w: 744, h: 478, alt: 'Снегопад на ледовом шоу' },
+    image: { src: media('/media/scenes/fx-snow.webp'), sm: media('/media/scenes/fx-snow-sm.webp'), w: 744, h: 478, alt: 'Снегопад на ледовом шоу' },
     text: 'Большой выбор искусственного снега собственного производства и машины для снежного занавеса на театральной сцене.',
     facts: ['Snow Drop DMX — снежный занавес, ≈30 мин на малых оборотах', 'EASY Swirl — снег и конфетти сверху', 'Снег для декораций и съёмок'],
     source: '/page/about, /product/…snow-drop-dmx, /product/…easy-swirl',
@@ -207,7 +208,7 @@ export const stories = [
         label: 'Эффект',
         title: 'Конфетти над залом',
         text: 'Финальный залп концерта, выход артиста, первый танец — конфетти превращает момент в кадр, который зрители снимают на телефоны.',
-        image: { src: '/media/scenes/story-effect.webp', w: 1000, h: 668, alt: 'Зрители концерта под дождём из конфетти' },
+        image: { src: media('/media/scenes/story-effect.webp'), w: 1000, h: 668, alt: 'Зрители концерта под дождём из конфетти' },
       },
       {
         kind: 'how',
@@ -241,7 +242,7 @@ export const stories = [
         kind: 'result',
         label: 'Результат на сцене',
         title: 'Кадр, который остаётся в памяти',
-        image: { src: '/media/scenes/story-result.webp', w: 750, h: 500, alt: 'Сцена концерта в облаке конфетти' },
+        image: { src: media('/media/scenes/story-result.webp'), w: 750, h: 500, alt: 'Сцена концерта в облаке конфетти' },
         gallery: 'konfetti',
       },
     ],
@@ -255,7 +256,7 @@ export const stories = [
         label: 'Эффект',
         title: 'Белые столбы над сценой',
         text: 'Плотный белый столб дыма CO₂ после выпуска быстро исчезает, а модели с DMX синхронизируются с музыкой и световым шоу.',
-        image: { src: '/media/scenes/fx-cryo-2.webp', w: 1000, h: 667, alt: 'Криоэффекты на концерте' },
+        image: { src: media('/media/scenes/fx-cryo-2.webp'), w: 1000, h: 667, alt: 'Криоэффекты на концерте' },
       },
       {
         kind: 'how',
@@ -290,7 +291,7 @@ export const stories = [
         kind: 'result',
         label: 'Результат на сцене',
         title: 'Сцена в движении',
-        image: { src: '/media/scenes/hero-cryo-columns.webp', w: 1280, h: 720, alt: 'Столбы криоэффектов на концерте' },
+        image: { src: media('/media/scenes/hero-cryo-columns.webp'), w: 1280, h: 720, alt: 'Столбы криоэффектов на концерте' },
         gallery: 'krioeffekty',
       },
     ],
@@ -314,10 +315,10 @@ export const dealers = [
 
 /** Hero photo reel (real event photos, graded). Replaced by the MP4 when it exists. */
 export const heroReel = [
-  { src: '/media/scenes/hero-cryo-stadium.webp', sm: '/media/scenes/hero-cryo-stadium-sm.webp', label: 'Криоэффекты' },
-  { src: '/media/scenes/hero-confetti-crowd.webp', sm: '/media/scenes/hero-confetti-crowd-sm.webp', label: 'Конфетти' },
-  { src: '/media/scenes/hero-cryo-columns.webp', sm: '/media/scenes/hero-cryo-columns-sm.webp', label: 'Криоэффекты' },
-  { src: '/media/scenes/hero-confetti-arena.webp', sm: '/media/scenes/hero-confetti-arena-sm.webp', label: 'Конфетти' },
+  { src: media('/media/scenes/hero-cryo-stadium.webp'), sm: media('/media/scenes/hero-cryo-stadium-sm.webp'), label: 'Криоэффекты' },
+  { src: media('/media/scenes/hero-confetti-crowd.webp'), sm: media('/media/scenes/hero-confetti-crowd-sm.webp'), label: 'Конфетти' },
+  { src: media('/media/scenes/hero-cryo-columns.webp'), sm: media('/media/scenes/hero-cryo-columns-sm.webp'), label: 'Криоэффекты' },
+  { src: media('/media/scenes/hero-confetti-arena.webp'), sm: media('/media/scenes/hero-confetti-arena-sm.webp'), label: 'Конфетти' },
 ];
 
 /** Flagship equipment shown in the home rail (ids from /data/catalog.json). */

@@ -91,7 +91,7 @@ function setupPage() {
     qs('[data-cat-title]').textContent = cat.title;
     qs('[data-cat-group]').textContent = GROUP_TITLES[cat.group];
     qs('[data-cat-meta]').textContent = `${cat.count} ${plural(cat.count, ['товар', 'товара', 'товаров'])}${cat.minPrice ? ` · от ${formatPrice(cat.minPrice)}` : ''}`;
-    qs('[data-crumbs]').innerHTML = `<li><a href="/">Главная</a></li><li><span>${GROUP_TITLES[cat.group]}</span></li><li><span aria-current="page">${esc(cat.title)}</span></li>`;
+    qs('[data-crumbs]').innerHTML = `<li><a href="${routes.home()}">Главная</a></li><li><span>${GROUP_TITLES[cat.group]}</span></li><li><span aria-current="page">${esc(cat.title)}</span></li>`;
     qs('[data-cat-search]').hidden = true;
     const cover = base[0];
     qs('[data-cat-media]').innerHTML = cover
@@ -119,7 +119,7 @@ function setupPage() {
     qs('[data-cat-title]').textContent = 'Поиск';
     qs('[data-cat-group]').textContent = `Запрос «${state.q}»`;
     qs('[data-cat-meta]').textContent = `${base.length} ${plural(base.length, ['результат', 'результата', 'результатов'])}`;
-    qs('[data-crumbs]').innerHTML = `<li><a href="/">Главная</a></li><li><span aria-current="page">Поиск</span></li>`;
+    qs('[data-crumbs]').innerHTML = `<li><a href="${routes.home()}">Главная</a></li><li><span aria-current="page">Поиск</span></li>`;
     const form = qs('[data-cat-search]');
     form.hidden = false;
     qs('input', form).value = state.q;

@@ -46,7 +46,7 @@ ready(async () => {
 });
 
 function renderHero(p, cat) {
-  qs('[data-crumbs]').innerHTML = `<li><a href="/">Главная</a></li>${
+  qs('[data-crumbs]').innerHTML = `<li><a href="${routes.home()}">Главная</a></li>${
     cat ? `<li><span>${GROUP_TITLES[cat.group]}</span></li><li><a href="${routes.category(cat.slug)}">${esc(cat.title)}</a></li>` : ''
   }<li><span aria-current="page">${esc(p.name)}</span></li>`;
 
