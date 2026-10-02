@@ -6,6 +6,7 @@ import { fitAll } from '../core/fit.js';
 import { routes, localizeLinks, pageParams } from '../core/routes.js';
 import { getPages } from '../data/api.js';
 import { renderMissing } from '../components/editorial.js';
+import { cleanHTML } from '../core/sanitize.js';
 
 const NAV = [
   ['delivery', 'Доставка'],
@@ -35,7 +36,7 @@ ready(async () => {
       <div class="prose" data-text></div>
     </div>`;
   const body = qs('[data-text]', root);
-  body.innerHTML = page.body; // sanitized at build time (tools/)
+  body.innerHTML = cleanHTML(page.body); // CMS HTML → allowlist (core/sanitize.js)
   localizeLinks(body);
   root.removeAttribute('aria-busy');
   reveal();

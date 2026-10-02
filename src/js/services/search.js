@@ -68,7 +68,9 @@ export async function search(query, { limit = 6 } = {}) {
 const RECENT_KEY = 'ge.search.recent';
 export function recent() {
   try {
-    return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+    // storage can be edited by hand: only a list of non-empty strings counts
+    const list = JSON.parse(localStorage.getItem(RECENT_KEY));
+    return Array.isArray(list) ? list.filter((x) => typeof x === 'string' && x.trim()).slice(0, 5) : [];
   } catch {
     return [];
   }
