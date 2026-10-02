@@ -2,8 +2,9 @@
  * Read-only data access.
  *
  * The JSON files in /public/data are a snapshot of globaleffects.ru
- * (see README → "Data"). In production the same shapes can be emitted by the
- * existing Yii views/export — no new backend endpoints are required.
+ * (see README → "Data"). In production the backend exports the same shapes
+ * from the existing database to the same URLs (docs/BACKEND-HANDOFF.md, §4);
+ * to use other URLs, change the paths below — this is the only place.
  */
 import { BASE, withBase } from '../core/env.js';
 
