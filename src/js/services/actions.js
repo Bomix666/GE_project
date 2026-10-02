@@ -7,12 +7,11 @@
  *   [data-quick-view="<slug>"]   quick preview dialog
  *   [data-qty] steppers
  */
-import { cart } from './cart.js';
+import { cart, clampQty } from './cart.js';
 import { PRODUCTION } from '../core/env.js';
 import { routes } from '../core/routes.js';
 import { toast } from '../components/toast.js';
 
-const clampQty = (v) => Math.min(999, Math.max(1, Math.round(Number(v) || 1)));
 
 function readQty(button) {
   const scope = button.closest('[data-qty-scope]');
@@ -21,7 +20,9 @@ function readQty(button) {
 }
 
 async function handleAdd(button, { oneClick = false } = {}) {
-  if (button.getAttribute('aria-busy') === 'true') return;
+  // While the button is adding or shows «Добавлено», repeated taps do nothing:
+  // a double tap must not turn one product into an unpredictable number of them
+  if (button.getAttribute('aria-busy') === 'true' || button.classList.contains('is-done')) return;
   const id = Number(button.dataset.add || button.dataset.oneClick);
   const qty = readQty(button);
   const label = button.querySelector('[data-add-label]');

@@ -6,7 +6,7 @@
  * only enhances filtering/sorting client-side (no endpoint changes).
  */
 import { ready } from '../app.js';
-import { qs, qsa, toHTML, esc, icon, formatPrice, plural, normalize, params, announce } from '../core/dom.js';
+import { qs, qsa, toHTML, esc, icon, formatPrice, plural, normalize, searchTokens, params, announce } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
 import { routes } from '../core/routes.js';
 import { getCatalog, GROUP_TITLES, specValue } from '../data/api.js';
@@ -15,8 +15,10 @@ import { productCard, productSkeleton } from '../components/product-card.js';
 import { createDialog } from '../components/dialog.js';
 import { initRail } from '../components/rail.js';
 import { fitHeading } from '../core/fit.js';
+import { toast } from '../components/toast.js';
 
 const PAGE = 24;
+const SORTS = ['default', 'price-asc', 'price-desc', 'name'];
 const keyToParam = facetKeys;
 const paramToKey = Object.fromEntries(Object.entries(facetKeys).map(([k, v]) => [v, k]));
 
@@ -39,9 +41,19 @@ ready(async () => {
     return;
   }
   state = readState();
+  const asked = params().get('c');
+  if (asked && state.slug && asked !== state.slug) {
+    toast({ title: 'Раздел не найден', text: `Ссылка устарела — показываем «${catalog.categories.get(state.slug).title}».` });
+  }
+  // invalid or unknown parameters are dropped from the address bar
+  if (stateUrl() !== location.pathname + location.search) history.replaceState(history.state, '', stateUrl());
   setupPage();
+  const view = savedView();
+  if (view) limit = Math.max(PAGE, view.limit);
   render();
   bind();
+  // right after rendering (scrollTo lays the page out); instant, not the CSS smooth scroll
+  if (view) window.scrollTo({ top: view.y, behavior: 'instant' });
   window.addEventListener('popstate', () => {
     state = readState();
     setupPage();
@@ -64,19 +76,35 @@ function readState() {
     q,
     f,
     stock: p.get('stock') === '1',
-    sort: p.get('sort') || 'default',
+    sort: SORTS.includes(p.get('sort')) ? p.get('sort') : 'default',
   };
 }
 
-function writeState(push = false) {
+function stateUrl() {
   const p = new URLSearchParams();
   if (state.slug) p.set('c', state.slug);
   if (state.q) p.set('q', state.q);
   Object.entries(state.f).forEach(([k, vals]) => vals.length && p.set(keyToParam[k], vals.join(',')));
   if (state.stock) p.set('stock', '1');
   if (state.sort !== 'default') p.set('sort', state.sort);
-  const url = `${location.pathname}?${p}`;
-  history[push ? 'pushState' : 'replaceState'](null, '', url);
+  return `${location.pathname}?${p}`;
+}
+
+function writeState(push = false) {
+  history[push ? 'pushState' : 'replaceState'](null, '', stateUrl());
+}
+
+/* Back from a product page: the list comes back as deep as it was opened with
+   «Показать ещё» and at the same scroll position (kept in history.state). */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+function savedView() {
+  const view = history.state && history.state.catalogView;
+  return view && Number.isFinite(view.limit) && Number.isFinite(view.y) ? view : null;
+}
+
+function rememberView() {
+  history.replaceState({ ...history.state, catalogView: { limit, y: Math.round(window.scrollY) } }, '');
 }
 
 /* ------------------------------------------------------------ setup */
@@ -109,9 +137,10 @@ function setupPage() {
     applyRouteClicks();
   } else {
     // prototype-only search results (production keeps /search/results)
-    const words = normalize(state.q).split(' ').filter(Boolean);
+    const words = searchTokens(state.q);
     base = catalog.products.filter((p) => {
-      const hay = normalize(`${p.name} ${p.type} ${(catalog.categories.get(p.category) || {}).title || ''}`);
+      // the same fields as the header search, so «Показать все N» opens exactly N results
+      const hay = normalize(`${p.name} ${p.type} ${(catalog.categories.get(p.category) || {}).title || ''} ${p.specs.map((x) => x[1]).join(' ')}`);
       return words.every((w) => hay.includes(w));
     });
     facets = [];
@@ -350,6 +379,7 @@ function bind() {
     if (e.target.closest('[data-more]')) {
       const before = limit;
       limit += PAGE;
+      rememberView();
       const results = sorted(base.filter((p) => matches(p)));
       renderGrid(results);
       // move focus to the first newly shown card for keyboard users
@@ -374,6 +404,10 @@ function bind() {
 
   // Mobile: filters move into a bottom sheet dialog
   qs('[data-filters-open]').addEventListener('click', (e) => openSheet(e.currentTarget));
+
+  // leaving for a product (or reloading) keeps the list depth and scroll position
+  document.addEventListener('click', (e) => e.target.closest('a[href]') && rememberView(), true);
+  window.addEventListener('pagehide', rememberView);
 }
 
 function update() {

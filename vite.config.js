@@ -48,7 +48,7 @@ function deployBase() {
   };
 }
 
-const PAGES = ['index', 'catalog', 'product', 'gallery', 'about', 'cart', 'news', 'blog', 'page'];
+const PAGES = ['index', 'catalog', 'product', 'gallery', 'about', 'cart', 'news', 'blog', 'page', '404'];
 
 export default defineConfig({
   plugins: [htmlPartials(), deployBase()],

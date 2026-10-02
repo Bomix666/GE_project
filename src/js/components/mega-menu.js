@@ -83,6 +83,14 @@ export function initMegaMenu() {
         e.preventDefault();
         setOpen(name, { focusFirst: true });
       }
+      // an open panel comes right after its trigger in the Tab order
+      if (e.key === 'Tab' && !e.shiftKey && current === name) {
+        const first = focusables(panels.get(name))[0];
+        if (first) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     });
     trigger.addEventListener('pointerenter', (e) => {
       if (e.pointerType !== 'mouse' || !env.finePointer) return;
@@ -111,9 +119,29 @@ export function initMegaMenu() {
       if (e.target.closest('a')) close();
     }),
   );
+  // Tab out of a panel continues with the header item after its trigger; Shift+Tab goes back to the trigger
+  panels.forEach((panel, key) =>
+    panel.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const items = focusables(panel);
+      const trigger = triggers.find((t) => t.dataset.megaTrigger === key);
+      if (e.shiftKey && document.activeElement === items[0]) {
+        e.preventDefault();
+        trigger.focus();
+      } else if (!e.shiftKey && document.activeElement === items[items.length - 1]) {
+        e.preventDefault();
+        const bar = focusables(header).filter((el) => !el.closest('[data-mega-panel]'));
+        const next = bar[bar.indexOf(trigger) + 1];
+        close();
+        (next || trigger).focus();
+      }
+    }),
+  );
 
   hydrateCatalogPanel(panels.get('catalog'));
 }
+
+const focusables = (root) => qsa('a[href], button:not([disabled]), input', root).filter((el) => el.offsetParent !== null);
 
 /** «О компании» panel: latest real news / blog material, loaded on first open. */
 let aboutHydrated = false;

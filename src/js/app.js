@@ -57,6 +57,16 @@ function initLocaleSwitch() {
   });
 }
 
+/* Product photos are hotlinked from the CMS; a file missing there must not leave
+   a broken-image box: the image hides and its frame shows a neutral placeholder. */
+document.addEventListener(
+  'error',
+  (e) => {
+    if (e.target instanceof HTMLImageElement) e.target.classList.add('is-broken');
+  },
+  true,
+);
+
 applyRoutes();
 initLocaleSwitch();
 initHeader();

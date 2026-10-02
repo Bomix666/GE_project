@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Страница не найдена — GLOBAL EFFECTS</title>
+    <meta name="robots" content="noindex" />
+    <!-- @include head.html -->
+    <link rel="stylesheet" href="/src/styles/pages/editorial.css" />
+  </head>
+  <body data-page="404">
+    <!-- @include icons.html -->
+    <!-- @include header.html -->
+
+    <!-- Served by static hosting (GitHub Pages preview) for addresses that do not exist -->
+    <main id="main" class="ed">
+      <section class="container ed-missing" aria-labelledby="nf-title">
+        <p class="eyebrow">Ошибка 404</p>
+        <h1 class="h1" id="nf-title">Страница не найдена</h1>
+        <p class="lead">Возможно, ссылка устарела или в адресе опечатка.</p>
+        <div class="ed-missing__actions">
+          <a class="btn btn--primary btn--lg" href="/" data-route="home"><span class="btn__label">На главную</span><span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg></span></a>
+          <a class="btn btn--secondary btn--lg" href="/catalog.html?c=konfetti-masiny" data-route="category" data-slug="konfetti-masiny"><span class="btn__label">Каталог</span></a>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer.html -->
+    <script type="module" src="/src/js/app.js"></script>
+  </body>
+</html>
