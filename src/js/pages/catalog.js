@@ -6,9 +6,9 @@
  * only enhances filtering/sorting client-side (no endpoint changes).
  */
 import { ready } from '../app.js';
-import { qs, qsa, toHTML, esc, icon, formatPrice, plural, normalize, searchTokens, params, announce } from '../core/dom.js';
+import { qs, qsa, toHTML, esc, icon, formatPrice, plural, normalize, searchTokens, announce } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
-import { routes } from '../core/routes.js';
+import { routes, pageParams } from '../core/routes.js';
 import { getCatalog, GROUP_TITLES, specValue } from '../data/api.js';
 import { facetKeys, swatches } from '../data/content.js';
 import { productCard, productSkeleton } from '../components/product-card.js';
@@ -41,7 +41,7 @@ ready(async () => {
     return;
   }
   state = readState();
-  const asked = params().get('c');
+  const asked = pageParams().get('c');
   if (asked && state.slug && asked !== state.slug) {
     toast({ title: 'Раздел не найден', text: `Ссылка устарела — показываем «${catalog.categories.get(state.slug).title}».` });
   }
@@ -63,7 +63,7 @@ ready(async () => {
 
 /* ------------------------------------------------------------ state */
 function readState() {
-  const p = params();
+  const p = pageParams();
   const slug = p.get('c');
   const q = (p.get('q') || '').trim();
   const f = {};
@@ -82,12 +82,14 @@ function readState() {
 
 function stateUrl() {
   const p = new URLSearchParams();
-  if (state.slug) p.set('c', state.slug);
+  // on the live route /category/<slug> the category is already in the path
+  if (state.slug && !/\/category\/[^/]+\/?$/.test(location.pathname)) p.set('c', state.slug);
   if (state.q) p.set('q', state.q);
   Object.entries(state.f).forEach(([k, vals]) => vals.length && p.set(keyToParam[k], vals.join(',')));
   if (state.stock) p.set('stock', '1');
   if (state.sort !== 'default') p.set('sort', state.sort);
-  return `${location.pathname}?${p}`;
+  const query = p.toString();
+  return query ? `${location.pathname}?${query}` : location.pathname;
 }
 
 function writeState(push = false) {

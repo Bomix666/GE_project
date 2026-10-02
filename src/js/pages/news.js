@@ -1,16 +1,16 @@
 /** Новости — a single news article. The list itself is a block of the «О компании» page. */
 import { ready } from '../app.js';
-import { qs, params } from '../core/dom.js';
+import { qs } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
 import { fitAll } from '../core/fit.js';
-import { routes } from '../core/routes.js';
+import { routes, pageParams } from '../core/routes.js';
 import { getNews } from '../data/api.js';
 import { renderArticle, renderMissing } from '../components/editorial.js';
 
 const back = { href: routes.newsList(), label: 'Новости', all: 'Все новости' };
 
 ready(async () => {
-  const id = Number(params().get('id'));
+  const id = Number(pageParams().get('id'));
   if (!id) {
     location.replace(routes.newsList());
     return;

@@ -11,11 +11,15 @@ npm run build    # dist/
 npm run preview  # http://127.0.0.1:4173
 ```
 
+**Передача в backend (Yii2):** [`docs/BACKEND-HANDOFF.md`](docs/BACKEND-HANDOFF.md). Там описано подключение сборки
+по `manifest.json`, шаблоны и маршруты, формат всех JSON-файлов и чек-лист.
+
 **Онлайн-превью:** https://bomix666.github.io/GE_project/. Его собирает и публикует GitHub Actions
 (`.github/workflows/pages.yml`) при каждом пуше в `main`. Сборка идёт с `--base=/GE_project/`: ссылки, данные и
-медиа получают этот префикс через `withBase()` (`core/env.js`) и плагин `deployBase` в `vite.config.js`, а страницы —
-`noindex`, чтобы прототип не попадал в поиск рядом с globaleffects.ru. Локальная копия этого превью:
-`npx vite build --base=/GE_project/ --outDir dist-pages`, затем `npx vite preview --base=/GE_project/ --outDir dist-pages`.
+медиа получают этот префикс через `withBase()` (`core/env.js`) и плагин `deployBase` в `vite.config.js`. С переменной
+`GE_PREVIEW=1` страницы получают `noindex`, чтобы прототип не попадал в поиск рядом с globaleffects.ru. Локальная копия
+этого превью: `GE_PREVIEW=1 npx vite build --base=/GE_project/ --outDir dist-pages`, затем
+`npx vite preview --base=/GE_project/ --outDir dist-pages`.
 
 Runtime-зависимостей нет: Vite используется только для сборки, шрифты — самохостинг `@fontsource-variable`.
 Стили подключены через `<link>` в `<head>` (`src/partials/head.html`), поэтому страница никогда не показывается без оформления.
@@ -65,7 +69,10 @@ PDF каталога и прайса, документы `/document/get`, кви
 
 Переключение окружения — `src/js/core/env.js`: на `*.globaleffects.ru` или при `<html data-env="production">`
 все ссылки идут через `src/js/core/routes.js` на реальные маршруты. Разметка partials содержит
-`data-route`, поэтому одни и те же файлы работают в обоих режимах.
+`data-route`, поэтому одни и те же файлы работают в обоих режимах. Страницы понимают и адреса прототипа
+(`product.html?p=<slug>`), и адреса сайта (`/product/<slug>`, `/category/<slug>`, `/blog/<slug>`, `/page/<slug>`,
+`/news/view?news_id=…`, `/gallery/images/<slug>`): это делает `pageParams()` в `routes.js`. В `npm run dev` адреса
+сайта открываются на нужном шаблоне, например `http://127.0.0.1:5173/product/<slug>`.
 
 ### Используемые контракты backend (без изменений)
 | Функция | Контракт | Где в коде |
@@ -136,6 +143,6 @@ tools/               скрипты снимка и тонирования
 
 ## 6. Что дальше
 - Получить реальное видео hero и векторный логотип.
-- Перенести partials и страницы в Yii-views, выводить данные серверным рендером, вместо `shopCart.setData` печатать `window.GE_CART_INITIAL`.
+- Подключить в Yii по [`docs/BACKEND-HANDOFF.md`](docs/BACKEND-HANDOFF.md): views маршрутов, layout, данные в формате JSON-контракта, `window.GE_CART_INITIAL` вместо `shopCart.setData`.
 - Сверить формат позиции корзины на живом ответе `/cart/add` (поля `slug`/`url` для ссылки на товар).
 - Прогнать ручную проверку с NVDA/VoiceOver и в Safari iOS.

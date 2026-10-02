@@ -1,8 +1,8 @@
 /** Gallery: real photo/video galleries of globaleffects.ru, filterable by effect. */
 import { ready } from '../app.js';
-import { qs, esc, params, plural, announce } from '../core/dom.js';
+import { qs, esc, plural, announce } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
-import { routes } from '../core/routes.js';
+import { routes, pageParams } from '../core/routes.js';
 import { getGallery } from '../data/api.js';
 import { effects } from '../data/content.js';
 import { ytFacade, initYouTube } from '../components/youtube.js';
@@ -13,7 +13,7 @@ const RHYTHM = ['xl', 's', 's', 'm', 'm', 'tall', 's', 'wide', 's'];
 ready(async () => {
   const galleries = await getGallery();
   const filter = qs('[data-gal-filter]');
-  let current = params().get('cat') || 'all';
+  let current = pageParams().get('cat') || 'all';
   if (current !== 'all' && !galleries.some((g) => g.slug === current)) current = 'all';
 
   const total = (key) => galleries.reduce((s, g) => s + g[key].length, 0);

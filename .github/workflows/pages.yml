@@ -27,6 +27,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx vite build --base=/${{ github.event.repository.name }}/
+        env:
+          GE_PREVIEW: '1' # noindex: the preview must not compete with globaleffects.ru in search
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
