@@ -467,6 +467,7 @@ body[data-page="home"] .chapter {
     display: none;
   }
   .hero__fx-list li {
+    flex: none; /* the list scrolls sideways: items keep their label width */
     scroll-snap-align: start;
   }
   .hero__shade {
@@ -517,6 +518,14 @@ body[data-page="home"] .chapter {
   margin-top: -90svh;
   padding: 50svh 0 var(--section-y);
   background: linear-gradient(to bottom, rgb(5 5 5 / 0) 0, rgb(5 5 5 / 0.72) 22svh, var(--bg) 52svh);
+}
+
+/* The curtain starts at the viewport bottom: overlap = hero stage − 100svh.
+   Otherwise its transparent top lies over the hero buttons and takes their taps. */
+@media (max-width: 1023px) {
+  .manifesto {
+    margin-top: -50svh; /* stage is 150svh here */
+  }
 }
 
 .reduce-motion .manifesto {
