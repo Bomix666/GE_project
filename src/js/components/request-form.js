@@ -55,18 +55,18 @@ export function openRequestForm(kind, product, trigger) {
         <input type="hidden" name="${n('product_id')}" value="${product.id}">
         <div class="field">
           <label class="field__label" for="${id('name')}">ФИО <span aria-hidden="true">*</span></label>
-          <input class="field__input" id="${id('name')}" name="${n('name')}" type="text" autocomplete="name" required aria-describedby="${id('name')}-err" data-autofocus>
+          <input class="field__input" id="${id('name')}" name="${n('name')}" type="text" autocomplete="name" required maxlength="255" aria-describedby="${id('name')}-err" data-autofocus>
           <p class="field__error" id="${id('name')}-err"></p>
         </div>
         <div class="form__row">
           <div class="field">
             <label class="field__label" for="${id('phone')}">Телефон <span aria-hidden="true">*</span></label>
-            <input class="field__input" id="${id('phone')}" name="${n('phone')}" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="${id('phone')}-err">
+            <input class="field__input" id="${id('phone')}" name="${n('phone')}" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" aria-describedby="${id('phone')}-err">
             <p class="field__error" id="${id('phone')}-err"></p>
           </div>
           <div class="field">
             <label class="field__label" for="${id('email')}">E-mail <span aria-hidden="true">*</span></label>
-            <input class="field__input" id="${id('email')}" name="${n('email')}" type="email" autocomplete="email" required aria-describedby="${id('email')}-err">
+            <input class="field__input" id="${id('email')}" name="${n('email')}" type="email" autocomplete="email" required maxlength="254" aria-describedby="${id('email')}-err">
             <p class="field__error" id="${id('email')}-err"></p>
           </div>
         </div>
@@ -81,7 +81,7 @@ export function openRequestForm(kind, product, trigger) {
               ? `<img class="captcha__img" src="${captchaSrc}" alt="Проверочный код — введите символы с картинки" width="120" height="50" data-captcha>
             <button type="button" class="captcha__refresh" data-captcha-refresh>Обновить код</button>`
               : '<span class="captcha__img captcha__img--proto" data-captcha>Код<br>с сайта</span>'}
-            <input class="field__input" id="${id('verifycode')}" name="${n('verifyCode')}" type="text" autocomplete="off" required aria-describedby="${id('verifycode')}-err">
+            <input class="field__input" id="${id('verifycode')}" name="${n('verifyCode')}" type="text" autocomplete="off" required maxlength="32" aria-describedby="${id('verifycode')}-err">
           </div>
           <p class="field__error" id="${id('verifycode')}-err"></p>
         </div>
@@ -127,9 +127,13 @@ const MESSAGES = {
 
 function validateField(input) {
   const key = input.id.split('-').pop();
-  let ok = input.value.trim().length > 0;
+  let ok = input.value.trim().length > 0 && (input.maxLength < 0 || input.value.length <= input.maxLength);
   if (ok && input.type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
-  if (ok && input.type === 'tel') ok = input.value.replace(/\D/g, '').length >= 10;
+  // a phone is digits with the usual separators, 10–15 digits (E.164); no words
+  if (ok && input.type === 'tel') {
+    const digits = input.value.replace(/\D/g, '').length;
+    ok = /^[+\d\s()\-.]+$/.test(input.value.trim()) && digits >= 10 && digits <= 15;
+  }
   const err = document.getElementById(`${input.id}-err`);
   input.setAttribute('aria-invalid', String(!ok));
   if (err) err.textContent = ok ? '' : MESSAGES[key] || 'Заполните поле.';

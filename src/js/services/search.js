@@ -3,14 +3,10 @@
  * UI sugar only: "Показать все результаты" still goes to the existing
  * backend search (POST /search/results, ProductSearch[query]).
  */
-import { normalize } from '../core/dom.js';
+import { normalize, searchTokens } from '../core/dom.js';
 import { getCatalog, getNews } from '../data/api.js';
 
 let indexPromise;
-
-function tokens(q) {
-  return normalize(q).split(' ').filter(Boolean);
-}
 
 export function buildIndex() {
   indexPromise ||= Promise.all([getCatalog(), getNews().catch(() => [])]).then(([catalog, news]) => {
@@ -34,7 +30,7 @@ export function buildIndex() {
 }
 
 function score(entry, words, q) {
-  let s = 0;
+  let s = 1; // every word matched somewhere (category, specs) → listed, just ranked lower
   for (const w of words) {
     if (!entry.hay && !entry.name.includes(w)) return 0;
     if (entry.hay && !entry.hay.includes(w)) return 0;
@@ -50,7 +46,7 @@ function score(entry, words, q) {
 export async function search(query, { limit = 6 } = {}) {
   const index = await buildIndex();
   const q = normalize(query);
-  const words = tokens(query);
+  const words = searchTokens(query);
   if (!words.length) return { products: [], categories: [], news: [], total: 0 };
 
   const rank = (list) =>

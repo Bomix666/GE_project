@@ -6,7 +6,7 @@
 import { ready } from '../app.js';
 import { qs, qsa, html, toHTML, esc, icon, formatPrice, plural, params } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
-import { routes, localizeLinks } from '../core/routes.js';
+import { routes, localizeLinks, unlinkMissingProducts } from '../core/routes.js';
 import { getCatalog, getProduct, GROUP_TITLES } from '../data/api.js';
 import { consumablesFor } from '../data/content.js';
 import { availabilityBadge, buyAction, productCard } from '../components/product-card.js';
@@ -15,10 +15,11 @@ import { initRail } from '../components/rail.js';
 
 ready(async () => {
   const main = qs('[data-product]');
-  const slug = params().get('p') || 'kompaktnaa-konfetti-masina-global-effects-easy-confetti';
+  const slug = params().get('p');
   let catalog;
   let product;
   try {
+    if (!slug) throw new Error('No product in the URL');
     [catalog, product] = await Promise.all([getCatalog(), getProduct(slug)]);
   } catch {
     main.removeAttribute('aria-busy');
@@ -38,7 +39,7 @@ ready(async () => {
 
   renderHero(p, cat);
   renderGallery(p);
-  renderSections(p);
+  renderSections(p, catalog);
   renderRails(p, catalog, cat);
   initBuyBar(p);
   main.removeAttribute('aria-busy');
@@ -139,7 +140,7 @@ function renderGallery(p) {
   count.textContent = photos.length > 1 ? `1 / ${photos.length}` : '';
 }
 
-function renderSections(p) {
+function renderSections(p, catalog) {
   const sections = [];
   if (p.description) sections.push({ id: 'desc', title: 'Описание', open: true, body: `<div class="prose">${p.description}</div>` });
   if (p.specs && p.specs.length)
@@ -196,8 +197,9 @@ function renderSections(p) {
     )
     .join('');
 
-  // Links inside CMS text → redesigned pages where they exist
+  // Links inside CMS text → redesigned pages where they exist; discontinued products → plain text
   localizeLinks(root);
+  unlinkMissingProducts(root, catalog.bySlug);
 
   // TOC opens the target section
   qs('[data-toc]').addEventListener('click', (e) => {

@@ -19,6 +19,10 @@ import { getCatalog } from '../data/api.js';
 
 const EMPTY = { items: [], count: 0, cost: 0, cost_full: 0 };
 
+/** A position quantity is always a whole number of pieces, 1…999 (same rule for every input). */
+export const MAX_QTY = 999;
+export const clampQty = (v) => Math.min(MAX_QTY, Math.max(1, Math.round(Number(v) || 1)));
+
 /* ------------------------------------------------------------ Yii driver */
 function csrfToken() {
   const meta = document.querySelector('meta[name="csrf-token"]');
@@ -58,11 +62,25 @@ const YiiDriver = {
 const STORE_KEY = 'ge.cart.v1';
 
 function readLocal() {
+  let saved = null;
   try {
-    return JSON.parse(localStorage.getItem(STORE_KEY)) || { items: [] };
+    saved = JSON.parse(localStorage.getItem(STORE_KEY));
   } catch {
-    return { items: [] };
+    /* unreadable → start with an empty cart */
   }
+  // Storage may be edited by hand or left by an older version: keep only well-formed positions
+  const items = saved && Array.isArray(saved.items) ? saved.items : [];
+  return {
+    items: items
+      .filter((i) => i && typeof i === 'object' && i.id != null && Number.isFinite(Number(i.product_id)))
+      .map((i) => ({
+        ...i,
+        product_id: Number(i.product_id),
+        quantity: clampQty(i.quantity),
+        discountPrice: Math.max(0, Number(i.discountPrice) || 0),
+        price: Math.max(0, Number(i.price) || 0),
+      })),
+  };
 }
 function writeLocal(state) {
   try {
@@ -71,6 +89,19 @@ function writeLocal(state) {
     /* private mode — keep in memory only */
   }
 }
+// Names and prices always come from the catalog, never from what the browser stored
+async function fromCatalog(items) {
+  try {
+    const catalog = await getCatalog();
+    return items.flatMap((i) => {
+      const p = catalog.byId.get(i.product_id);
+      return p ? [{ ...i, slug: p.slug, name: p.name, discountPrice: p.price || 0, price: p.price || 0 }] : [];
+    });
+  } catch {
+    return items;
+  }
+}
+
 function totals(items) {
   const count = items.reduce((n, i) => n + i.quantity, 0);
   const cost = items.reduce((n, i) => n + i.quantity * (i.discountPrice || 0), 0);
@@ -80,7 +111,7 @@ function totals(items) {
 const LocalDriver = {
   name: 'local',
   async initial() {
-    return totals(readLocal().items);
+    return totals(await fromCatalog(readLocal().items));
   },
   async call(action, body) {
     const state = readLocal();
@@ -91,14 +122,14 @@ const LocalDriver = {
       const product = catalog.byId.get(Number(body.product_id));
       if (!product) throw new Error('Unknown product');
       const existing = items.find((i) => i.product_id === product.id);
-      if (existing) existing.quantity += body.qty || 1;
+      if (existing) existing.quantity = clampQty(existing.quantity + clampQty(body.qty));
       else
         items.push({
           id: `p${product.id}`,
           product_id: product.id,
           slug: product.slug,
           name: product.name,
-          quantity: body.qty || 1,
+          quantity: clampQty(body.qty),
           discountPrice: product.price || 0,
           price: product.price || 0,
           images: { thumbnails: { cart: product.thumb } },
@@ -107,7 +138,7 @@ const LocalDriver = {
       message = 'Товар добавлен в корзину';
     } else if (action === 'update') {
       const pos = items.find((i) => i.id === body.position_id);
-      if (pos) pos.quantity = Math.max(1, Number(body.qty) || 1);
+      if (pos) pos.quantity = clampQty(body.qty);
       message = 'Корзина обновлена';
     } else if (action === 'remove') {
       items = items.filter((i) => i.id !== body.position_id);
@@ -116,6 +147,7 @@ const LocalDriver = {
       items = [];
       message = 'Корзина очищена';
     }
+    items = await fromCatalog(items);
     writeLocal({ items });
     await new Promise((r) => setTimeout(r, 180)); // feel of a network round-trip
     return { data: totals(items), message };

@@ -91,6 +91,13 @@ export const normalize = (s) =>
     .replace(/\s+/g, ' ')
     .trim();
 
+/** Search words: punctuation and emoji around a word are ignored («снег!», «🔥 конфетти»). */
+export const searchTokens = (s) =>
+  normalize(s)
+    .split(' ')
+    .map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ''))
+    .filter(Boolean);
+
 export const params = () => new URLSearchParams(location.search);
 
 export function announce(message) {

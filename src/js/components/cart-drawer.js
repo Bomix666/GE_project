@@ -4,7 +4,7 @@
  */
 import { qs, qsa, esc, formatPrice, plural, debounce, announce } from '../core/dom.js';
 import { routes } from '../core/routes.js';
-import { cart } from '../services/cart.js';
+import { cart, clampQty } from '../services/cart.js';
 import { createDialog } from './dialog.js';
 import { toast } from './toast.js';
 import { getCatalog } from '../data/api.js';
@@ -50,7 +50,8 @@ export function bindLineEvents(root) {
     const input = e.target.closest('.qty__input');
     if (!input) return;
     const line = input.closest('[data-position]');
-    const qty = Math.max(1, Number(input.value) || 1);
+    const qty = clampQty(input.value);
+    input.value = qty; // what the field shows is what the cart stores
     const unit = Number(line.dataset.unit);
     qs('[data-line-total]', line).textContent = formatPrice(unit * qty);
     pushQty(line.dataset.position, qty);

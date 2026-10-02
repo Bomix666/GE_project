@@ -26,6 +26,19 @@
   transition: transform var(--dur-cine) var(--ease-out), filter var(--dur-content) var(--ease-out);
 }
 
+.pcard__media:has(.is-broken)::before {
+  content: "Нет фото";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+  background: var(--surface-1);
+}
+
 .pcard__glow {
   position: absolute;
   inset: auto 0 0;

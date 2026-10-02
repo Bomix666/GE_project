@@ -125,6 +125,11 @@ dd {
   display: none !important;
 }
 
+/* image that failed to load (see app.js) */
+img.is-broken {
+  visibility: hidden;
+}
+
 /* Sticky UI must never cover the focused element (WCAG 2.2 focus-not-obscured) */
 html {
   scroll-padding-top: calc(var(--header-h) + 16px);

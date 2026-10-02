@@ -16,10 +16,10 @@ const NAV = [
 ready(async () => {
   const root = qs('[data-ed-root]');
   const pages = await getPages();
-  const slug = params().get('p') || 'delivery';
+  const slug = params().get('p');
   const page = pages[slug];
   if (!page) {
-    renderMissing(root, { title: 'Страница не найдена', back: { href: '/', all: 'На главную' } });
+    renderMissing(root, { title: 'Страница не найдена', back: { href: routes.home(), all: 'На главную' } });
     root.removeAttribute('aria-busy');
     return;
   }

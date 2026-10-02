@@ -3,7 +3,8 @@
  * site's own texts. Links inside CMS text are routed to redesigned pages.
  */
 import { qs, html, raw, toHTML, icon, esc, plural } from '../core/dom.js';
-import { localizeLinks, routes } from '../core/routes.js';
+import { localizeLinks, unlinkMissingProducts, routes } from '../core/routes.js';
+import { getCatalog } from '../data/api.js';
 import { ytFacade, initYouTube } from './youtube.js';
 
 const iso = (d) => (d ? d.split('.').reverse().join('-') : '');
@@ -85,6 +86,10 @@ export function renderArticle(root, item, { eyebrow, back, siblings = [], siblin
   const body = qs('[data-art-body]', root);
   body.innerHTML = item.body; // sanitized at build time (tools/)
   localizeLinks(body);
+  // discontinued products mentioned in old texts → plain text (the catalog is cached by the header search)
+  getCatalog()
+    .then((catalog) => unlinkMissingProducts(body, catalog.bySlug))
+    .catch(() => {});
   initYouTube(root);
 }
 

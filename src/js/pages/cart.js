@@ -9,11 +9,13 @@ import { lineItem, bindLineEvents } from '../components/cart-drawer.js';
 ready(() => {
   const list = qs('[data-cart-page-list]');
   const summary = qs('[data-cart-summary-body]');
+  const aside = qs('[data-cart-summary]');
   const count = qs('[data-cart-page-count]');
   if (PRODUCTION) qs('[data-proto-only]')?.remove();
 
   const render = (state) => {
     count.textContent = state.count ? state.count : '';
+    aside.hidden = !state.items.length; // no order summary for an empty cart
     if (!state.items.length) {
       list.innerHTML = `<div class="cart-empty">
         <p class="h3">В корзине пока пусто</p>

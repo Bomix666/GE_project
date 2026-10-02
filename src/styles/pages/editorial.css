@@ -374,6 +374,12 @@
   padding-block: calc(var(--header-h) + var(--s-9)) var(--section-y);
 }
 
+.ed-missing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
 /* ---------------- «Наш блог» — editorial layout ---------------- */
 .bl-num {
   font-family: var(--font-display);
