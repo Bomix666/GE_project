@@ -18,11 +18,22 @@ const CATEGORIES = new Set([
 const TEXT_PAGES = new Set(['delivery', 'politika-konfidencialnosti', 'pravila-prodazi-tovarov']);
 
 /**
+ * Links that come from data (CMS text, news.url, document urls) may only be
+ * site paths, #anchors, http(s), mailto or tel — never javascript:, data:, vbscript:.
+ * Browsers ignore tabs, newlines and leading spaces inside a scheme, so do we.
+ */
+export function isSafeUrl(url) {
+  const value = String(url ?? '').replace(/[\u0000-\u0020\u007f-\u009f]/g, '');
+  const scheme = /^([a-z][a-z0-9+.-]*):/i.exec(value);
+  return !scheme || ['http', 'https', 'mailto', 'tel'].includes(scheme[1].toLowerCase());
+}
+
+/**
  * Map any live-site path to its redesigned page (prototype) or keep it as is
  * (production). Paths the redesign does not cover resolve to the live site.
  */
 export function resolve(path) {
-  if (!path) return '#';
+  if (!path || !isSafeUrl(path)) return '#';
   if (PRODUCTION) return path;
   if (/^(https?:|mailto:|tel:|#)/.test(path) && !path.startsWith(ORIGIN)) return path;
 
@@ -84,14 +95,14 @@ export const isLive = (href) => !PRODUCTION && href.startsWith(ORIGIN);
 
 export const routes = {
   home: () => (PRODUCTION ? '/' : withBase('/')),
-  category: (slug) => (PRODUCTION ? `/category/${slug}` : withBase(`/catalog.html?c=${encodeURIComponent(slug)}`)),
+  category: (slug) => (PRODUCTION ? `/category/${encodeURIComponent(slug)}` : withBase(`/catalog.html?c=${encodeURIComponent(slug)}`)),
   /** Deep link with facet filters (prototype catalog). The live site filters via POST, so production links the category. */
   categoryFiltered: (slug, filters) => {
     if (PRODUCTION || !filters) return routes.category(slug);
     const q = new URLSearchParams({ c: slug, ...filters });
     return withBase(`/catalog.html?${q}`);
   },
-  product: (slug) => (PRODUCTION ? `/product/${slug}` : withBase(`/product.html?p=${encodeURIComponent(slug)}`)),
+  product: (slug) => (PRODUCTION ? `/product/${encodeURIComponent(slug)}` : withBase(`/product.html?p=${encodeURIComponent(slug)}`)),
   cart: () => (PRODUCTION ? '/cart/index' : withBase('/cart.html')),
   gallery: (cat) => resolve(`/gallery/images${cat ? `/${cat}` : ''}`),
   videos: (cat) => resolve(`/gallery/videos${cat ? `/${cat}` : ''}`),
@@ -101,11 +112,11 @@ export const routes = {
   effect: (slug) => (PRODUCTION ? `/#fx-${slug}` : withBase(`/#fx-${slug}`)),
   newsList: () => `${routes.about()}#news`,
   news: (path) => resolve(path),
-  newsItem: (id) => resolve(`/news/view?news_id=${id}`),
+  newsItem: (id) => resolve(`/news/view?news_id=${encodeURIComponent(id)}`),
   blog: () => `${routes.about()}#blog`,
-  blogPost: (slug) => resolve(`/blog/${slug}`),
+  blogPost: (slug) => resolve(`/blog/${encodeURIComponent(slug)}`),
   page: (path) => resolve(path),
-  doc: (path) => (PRODUCTION ? path : ORIGIN + path),
+  doc: (path) => (!path || !isSafeUrl(path) ? '#' : PRODUCTION ? path : ORIGIN + path),
   locale: (locale) => (PRODUCTION ? `/site/set-locale?locale=${locale}` : ORIGIN + `/site/set-locale?locale=${locale}`),
   /** Full search results keep using the existing backend search. */
   searchResults: (q) =>

@@ -12,6 +12,7 @@ import { consumablesFor } from '../data/content.js';
 import { availabilityBadge, buyAction, productCard } from '../components/product-card.js';
 import { ytFacade, initYouTube } from '../components/youtube.js';
 import { initRail } from '../components/rail.js';
+import { cleanHTML } from '../core/sanitize.js';
 
 ready(async () => {
   const main = qs('[data-product]');
@@ -142,7 +143,7 @@ function renderGallery(p) {
 
 function renderSections(p, catalog) {
   const sections = [];
-  if (p.description) sections.push({ id: 'desc', title: 'Описание', open: true, body: `<div class="prose">${p.description}</div>` });
+  if (p.description) sections.push({ id: 'desc', title: 'Описание', open: true, body: `<div class="prose">${cleanHTML(p.description)}</div>` }); // CMS HTML → allowlist
   if (p.specs && p.specs.length)
     sections.push({
       id: 'specs',
@@ -159,7 +160,7 @@ function renderSections(p, catalog) {
       body: `<ul class="docs" role="list">${p.files
         .map(
           (f) =>
-            `<li><a class="doc" href="${routes.doc(f.url)}" target="_blank" rel="noopener">${toHTML(icon('i-file', 22))}<span>${esc(f.title)}</span>${toHTML(icon('i-download', 18))}</a></li>`,
+            `<li><a class="doc" href="${esc(routes.doc(f.url))}" target="_blank" rel="noopener">${toHTML(icon('i-file', 22))}<span>${esc(f.title)}</span>${toHTML(icon('i-download', 18))}</a></li>`,
         )
         .join('')}</ul>`,
     });

@@ -127,7 +127,7 @@ export function lineItem(pos) {
     <li class="line" data-position="${esc(pos.id)}" data-unit="${unit}">
       <img class="line__img" src="${esc(thumb)}" alt="" width="72" height="80" loading="lazy">
       <div class="line__body">
-        ${url ? `<a class="line__name" href="${url}">${name}</a>` : `<p class="line__name">${name}</p>`}
+        ${url ? `<a class="line__name" href="${esc(url)}">${name}</a>` : `<p class="line__name">${name}</p>`}
         ${pos.is_rent ? '<p class="line__tag">Аренда</p>' : ''}
         <p class="line__unit text-3 tabular">${formatPrice(unit)} / шт.</p>
         <div class="line__controls">

@@ -143,7 +143,7 @@ async function update(value) {
   }
 
   let n = 0;
-  const opt = (inner, href, cls = '') => `<a class="sopt ${cls}" id="sopt-${n++}" role="option" aria-selected="false" href="${href}">${inner}</a>`;
+  const opt = (inner, href, cls = '') => `<a class="sopt ${cls}" id="sopt-${n++}" role="option" aria-selected="false" href="${esc(href)}">${inner}</a>`;
   els.results.innerHTML = `
     <div id="search-list" role="listbox" aria-label="Результаты поиска" class="search__grid">
       ${res.products.length ? `<section class="sgroup sgroup--products" role="group" aria-label="Товары">

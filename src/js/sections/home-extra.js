@@ -3,7 +3,7 @@
  *  catalog index (with cursor-following preview), flagship rail,
  *  projects (clients + drifting photo rows), video, news.
  */
-import { qs, qsa, html, toHTML, icon, formatPrice, plural, rafThrottle } from '../core/dom.js';
+import { qs, qsa, html, toHTML, esc, icon, formatPrice, plural, rafThrottle } from '../core/dom.js';
 import { env } from '../core/env.js';
 import { scene } from '../core/motion.js';
 import { routes } from '../core/routes.js';
@@ -102,10 +102,10 @@ export async function initProjects() {
   const rowB = [...pick('krioeffekty', [3, 12]), ...pick('konfetti', [9, 15, 12]), ...pick('tazelyj-dym', [0]), ...pick('iskusstvennyj-sneg', [21, 5])];
 
   const tile = (ph) =>
-    `<li class="drift__item"><a class="drift__link" href="${routes.gallery(ph.slug)}" aria-label="Галерея: ${ph.cat}">
-      <img src="${ph.thumb}" srcset="${ph.thumb} 520w, ${ph.src} ${ph.w}w" sizes="${Math.round((ph.w / ph.h) * 360)}px"
+    `<li class="drift__item"><a class="drift__link" href="${esc(routes.gallery(ph.slug))}" aria-label="Галерея: ${esc(ph.cat)}">
+      <img src="${esc(ph.thumb)}" srcset="${esc(ph.thumb)} 520w, ${esc(ph.src)} ${Number(ph.w)}w" sizes="${Math.round((ph.w / ph.h) * 360)}px"
         alt="" width="${Math.round((ph.w / ph.h) * 360)}" height="360" loading="lazy" decoding="async">
-      <span class="drift__cap">${ph.cat}</span></a></li>`;
+      <span class="drift__cap">${esc(ph.cat)}</span></a></li>`;
   qs('[data-drift-a]', root).innerHTML = rowA.map(tile).join('');
   qs('[data-drift-b]', root).innerHTML = rowB.map(tile).join('');
 

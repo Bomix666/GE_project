@@ -23,7 +23,7 @@ ready(async () => {
       .filter((g) => g.photos.length || g.videos.length)
       .map(
         (g) =>
-          `<button type="button" class="chip" data-cat="${g.slug}" aria-pressed="${current === g.slug}">${esc(g.title)} <span class="tabular">${g.photos.length || g.videos.length}</span></button>`,
+          `<button type="button" class="chip" data-cat="${esc(g.slug)}" aria-pressed="${current === g.slug}">${esc(g.title)} <span class="tabular">${g.photos.length || g.videos.length}</span></button>`,
       ),
   ].join('');
 
@@ -43,7 +43,7 @@ ready(async () => {
           .map(
             (ph, i) => `<li class="mosaic__item mosaic__item--${ph.studio ? 's' : RHYTHM[i % RHYTHM.length]}">
               <button type="button" class="mosaic__btn" data-open="${i}" aria-label="Открыть фото ${i + 1}: ${esc(ph.cat)}">
-                <img src="${ph.thumb}" srcset="${ph.thumb} 520w, ${ph.src} ${ph.w}w" sizes="(min-width: 1024px) 40vw, 50vw" alt="" width="${ph.w}" height="${ph.h}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
+                <img src="${esc(ph.thumb)}" srcset="${esc(ph.thumb)} 520w, ${esc(ph.src)} ${Number(ph.w)}w" sizes="(min-width: 1024px) 40vw, 50vw" alt="" width="${Number(ph.w)}" height="${Number(ph.h)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
                 <span class="mosaic__cap">${esc(ph.cat)}</span>
               </button>
             </li>`,
