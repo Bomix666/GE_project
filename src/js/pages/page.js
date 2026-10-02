@@ -1,9 +1,9 @@
 /** Text pages from the live CMS: delivery, privacy policy, sales rules. */
 import { ready } from '../app.js';
-import { qs, esc, params } from '../core/dom.js';
+import { qs, esc } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
 import { fitAll } from '../core/fit.js';
-import { routes, localizeLinks } from '../core/routes.js';
+import { routes, localizeLinks, pageParams } from '../core/routes.js';
 import { getPages } from '../data/api.js';
 import { renderMissing } from '../components/editorial.js';
 
@@ -16,7 +16,7 @@ const NAV = [
 ready(async () => {
   const root = qs('[data-ed-root]');
   const pages = await getPages();
-  const slug = params().get('p');
+  const slug = pageParams().get('p');
   const page = pages[slug];
   if (!page) {
     renderMissing(root, { title: 'Страница не найдена', back: { href: routes.home(), all: 'На главную' } });

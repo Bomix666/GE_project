@@ -51,11 +51,39 @@ function localPage(p, q) {
   return null;
 }
 
+/**
+ * The page's own parameters (which product, category, article…), wherever they come from:
+ *   prototype   product.html?p=<slug>, catalog.html?c=<slug>, news.html?id=<id>, gallery.html?cat=<slug>
+ *   live site   /product/<slug>, /category/<slug>, /blog/<slug>, /page/<slug>,
+ *               /gallery/images/<slug>, /gallery/videos/<slug>, /news/view?news_id=<id>
+ *   Yii view    <body data-param-p="<slug>"> (any data-param-<name>) wins over both
+ */
+export function pageParams() {
+  const p = new URLSearchParams(location.search);
+  let path = location.pathname.replace(/\/+$/, '');
+  try {
+    path = decodeURIComponent(path);
+  } catch {
+    /* malformed escape: match on the raw path */
+  }
+  let m;
+  if ((m = path.match(/\/product\/([^/]+)$/))) p.set('p', m[1]);
+  else if ((m = path.match(/\/category\/([^/]+)$/))) p.set('c', m[1]);
+  else if ((m = path.match(/\/blog\/([^/]+)$/))) p.set('p', m[1]);
+  else if ((m = path.match(/\/page\/([^/]+)$/))) p.set('p', m[1]);
+  else if ((m = path.match(/\/gallery\/(?:images|videos)\/([^/]+)$/))) p.set('cat', m[1]);
+  else if (/\/news\/view$/.test(path) && p.get('news_id')) p.set('id', p.get('news_id'));
+  Object.entries(document.body.dataset).forEach(([key, value]) => {
+    if (/^param[A-Z]/.test(key)) p.set(key[5].toLowerCase() + key.slice(6), value);
+  });
+  return p;
+}
+
 /** True when a resolved URL leaves the redesign (opens the current live site). */
 export const isLive = (href) => !PRODUCTION && href.startsWith(ORIGIN);
 
 export const routes = {
-  home: () => withBase('/'),
+  home: () => (PRODUCTION ? '/' : withBase('/')),
   category: (slug) => (PRODUCTION ? `/category/${slug}` : withBase(`/catalog.html?c=${encodeURIComponent(slug)}`)),
   /** Deep link with facet filters (prototype catalog). The live site filters via POST, so production links the category. */
   categoryFiltered: (slug, filters) => {
@@ -69,8 +97,8 @@ export const routes = {
   videos: (cat) => resolve(`/gallery/videos${cat ? `/${cat}` : ''}`),
   about: () => resolve('/page/about'),
   contacts: () => resolve('/contacts'),
-  effects: () => withBase('/#effects'),
-  effect: (slug) => withBase(`/#fx-${slug}`),
+  effects: () => (PRODUCTION ? '/#effects' : withBase('/#effects')),
+  effect: (slug) => (PRODUCTION ? `/#fx-${slug}` : withBase(`/#fx-${slug}`)),
   newsList: () => `${routes.about()}#news`,
   news: (path) => resolve(path),
   newsItem: (id) => resolve(`/news/view?news_id=${id}`),

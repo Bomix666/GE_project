@@ -4,9 +4,9 @@
  * Buying uses the same actions as everywhere (existing cart contract).
  */
 import { ready } from '../app.js';
-import { qs, qsa, html, toHTML, esc, icon, formatPrice, plural, params } from '../core/dom.js';
+import { qs, qsa, html, toHTML, esc, icon, formatPrice, plural } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
-import { routes, localizeLinks, unlinkMissingProducts } from '../core/routes.js';
+import { routes, localizeLinks, unlinkMissingProducts, pageParams } from '../core/routes.js';
 import { getCatalog, getProduct, GROUP_TITLES } from '../data/api.js';
 import { consumablesFor } from '../data/content.js';
 import { availabilityBadge, buyAction, productCard } from '../components/product-card.js';
@@ -15,7 +15,7 @@ import { initRail } from '../components/rail.js';
 
 ready(async () => {
   const main = qs('[data-product]');
-  const slug = params().get('p');
+  const slug = pageParams().get('p');
   let catalog;
   let product;
   try {

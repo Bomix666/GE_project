@@ -1,16 +1,16 @@
 /** «Наш блог» — a single material. The list itself is a block of the «О компании» page. */
 import { ready } from '../app.js';
-import { qs, params } from '../core/dom.js';
+import { qs } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
 import { fitAll } from '../core/fit.js';
-import { routes } from '../core/routes.js';
+import { routes, pageParams } from '../core/routes.js';
 import { getBlog } from '../data/api.js';
 import { renderArticle, renderMissing } from '../components/editorial.js';
 
 const back = { href: routes.blog(), label: 'Наш блог', all: 'Все материалы блога' };
 
 ready(async () => {
-  const slug = params().get('p');
+  const slug = pageParams().get('p');
   if (!slug) {
     location.replace(routes.blog());
     return;
