@@ -1,23 +1,22 @@
 /**
  * "Как рождается эффект": Effect → How → Equipment → Consumables → Result.
- * Desktop: vertical scroll drives a horizontal production line (pinned).
- * Mobile / reduced motion: the same panels stacked vertically.
+ * A horizontal rail (the shared rail component): swiped on phones, scrolled
+ * sideways or paged with the arrows on desktop.
  * Tabs switch between real chains (confetti, cryo).
  */
 import { qs, qsa, html, toHTML, icon, formatPrice } from '../core/dom.js';
-import { env, onBreakpointChange, onMotionPreferenceChange } from '../core/env.js';
-import { scene, refreshScenes } from '../core/motion.js';
+import { env } from '../core/env.js';
 import { routes } from '../core/routes.js';
 import { getCatalog, specValue } from '../data/api.js';
 import { stories } from '../data/content.js';
+import { initRail } from '../components/rail.js';
 
 export async function initStory() {
   const root = qs('[data-story]');
   if (!root) return;
-  const stage = qs('[data-story-stage]', root);
   const track = qs('[data-story-track]', root);
-  const steps = qs('[data-story-steps]', root);
   const tabs = qsa('[role="tab"]', root);
+  const rail = initRail(root, { step: 'view' });
 
   let catalog = null;
   try {
@@ -33,12 +32,10 @@ export async function initStory() {
     track.classList.add('is-swapping');
     const apply = () => {
       track.innerHTML = story.steps.map((s, k) => toHTML(panel(s, k, story, catalog))).join('');
-      steps.innerHTML = story.steps
-        .map((s, k) => `<li class="story-steps__item" data-story-step="${k}"><span class="tabular">${String(k + 1).padStart(2, '0')}</span>${s.label}</li>`)
-        .join('');
+      track.scrollLeft = 0;
       track.classList.remove('is-swapping');
-      measure();
-      refreshScenes();
+      track.setAttribute('aria-labelledby', `story-tab-${i}`);
+      rail.update();
     };
     if (track.children.length && !env.reducedMotion) setTimeout(apply, 260);
     else apply();
@@ -60,44 +57,7 @@ export async function initStory() {
     });
   });
 
-  // Horizontal distance → stage height
-  const horizontal = () => env.desktop && !env.reducedMotion;
-  const measure = () => {
-    root.classList.toggle('is-horizontal', horizontal());
-    if (!horizontal()) {
-      stage.style.removeProperty('height');
-      return;
-    }
-    const dist = Math.max(0, track.scrollWidth - window.innerWidth);
-    stage.style.setProperty('--dist', dist);
-    stage.style.height = `${window.innerHeight + dist}px`;
-  };
-
-  let handle = null;
-  const mount = () => {
-    measure();
-    if (horizontal() && !handle) {
-      handle = scene(stage, {
-        mode: 'pin',
-        onProgress: (p) => {
-          const k = Math.min(stories[active].steps.length - 1, Math.floor(p * stories[active].steps.length * 0.999));
-          qsa('[data-story-step]', steps).forEach((el, j) => {
-            el.classList.toggle('is-active', j === k);
-            el.classList.toggle('is-done', j < k);
-          });
-        },
-      });
-    } else if (!horizontal() && handle) {
-      handle.destroy();
-      handle = null;
-    }
-  };
-
   render(0);
-  mount();
-  window.addEventListener('resize', measure, { passive: true });
-  onBreakpointChange(mount);
-  onMotionPreferenceChange(mount);
 }
 
 function panel(s, k, story, catalog) {

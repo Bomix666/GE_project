@@ -192,6 +192,21 @@ export const effects = [
     featured: [453, 12, 8],
     gallery: 'iskusstvennyj-sneg',
   },
+  {
+    slug: 'curtain',
+    num: '07',
+    title: 'Сброс занавеса',
+    short: 'Занавес',
+    icon: 'ifx-curtain',
+    // photo from the Kabuki Drop DMX product page (no local copy: served by the site, like product photos)
+    image: { src: 'https://globaleffects.ru/storage/web/images/tKoEyeMh2WY0DPMOLx_sod_ivvwGebLIHkQ5fP1I.jpg', sm: 'https://globaleffects.ru/storage/web/images/tKoEyeMh2WY0DPMOLx_sod_ivvwGebLIHkQ5fP1I.jpg', w: 1000, h: 495, alt: 'Красный занавес падает над сценой большого шоу' },
+    text: 'Система Kabuki Drop для сброса занавесов, знамён, воздушных шаров и других элементов шоу. Ткань крепится в регулируемый зажим — без люверсов и крючков: занавес падает естественно и красиво, без зацепов.',
+    facts: ['Kabuki Drop — сброс при подаче электропитания', 'Kabuki Drop DMX — управление по DMX, есть режим 220 В', 'Система из 10 элементов в кейсе'],
+    source: '/product/…kabuki-drop, /product/…kabuki-drop-dmx, /product/…kabuki-drop-10-st-v-kejse',
+    equipment: 'sistema-sbrosa-zanavesa',
+    consumables: [],
+    featured: [356, 472, 357],
+  },
 ];
 
 /**

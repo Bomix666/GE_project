@@ -1,6 +1,6 @@
 /* GLOBAL EFFECTS — stylesheet entry. Order: tokens → base → components → sections → pages */
 /* self-hosted variable fonts (Cyrillic subsets load only when used) */
-@import '@fontsource-variable/unbounded';
+@import '@fontsource-variable/jost';
 @import '@fontsource-variable/onest';
 @import './tokens.css';
 @import './base.css';

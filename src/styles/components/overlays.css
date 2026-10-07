@@ -98,7 +98,7 @@
 .drawer__title {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .drawer__count {
@@ -135,7 +135,7 @@
   color: var(--text);
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .drawer__note {
@@ -302,8 +302,8 @@ a.line__name:hover {
   background: none;
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 0.8rem + 2.6vw, 2.75rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  letter-spacing: var(--tracking-display);
   color: var(--text);
 }
 
@@ -904,7 +904,7 @@ a.line__name:hover {
 .qv__price {
   font-family: var(--font-display);
   font-size: 1.75rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .qv__excerpt {
@@ -932,35 +932,16 @@ a.line__name:hover {
   width: 100%;
 }
 
-.yt__btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgb(236 28 35 / 0.2);
-  mix-blend-mode: multiply;
-  transition: opacity var(--dur-content) var(--ease-out);
-  pointer-events: none;
-}
-
-.yt__btn:hover::after,
-.yt__btn:focus-visible::after {
-  opacity: 0;
-}
-
 .yt__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.85) contrast(1.05) brightness(0.68);
-  transition:
-    transform var(--dur-content) var(--ease-out),
-    filter var(--dur-content) var(--ease-out);
+  transition: transform var(--dur-content) var(--ease-out);
 }
 
 .yt__btn:hover .yt__img,
 .yt__btn:focus-visible .yt__img {
   transform: scale(1.04);
-  filter: none;
 }
 
 .yt__play {

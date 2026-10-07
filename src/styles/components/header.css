@@ -266,7 +266,7 @@
   border-bottom: 1px solid var(--line);
   font-family: var(--font-display);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -398,7 +398,7 @@
 .mega__preview-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.15;
 }
 
@@ -416,7 +416,7 @@
 
 .fxmenu {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: var(--s-4);
   margin: 0;
 }
@@ -520,8 +520,8 @@
   border-bottom: 1px solid var(--line);
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 5vw, 1.6rem);
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
   list-style: none;
 }
 
@@ -720,10 +720,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.6) brightness(0.85);
-  transition:
-    transform var(--dur-content) var(--ease-out),
-    filter var(--dur-content) var(--ease-out);
+  transition: transform var(--dur-content) var(--ease-out);
 }
 
 .aboutmenu__num {
@@ -736,7 +733,7 @@
 .aboutmenu__name {
   font-family: var(--font-display);
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -748,7 +745,6 @@
 .aboutmenu__item:hover .aboutmenu__media img,
 .aboutmenu__item:focus-visible .aboutmenu__media img {
   transform: scale(1.05);
-  filter: none;
 }
 
 .mega__extra--row {
