@@ -670,52 +670,6 @@ a.lang__item:hover {
   color: var(--text-2);
 }
 
-/* ---------- Mini product row ---------- */
-.mini-list {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1px;
-  background: var(--line);
-  border-block: 1px solid var(--line);
-}
-
-.mini {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--s-4);
-  padding: 0.55rem 0;
-  background: var(--bg);
-  transition: background-color var(--dur-micro);
-}
-
-.mini img {
-  width: 44px;
-  height: 48px;
-  object-fit: cover;
-  border-radius: var(--r-1);
-}
-
-.mini__name {
-  font-size: var(--fs-sm);
-  line-height: 1.35;
-  color: var(--text-2);
-  transition: color var(--dur-micro);
-}
-
-.mini__price {
-  font-size: var(--fs-sm);
-  font-weight: 600;
-}
-
-.mini:hover .mini__name {
-  color: var(--text);
-}
-
-.mini:hover .mini__price {
-  color: var(--accent-text);
-}
-
 /* ---------- Prototype note (visible only in prototype mode) ---------- */
 .proto-note {
   margin-top: var(--s-4);
