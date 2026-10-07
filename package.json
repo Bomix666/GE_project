@@ -13,8 +13,8 @@
     "vite": "^6.4.3"
   },
   "dependencies": {
+    "@fontsource-variable/jost": "^5.3.0",
     "@fontsource-variable/onest": "^5.3.1",
-    "@fontsource-variable/unbounded": "^5.3.0",
     "dompurify": "^3.4.16"
   }
 }

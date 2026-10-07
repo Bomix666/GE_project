@@ -23,7 +23,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--dur-cine) var(--ease-out), filter var(--dur-content) var(--ease-out);
+  transition: transform var(--dur-cine) var(--ease-out);
 }
 
 .pcard__media:has(.is-broken)::before {
@@ -140,8 +140,8 @@ body:not([data-page="home"]) .pcard__title {
 .pcard__price {
   font-family: var(--font-display);
   font-size: 1.125rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
 }
 
 .pcard__actions {

@@ -148,7 +148,9 @@ function step(fx, i, n, catalog) {
         ${cons
           ? html`<a class="btn btn--ghost" href="${routes.categoryFiltered(cons.slug, fx.consumablesFilter)}"><span class="btn__label">${cons.group === 'consumables' ? 'Расходники' : cons.title}</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>`
           : ''}
-        <a class="btn btn--ghost" href="${routes.gallery(fx.gallery)}"><span class="btn__label">Фото</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
+        ${fx.gallery
+          ? html`<a class="btn btn--ghost" href="${routes.gallery(fx.gallery)}"><span class="btn__label">Фото</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>`
+          : ''}
       </div>
     </div>
   </article>`;

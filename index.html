@@ -86,6 +86,7 @@
                     <li><a class="fxlink" href="#fx-foam"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-foam" /></svg></span>Пена</a></li>
                     <li><a class="fxlink" href="#fx-flame"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-flame" /></svg></span>Пламя</a></li>
                     <li><a class="fxlink" href="#fx-snow"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-snow" /></svg></span>Снег</a></li>
+                    <li><a class="fxlink" href="#fx-curtain"><span class="fxlink__ring"><svg width="26" height="26" aria-hidden="true"><use href="#ifx-curtain" /></svg></span>Занавес</a></li>
                   </ul>
                 </nav>
                 <ul class="hero__promises" role="list">
@@ -125,7 +126,7 @@
         <div class="container">
           <div class="chapter"><span>Эффекты</span><span class="chapter__num" data-chapter-num></span></div>
           <div class="section-head section-head--split">
-            <h2 class="display" id="fx-title" data-reveal="mask"><span class="line"><span>Шесть эффектов —</span></span><span class="line"><span class="accent">один каталог</span></span></h2>
+            <h2 class="display" id="fx-title" data-reveal="mask"><span class="line"><span>Семь эффектов —</span></span><span class="line"><span class="accent">один каталог</span></span></h2>
             <p class="lead" data-reveal>Конфетти, криоэффекты, тяжелый дым, пена, пламя и&nbsp;снег. Для каждого эффекта — оборудование и&nbsp;расходные материалы, которые работают вместе.</p>
           </div>
         </div>
@@ -139,23 +140,23 @@
       </section>
 
       <!-- ============================== STORY ============================= -->
-      <section class="story" data-story data-chapter="Как это работает" data-rail-hide aria-labelledby="story-title">
-        <div class="story__stage" data-story-stage>
-          <div class="story__sticky">
-            <div class="story__head container">
-              <div class="chapter"><span>Как это работает</span><span class="chapter__num" data-chapter-num></span></div>
-              <div class="story__bar">
-                <h2 class="h2" id="story-title">Как рождается эффект</h2>
-                <div class="tabs" role="tablist" aria-label="Выберите эффект">
-                  <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="story-track" id="story-tab-0">Конфетти</button>
-                  <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="story-track" id="story-tab-1" tabindex="-1">Криоэффекты</button>
-                </div>
-              </div>
-              <ol class="story-steps" data-story-steps role="list" aria-hidden="true"></ol>
+      <section class="story" data-story data-chapter="Как это работает" aria-labelledby="story-title">
+        <div class="story__head container">
+          <div class="chapter"><span>Как это работает</span><span class="chapter__num" data-chapter-num></span></div>
+          <div class="story__bar">
+            <h2 class="h2" id="story-title">Как рождается эффект</h2>
+            <div class="tabs" role="tablist" aria-label="Выберите эффект">
+              <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="story-track" id="story-tab-0">Конфетти</button>
+              <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="story-track" id="story-tab-1" tabindex="-1">Криоэффекты</button>
             </div>
-            <div class="story__track" id="story-track" role="tabpanel" aria-labelledby="story-tab-0" data-story-track></div>
+            <div class="rail-controls story__arrows">
+              <button type="button" class="icon-btn icon-btn--line" data-rail-prev aria-label="Предыдущий шаг"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>
+              <button type="button" class="icon-btn icon-btn--line" data-rail-next aria-label="Следующий шаг"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+            </div>
           </div>
         </div>
+        <div class="story__track" id="story-track" role="tabpanel" aria-labelledby="story-tab-0" data-story-track data-rail-track></div>
+        <div class="container"><span class="rail-progress story__progress" aria-hidden="true"><span data-rail-progress></span></span></div>
       </section>
 
       <!-- ============================= CATALOG ============================ -->

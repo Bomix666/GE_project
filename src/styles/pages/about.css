@@ -70,9 +70,9 @@
 .ab-hero__title {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 0.6rem + 3.75vw, 4.75rem);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 0.98;
-  letter-spacing: -0.045em;
+  letter-spacing: var(--tracking-display);
   text-transform: uppercase;
 }
 
@@ -251,7 +251,7 @@ body:has(.header[data-hidden="true"]) .abnav {
 
 .ab-step__num b {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--accent-text);
 }
@@ -260,9 +260,9 @@ body:has(.header[data-hidden="true"]) .abnav {
   margin-top: var(--s-4);
   font-family: var(--font-display);
   font-size: var(--fs-h2);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--tracking-display);
   text-wrap: balance;
 }
 
@@ -345,7 +345,7 @@ body:has(.header[data-hidden="true"]) .abnav {
 .service__title {
   font-family: var(--font-display);
   font-size: var(--fs-h4);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -429,8 +429,8 @@ body:has(.header[data-hidden="true"]) .abnav {
 .city__name {
   font-family: var(--font-display);
   font-size: var(--fs-h2);
-  font-weight: 400;
-  letter-spacing: -0.03em;
+  font-weight: 500;
+  letter-spacing: var(--tracking-display);
 }
 
 .dealers {

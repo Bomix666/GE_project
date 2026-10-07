@@ -1,6 +1,6 @@
 /* ==========================================================================
    Gallery — editorial mosaic, not a uniform grid.
-   Photos stay brand-graded until hovered/focused, then show true colour.
+   Photos are shown in their own colours.
    ========================================================================== */
 
 .gal-hero {
@@ -24,9 +24,9 @@
 .gal-hero__title {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 0.65rem + 4vw, 4.75rem);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 0.94;
-  letter-spacing: -0.045em;
+  letter-spacing: var(--tracking-display);
   text-transform: uppercase;
 }
 
@@ -124,20 +124,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.8) contrast(1.05) brightness(0.78);
-  transition:
-    filter var(--dur-content) var(--ease-out),
-    transform var(--dur-cine) var(--ease-out);
-}
-
-.mosaic__btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgb(236 28 35 / 0.2);
-  mix-blend-mode: multiply;
-  transition: opacity var(--dur-content) var(--ease-out);
-  pointer-events: none;
+  transition: transform var(--dur-cine) var(--ease-out);
 }
 
 .mosaic__cap {
@@ -160,13 +147,7 @@
 
 .mosaic__btn:hover img,
 .mosaic__btn:focus-visible img {
-  filter: none;
   transform: scale(1.04);
-}
-
-.mosaic__btn:hover::after,
-.mosaic__btn:focus-visible::after {
-  opacity: 0;
 }
 
 .mosaic__btn:hover .mosaic__cap,
@@ -176,9 +157,6 @@
 }
 
 @media (hover: none) {
-  .mosaic__btn img {
-    filter: grayscale(0.4) brightness(0.9);
-  }
   .mosaic__cap {
     opacity: 1;
     transform: none;
