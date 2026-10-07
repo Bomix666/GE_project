@@ -1,7 +1,7 @@
 /* ==========================================================================
    Home — one continuous film:
-   Hero → (curtain) Manifesto → Effects (pinned) → Story (horizontal) →
-   Catalog → Band → Flagship → Projects → Video → News → CTA
+   Hero → (curtain) Effects → Story (rail) → Catalog → Band → Flagship →
+   Projects (photo + video) → CTA
    --p is written by core/motion.js (0..1) on each scene element.
    ========================================================================== */
 
@@ -511,461 +511,152 @@ body[data-page="home"] .chapter {
   animation: none;
 }
 
-/* ============================== MANIFESTO =============================== */
-.manifesto {
+/* =============================== EFFECTS ================================ */
+/* The section rises over the pinned hero like a curtain. Overlap = hero stage − 100svh:
+   its transparent top starts at the viewport bottom and never takes the hero buttons' taps. */
+.fx {
   position: relative;
   z-index: 2;
   margin-top: -90svh;
-  padding: 50svh 0 var(--section-y);
+  padding-top: 50svh;
   background: linear-gradient(to bottom, rgb(5 5 5 / 0) 0, rgb(5 5 5 / 0.72) 22svh, var(--bg) 52svh);
+  scroll-margin-top: calc(var(--section-y) - 50svh); /* #effects lands on the heading, not on the transparent top */
 }
 
-/* The curtain starts at the viewport bottom: overlap = hero stage − 100svh.
-   Otherwise its transparent top lies over the hero buttons and takes their taps. */
 @media (max-width: 1023px) {
-  .manifesto {
+  .fx {
     margin-top: -50svh; /* stage is 150svh here */
   }
 }
 
-.reduce-motion .manifesto {
+.reduce-motion .fx {
   margin-top: 0;
   padding-top: var(--section-y);
   background: var(--bg);
+  scroll-margin-top: 0;
 }
 
-.manifesto__eyebrow {
-  margin-bottom: var(--s-6);
-}
-
-.manifesto__text {
-  max-width: 22ch;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 0.6rem + 3.1vw, 3.6rem);
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: var(--tracking-display);
-}
-
-.manifesto__text .w {
-  display: inline-block;
-  opacity: clamp(0.14, calc(var(--mp, 0) * (var(--n) + 2) - var(--i)), 1);
-  transition: opacity 140ms linear;
-}
-
-.manifesto__text .w--accent {
-  color: var(--accent);
-}
-
-.manifesto__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-7);
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-}
-
-@media (min-width: 1100px) {
-  .manifesto__grid {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    align-items: end;
-    gap: clamp(2rem, 5vw, 6rem);
-  }
-}
-
-.facts {
+.fxgrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0;
-  background: var(--line);
-  border: 1px solid var(--line);
+  gap: var(--s-3);
 }
 
-@media (min-width: 1280px) {
-  .facts {
+@media (min-width: 1024px) {
+  .fxgrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
   }
 }
 
-.fact {
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: var(--s-3);
-  padding: clamp(1rem, 1.6vw, 1.5rem);
-  background: var(--bg);
-}
-
-.fact::before {
-  content: "";
-  order: 3;
-  width: 20px;
-  height: 2px;
-  margin-bottom: var(--s-3);
-  background: var(--accent);
-}
-
-.fact__value {
-  margin: 0;
-  white-space: nowrap;
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 1rem + 1.1vw, 2.25rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: var(--tracking-display);
-  font-variant-numeric: tabular-nums;
-}
-
-.fact__pre,
-.fact__unit {
-  font-size: 0.42em;
-  letter-spacing: 0;
-  color: var(--text-2);
-}
-
-.fact__label {
-  font-size: var(--fs-sm);
-  line-height: 1.4;
-  color: var(--text-3);
-}
-
-/* =============================== EFFECTS ================================ */
-.fx {
+.fxcard {
   position: relative;
-  padding-top: var(--section-y);
-}
-
-.fx__stage {
-  position: relative;
-}
-
-.fx__track {
+  isolation: isolate;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 0;
-  padding-bottom: var(--section-y);
-}
-
-.fx-step {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-6);
-  padding-block: var(--s-7);
-  border-top: 1px solid var(--line);
-}
-
-.fx-step__media {
-  position: relative;
-  margin: 0;
-  aspect-ratio: 4 / 3;
+  align-content: end;
+  min-height: clamp(11rem, 24vw, 21rem);
   border-radius: var(--r-3);
   overflow: hidden;
   background: var(--surface-1);
 }
 
-.fx-step__media img {
+/* an odd number of effects (seven): the first card takes two columns, so the grid closes without a hole */
+.fxcard:first-child:nth-last-child(odd) {
+  grid-column: span 2;
+}
+
+.fxcard:target {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.fxcard > img,
+.fxcard::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.fxcard > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--dur-cine) var(--ease-out);
 }
 
-.fx-step__bignum {
-  position: absolute;
-  right: 3%;
-  bottom: -0.12em;
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 11vw, 10.5rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: var(--tracking-display);
-  color: transparent;
-  -webkit-text-stroke: 1px rgb(244 242 239 / 0.34);
-  pointer-events: none;
+.fxcard::after {
+  content: "";
+  background: linear-gradient(0deg, rgb(5 5 5 / 0.94) 0%, rgb(5 5 5 / 0.5) 45%, rgb(5 5 5 / 0.08) 100%);
 }
 
-.fx-step__cap {
-  position: absolute;
-  left: var(--s-4);
-  bottom: var(--s-4);
-  display: flex;
-  gap: var(--s-3);
-  align-items: center;
-  padding: 0.35rem 0.7rem;
-  border-radius: var(--r-1);
-  background: rgb(5 5 5 / 0.7);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-2);
+/* small cards: the text takes most of the card, so the scrim covers all of it */
+@media (max-width: 1023px) {
+  .fxcard::after {
+    background: linear-gradient(0deg, rgb(5 5 5 / 0.94) 0%, rgb(5 5 5 / 0.66) 65%, rgb(5 5 5 / 0.4) 100%);
+  }
 }
 
-.fx-step__cap span {
-  color: var(--accent-text);
+.fxcard:hover > img {
+  transform: scale(1.04);
 }
 
-.fx-step__body {
+.fxcard__body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-4);
-  align-content: start;
+  gap: var(--s-1);
+  padding: clamp(0.85rem, 1.6vw, 1.5rem);
 }
 
-.fx-step__num {
+.fxcard__num {
   font-family: var(--font-display);
   font-size: var(--fs-sm);
-  color: var(--text-3);
-}
-
-.fx-step__num b {
-  font-weight: 500;
   color: var(--accent-text);
 }
 
-.fx-step__icon {
-  display: none;
-  color: var(--text-2);
-}
-
-.fx-step__title {
+.fxcard__title {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 0.8rem + 1.5vw, 2.3rem);
+  font-size: clamp(0.8125rem, min(4.1vw, 0.8rem + 0.8vw), 1.5rem); /* 4.1vw: «Искусственный» fits a 320px phone */
   font-weight: 500;
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: var(--tracking-display);
   text-transform: uppercase;
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
-.fx-step__text {
-  max-width: 30rem;
-  font-size: var(--fs-lead);
-  line-height: 1.5;
+.fxcard__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s-5);
+  font-size: var(--fs-sm);
   color: var(--text-2);
 }
 
-.fx-step__facts {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-2);
-  margin: 0;
-}
-
-.fx-step__facts li {
+.fxcard__links a {
   position: relative;
-  padding-left: 1.2rem;
-  font-size: var(--fs-sm);
-  color: var(--text);
-}
-
-.fx-step__facts li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.62em;
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-}
-
-.fx-step__equip {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-3);
-  margin-top: var(--s-2);
-}
-
-.fx-step__links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s-3) var(--s-6);
-  margin-top: var(--s-2);
-}
-
-.fx-nav,
-.fx__progress {
-  display: none;
-}
-
-/* ---------- pinned (desktop) ---------- */
-.fx.is-pinned .fx__stage {
-  height: calc(var(--n, 6) * 100svh);
-}
-
-.fx.is-pinned .fx__sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow: hidden;
-}
-
-.fx.is-pinned .fx__track {
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  grid-template-areas: "media body";
-  column-gap: clamp(2.5rem, 5vw, 6rem);
-  height: 100%;
-  padding-block: calc(var(--header-h) + 4vh) 7vh;
-  padding-right: calc(var(--gutter) + 150px);
-}
-
-.fx.is-pinned .fx-step {
-  display: contents;
-}
-
-.fx.is-pinned .fx-step__media {
-  grid-area: media;
-  aspect-ratio: auto;
-  height: 100%;
   z-index: 1;
-  clip-path: inset(0 0 0 0);
-  transition: clip-path var(--dur-cine) var(--ease-in-out);
-}
-
-.fx.is-pinned .fx-step.is-active .fx-step__media {
-  z-index: 2;
-}
-
-.fx.is-pinned .fx-step.is-after .fx-step__media {
-  z-index: 3;
-  clip-path: inset(100% 0 0 0);
-}
-
-.fx.is-pinned .fx-step__media img {
-  transform: scale(1.14);
-  transition: transform 1.8s var(--ease-out);
-}
-
-.fx.is-pinned .fx-step.is-active .fx-step__media img {
-  transform: scale(1.02);
-}
-
-.fx.is-pinned .fx-step__bignum {
-  transform: translateY(12%);
-  opacity: 0;
-  transition:
-    transform var(--dur-cine) var(--ease-out),
-    opacity var(--dur-content) var(--ease-out);
-}
-
-.fx.is-pinned .fx-step.is-active .fx-step__bignum {
-  transform: none;
-  opacity: 1;
-  transition-delay: 250ms;
-}
-
-.fx.is-pinned .fx-step__body {
-  grid-area: body;
-  align-self: center;
-  opacity: 0;
-  transform: translate3d(0, 36px, 0);
-  pointer-events: none;
-  transition:
-    opacity var(--dur-ui-exit) var(--ease-in),
-    transform var(--dur-ui-exit) var(--ease-in);
-}
-
-.fx.is-pinned .fx-step.is-before .fx-step__body {
-  transform: translate3d(0, -36px, 0);
-}
-
-.fx.is-pinned .fx-step.is-active .fx-step__body {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  transition:
-    opacity var(--dur-content) var(--ease-out) 220ms,
-    transform var(--dur-content) var(--ease-out) 220ms;
-}
-
-.fx.is-pinned .fx-step__icon {
-  display: block;
-}
-
-.fx.is-pinned .fx-nav {
-  position: absolute;
-  right: var(--gutter);
-  top: 50%;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2px;
-  margin: 0;
-  transform: translateY(-50%);
-}
-
-.fx-nav__item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  width: 140px;
-  min-height: 36px;
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: left;
-  color: var(--text-3);
+  gap: var(--s-1);
+  min-height: var(--tap);
   transition: color var(--dur-micro);
 }
 
-.fx-nav__num {
-  font-family: var(--font-display);
-  letter-spacing: 0.02em;
-}
-
-.fx-nav__item:hover {
-  color: var(--text);
-}
-
-.fx-nav__item.is-active {
-  color: var(--text);
-}
-
-.fx-nav__item.is-active .fx-nav__num {
+.fxcard__links a:hover {
   color: var(--accent-text);
 }
 
-.fx.is-pinned .fx__progress {
-  position: absolute;
-  right: calc(var(--gutter) + 150px);
-  top: 50%;
-  display: block;
-  width: 1px;
-  height: 228px;
-  transform: translateY(-50%);
-  background: var(--line-2);
+/* the whole card opens the equipment; the consumables link stays on top of it */
+.fxcard__links .fxcard__go {
+  position: static;
+  color: var(--text);
 }
 
-.fx__progress span {
+.fxcard__go::after {
+  content: "";
   position: absolute;
   inset: 0;
-  background: var(--accent);
-  transform-origin: top;
-  transform: scaleY(calc((var(--step, 0) + 1) / var(--n, 6)));
-  transition: transform var(--dur-content) var(--ease-out);
-}
-
-/* Height-aware pinned scene: secondary blocks fold away before the text can overflow */
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .fx.is-pinned .fx__track {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    padding-right: var(--gutter);
-  }
-  .fx.is-pinned .fx-nav,
-  .fx.is-pinned .fx__progress {
-    display: none;
-  }
-}
-
-@media (max-height: 920px) {
-  .fx.is-pinned .fx-step__equip {
-    display: none;
-  }
-}
-
-@media (max-height: 720px) {
-  .fx.is-pinned .fx-step__facts,
-  .fx.is-pinned .fx-step__icon {
-    display: none;
-  }
 }
 
 /* ================================ STORY ================================= */
@@ -1514,7 +1205,7 @@ body[data-page="home"] .chapter {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-4);
-  margin-block: clamp(3rem, 6vw, 5.5rem);
+  margin-block: clamp(3rem, 6vw, 5.5rem) var(--s-4);
   overflow: hidden;
 }
 
@@ -1523,16 +1214,10 @@ body[data-page="home"] .chapter {
   gap: var(--s-4);
   width: max-content;
   margin: 0;
+  transform: translate3d(calc(var(--p, 0.5) * -32vw + 4vw), 0, 0);
   will-change: transform;
 }
 
-.drift__row--a {
-  transform: translate3d(calc(var(--p, 0.5) * -32vw + 4vw), 0, 0);
-}
-
-.drift__row--b {
-  transform: translate3d(calc(var(--p, 0.5) * 32vw - 36vw), 0, 0);
-}
 
 .drift__link {
   position: relative;
@@ -1585,12 +1270,6 @@ body[data-page="home"] .chapter {
   overflow-x: auto;
 }
 
-.projects__foot {
-  display: flex;
-  justify-content: flex-start;
-}
-
-/* ================================ VIDEOS ================================ */
 .vgrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1602,162 +1281,14 @@ body[data-page="home"] .chapter {
   .vgrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .vgrid__item--lead {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
-  .vgrid__item--lead .yt {
-    height: 100%;
-    aspect-ratio: auto;
-    min-height: 100%;
-  }
-  .vgrid__item:nth-child(n + 4) {
-    display: none;
-  }
 }
 
-.videos__foot {
-  margin-top: var(--s-6);
-}
-
-/* ================================= NEWS ================================= */
-.news__head {
+.projects__foot {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--s-5);
-  margin-bottom: var(--s-7);
-}
-
-.news__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-7);
-}
-
-@media (min-width: 1024px) {
-  .news__grid {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    gap: clamp(2rem, 4vw, 5rem);
-  }
-}
-
-.news-lead__link {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-5);
-}
-
-.news-lead__media {
-  display: block;
-  aspect-ratio: 16 / 10;
-  border-radius: var(--r-3);
-  overflow: hidden;
-  background: var(--surface-1);
-}
-
-.news-lead__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--dur-cine) var(--ease-out);
-}
-
-.news-lead__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-3);
-}
-
-.news__date {
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  color: var(--accent-text);
-}
-
-.news-lead__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: var(--tracking-display);
-  text-wrap: balance;
-}
-
-.news__more {
-  display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--s-2);
-  font-size: var(--fs-sm);
-  color: var(--text-2);
-}
-
-.news__more svg {
-  color: var(--accent-text);
-  transition: transform var(--dur-ui) var(--ease-out);
-}
-
-.news-lead__link:hover img {
-  transform: scale(1.04);
-}
-
-.news-lead__link:hover .news__more svg {
-  transform: translateX(4px);
-}
-
-.news-list {
-  margin: 0;
-  border-top: 1px solid var(--line-2);
-}
-
-.news-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px 24px;
-  grid-template-areas:
-    "date thumb arrow"
-    "title thumb arrow";
-  align-items: center;
-  gap: var(--s-2) var(--s-4);
-  padding-block: var(--s-5);
-  border-bottom: 1px solid var(--line);
-}
-
-.news-item .news__date {
-  grid-area: date;
-}
-
-.news-item__title {
-  grid-area: title;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.35;
-  color: var(--text-2);
-  transition: color var(--dur-micro);
-}
-
-.news-item__thumb {
-  grid-area: thumb;
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: var(--r-2);
-}
-
-.news-item__arrow {
-  grid-area: arrow;
-  color: var(--text-3);
-  transition:
-    color var(--dur-micro),
-    transform var(--dur-ui) var(--ease-out);
-}
-
-.news-item:hover .news-item__title {
-  color: var(--text);
-}
-
-.news-item:hover .news-item__arrow {
-  color: var(--accent-text);
-  transform: translate(2px, -2px);
+  gap: var(--s-4) var(--s-6);
+  margin-top: var(--s-7);
 }
 
 /* ================================= CTA ================================== */

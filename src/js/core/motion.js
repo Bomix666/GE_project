@@ -149,23 +149,3 @@ if ('ResizeObserver' in window) {
 onMotionPreferenceChange(measureAll);
 
 export const refreshScenes = measureAll;
-
-/* -------------------------------------------------------------- utilities */
-
-/** Local progress of a sub-range: segment(0.42, 0.2, 0.6) → 0.55 */
-export const segment = (p, start, end) => clamp((p - start) / (end - start));
-
-/** Pick an index 0..count-1 from progress, with a small hysteresis. */
-export function stepFromProgress(p, count, prev = 0) {
-  const raw = p * count;
-  let idx = Math.min(count - 1, Math.floor(raw));
-  if (idx !== prev && Math.abs(raw - Math.round(raw)) < 0.04) idx = prev;
-  return Math.max(0, idx);
-}
-
-/** Scroll the window so that a pinned scene sits at local progress p. */
-export function scrollToSceneProgress(el, p) {
-  const top = el.getBoundingClientRect().top + window.scrollY;
-  const range = el.offsetHeight - window.innerHeight;
-  window.scrollTo({ top: top + range * p + 2, behavior: env.reducedMotion ? 'auto' : 'smooth' });
-}

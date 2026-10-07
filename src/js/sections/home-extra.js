@@ -1,13 +1,13 @@
 /**
  * Remaining home scenes, all fed by real data:
  *  catalog index (with cursor-following preview), flagship rail,
- *  projects (clients + drifting photo rows), video, news.
+ *  projects (clients, a drifting photo row, video).
  */
 import { qs, qsa, html, toHTML, esc, icon, formatPrice, plural, rafThrottle } from '../core/dom.js';
 import { env } from '../core/env.js';
 import { scene } from '../core/motion.js';
 import { routes } from '../core/routes.js';
-import { getCatalog, getGallery, getNews } from '../data/api.js';
+import { getCatalog, getGallery } from '../data/api.js';
 import { clients, flagship } from '../data/content.js';
 import { productCard } from '../components/product-card.js';
 import { ytFacade, initYouTube } from '../components/youtube.js';
@@ -98,16 +98,14 @@ export async function initProjects() {
   const gallery = await getGallery();
   const by = Object.fromEntries(gallery.map((g) => [g.slug, g]));
   const pick = (slug, idx) => idx.map((i) => by[slug] && by[slug].photos[i] && { ...by[slug].photos[i], cat: by[slug].title, slug }).filter(Boolean);
-  const rowA = [...pick('konfetti', [1, 3, 5, 8]), ...pick('krioeffekty', [2, 5, 7]), ...pick('iskusstvennyj-sneg', [19])];
-  const rowB = [...pick('krioeffekty', [3, 12]), ...pick('konfetti', [9, 15, 12]), ...pick('tazelyj-dym', [0]), ...pick('iskusstvennyj-sneg', [21, 5])];
+  const row = [...pick('konfetti', [1, 3, 5, 8]), ...pick('krioeffekty', [2, 5, 7]), ...pick('iskusstvennyj-sneg', [19])];
 
   const tile = (ph) =>
     `<li class="drift__item"><a class="drift__link" href="${esc(routes.gallery(ph.slug))}" aria-label="Галерея: ${esc(ph.cat)}">
       <img src="${esc(ph.thumb)}" srcset="${esc(ph.thumb)} 520w, ${esc(ph.src)} ${Number(ph.w)}w" sizes="${Math.round((ph.w / ph.h) * 360)}px"
         alt="" width="${Math.round((ph.w / ph.h) * 360)}" height="360" loading="lazy" decoding="async">
       <span class="drift__cap">${esc(ph.cat)}</span></a></li>`;
-  qs('[data-drift-a]', root).innerHTML = rowA.map(tile).join('');
-  qs('[data-drift-b]', root).innerHTML = rowB.map(tile).join('');
+  qs('[data-drift-row]', root).innerHTML = row.map(tile).join('');
 
   if (!env.reducedMotion) scene(qs('[data-drift]', root), { mode: 'through' });
 }
@@ -128,37 +126,7 @@ export async function initVideos() {
     find('imitacia-plameni', 'vapbhhGwmtU'),
   ].filter(Boolean);
   qs('[data-video-grid]', root).innerHTML = list
-    .map((v, i) => `<li class="vgrid__item ${i === 0 ? 'vgrid__item--lead' : ''}">${ytFacade(v.id, { thumb: v.thumb, title: `${v.cat} — видео GLOBAL EFFECTS`, label: v.cat })}</li>`)
+    .map((v) => `<li>${ytFacade(v.id, { thumb: v.thumb, title: `${v.cat} — видео GLOBAL EFFECTS`, label: v.cat })}</li>`)
     .join('');
   initYouTube(root);
-}
-
-/* ------------------------------------------------------------------- news */
-export async function initNews() {
-  const root = qs('[data-news]');
-  if (!root) return;
-  const news = await getNews();
-  const [lead, ...rest] = news;
-  qs('[data-news-list]', root).innerHTML =
-    toHTML(html`<article class="news-lead">
-      <a class="news-lead__link" href="${routes.news(lead.url)}">
-        <span class="news-lead__media"><img src="${lead.image}" alt="" loading="lazy" decoding="async" width="1200" height="675" /></span>
-        <span class="news-lead__body">
-          <time class="news__date tabular" datetime="${lead.date.split('.').reverse().join('-')}">${lead.date}</time>
-          <span class="news-lead__title">${lead.title}</span>
-          <span class="news__more">Читать ${icon('i-arrow', 18)}</span>
-        </span>
-      </a>
-    </article>`) +
-    `<ol class="news-list" role="list">${rest
-      .slice(0, 4)
-      .map((n) =>
-        toHTML(html`<li><a class="news-item" href="${routes.news(n.url)}">
-          <time class="news__date tabular" datetime="${n.date.split('.').reverse().join('-')}">${n.date}</time>
-          <span class="news-item__title">${n.title}</span>
-          <img class="news-item__thumb" src="${n.thumb}" alt="" width="255" height="255" loading="lazy" />
-          <span class="news-item__arrow" aria-hidden="true">${icon('i-arrow-up-right', 20)}</span>
-        </a></li>`),
-      )
-      .join('')}</ol>`;
 }

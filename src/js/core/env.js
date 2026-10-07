@@ -42,10 +42,6 @@ export function onMotionPreferenceChange(cb) {
   reducedQuery.addEventListener('change', cb);
 }
 
-export function onBreakpointChange(cb) {
-  desktopQuery.addEventListener('change', cb);
-}
-
 html.classList.add('js');
 if (reducedQuery.matches) html.classList.add('reduce-motion');
 reducedQuery.addEventListener('change', (e) => html.classList.toggle('reduce-motion', e.matches));
