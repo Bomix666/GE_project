@@ -83,9 +83,9 @@
 }
 
 .pcard__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto 1fr auto;
+  container-type: inline-size; /* the buy row adapts to the card, not to the screen (see below) */
+  display: flex;
+  flex-direction: column;
   gap: var(--s-2);
   padding: var(--s-4) var(--s-1) var(--s-5);
 }
@@ -133,7 +133,7 @@ body:not([data-page="home"]) .pcard__title {
   justify-content: space-between;
   align-items: baseline;
   gap: var(--s-2) var(--s-4);
-  align-self: end;
+  margin-top: auto; /* price and buttons sit at the bottom, with or without the type line */
   padding-top: var(--s-2);
 }
 
@@ -160,6 +160,30 @@ body:not([data-page="home"]) .pcard__title {
 .pcard__actions .btn__label {
   flex: 1;
   justify-content: center;
+}
+
+/* Stepper + button need 260px. Narrower card: the button drops its icon;
+   narrower still: they stack (the icon returns while the full-width button has its 143px). */
+@container ((min-width: 204px) and (max-width: 259px)) or (max-width: 142px) {
+  .pcard__actions .btn__icon {
+    display: none;
+  }
+}
+
+@container (min-width: 204px) and (max-width: 259px) {
+  .pcard__actions .btn__label {
+    padding-inline: var(--s-2);
+  }
+}
+
+@container (max-width: 203px) {
+  .pcard__actions {
+    flex-direction: column;
+  }
+  .pcard__actions .qty {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -224,13 +248,6 @@ body:not([data-page="home"]) .pcard__title {
   .pgrid > .pcard {
     padding: var(--s-2);
   }
-  .pcard__actions {
-    flex-direction: column;
-  }
-  .pcard__actions .qty {
-    width: 100%;
-    justify-content: space-between;
-  }
   .pcard__title {
     font-size: 0.875rem;
   }
@@ -273,6 +290,9 @@ body:not([data-page="home"]) .pcard__title {
 }
 
 /* ---------------- Rails ---------------- */
+/* Phones: a full-bleed strip to swipe, the next card peeks in.
+   From 768px: the strip stays inside the page container and shows a whole
+   number of cards (--per-view); arrows page by exactly that many. */
 .rail-track {
   display: grid;
   grid-auto-flow: column;
@@ -301,14 +321,35 @@ body:not([data-page="home"]) .pcard__title {
   pointer-events: none;
 }
 
+/* the card fills the item, so prices and buttons line up whatever the title length */
 .rail-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   scroll-snap-align: start;
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 768px) {
   .rail-track {
-    padding-inline: calc((100vw - var(--container)) / 2 + var(--gutter));
-    scroll-padding-inline: calc((100vw - var(--container)) / 2 + var(--gutter));
+    --per-view: 2;
+    --ring: var(--s-1); /* room for the focus ring of the first and last card */
+    grid-auto-columns: calc((100% - (var(--per-view) - 1) * var(--s-4)) / var(--per-view));
+    width: calc(100% - 2 * var(--gutter) + 2 * var(--ring));
+    max-width: calc(var(--container) - 2 * var(--gutter) + 2 * var(--ring));
+    margin-inline: auto;
+    padding-inline: var(--ring);
+    scroll-padding-inline: var(--ring);
+  }
+}
+
+@media (min-width: 1024px) {
+  .rail-track {
+    --per-view: 3;
+  }
+}
+
+@media (min-width: 1280px) {
+  .rail-track {
+    --per-view: 4;
   }
 }
 
