@@ -32,8 +32,9 @@ export function initRail(root, { step: stepMode = 'items' } = {}) {
       return;
     }
     const item = track.firstElementChild;
-    const step = item ? item.getBoundingClientRect().width + 16 : track.clientWidth * 0.8;
-    const count = Math.max(1, Math.floor(track.clientWidth / step));
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const step = item ? item.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+    const count = Math.max(1, Math.floor((track.clientWidth + gap) / step)); // n cards take n·step − gap
     track.scrollBy({ left: dir * step * count, behavior: env.reducedMotion ? 'auto' : 'smooth' });
   };
 

@@ -180,7 +180,7 @@ export const stories = [
         label: 'Эффект',
         title: 'Конфетти над залом',
         text: 'Финальный залп концерта, выход артиста, первый танец — конфетти превращает момент в кадр, который зрители снимают на телефоны.',
-        image: { src: media('/media/scenes/story-effect.webp'), w: 1000, h: 668, alt: 'Зрители концерта под дождём из конфетти' },
+        image: { src: media('/media/scenes/story-effect.webp'), w: 1535, h: 1025, alt: 'Зрители концерта под дождём из конфетти' },
       },
       {
         kind: 'how',
@@ -263,7 +263,7 @@ export const stories = [
         kind: 'result',
         label: 'Результат на сцене',
         title: 'Сцена в движении',
-        image: { src: media('/media/scenes/hero-cryo-columns.webp'), w: 1280, h: 720, alt: 'Столбы криоэффектов на концерте' },
+        image: { src: media('/media/scenes/hero-cryo-columns.webp'), w: 1672, h: 941, alt: 'Столбы криоэффектов на концерте' },
         gallery: 'krioeffekty',
       },
     ],
@@ -283,14 +283,6 @@ export const dealers = [
   { city: 'Сочи', name: 'Праздникмастер', address: 'ул. Гагарина, 82', phone: '+7 (918) 320-10-56', site: 'prazdnikmaster.ru', type: 'Продажа' },
   { city: 'Симферополь', name: 'Праздникмастер', address: 'ул. Москалёва, 9', phone: '+7 (989) 295-59-24', site: 'prazdnikmaster.ru', type: 'Продажа' },
   { city: 'Краснодар', name: 'Праздникмастер', address: 'ул. Васнецова, 39/1', phone: '+7 (988) 356-28-17', site: 'prazdnikmaster.ru', type: 'Продажа' },
-];
-
-/** Hero photo reel (real event photos, graded). Replaced by the MP4 when it exists. */
-export const heroReel = [
-  { src: media('/media/scenes/hero-cryo-stadium.webp'), sm: media('/media/scenes/hero-cryo-stadium-sm.webp'), label: 'Криоэффекты' },
-  { src: media('/media/scenes/hero-confetti-crowd.webp'), sm: media('/media/scenes/hero-confetti-crowd-sm.webp'), label: 'Конфетти' },
-  { src: media('/media/scenes/hero-cryo-columns.webp'), sm: media('/media/scenes/hero-cryo-columns-sm.webp'), label: 'Криоэффекты' },
-  { src: media('/media/scenes/hero-confetti-arena.webp'), sm: media('/media/scenes/hero-confetti-arena-sm.webp'), label: 'Конфетти' },
 ];
 
 /** Flagship equipment shown in the home rail (ids from /data/catalog.json). */

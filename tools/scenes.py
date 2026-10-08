@@ -7,9 +7,12 @@ the page darkens them with CSS gradients only where text sits on top.
 
     python tools/scenes.py      # rewrites public/media/scenes/*.webp (+ -sm)
 
-ponytail: 9 scenes come from 960px video posters and are upscaled to the old
+MASTERS were supplied at full size: the file in scenes/ is the original and only
+its phone version is derived here.
+
+ponytail: 6 scenes come from 960px video posters and are upscaled to the old
 1280px size so no markup changes; replace with original footage when the client
-provides it.
+provides it (move the name to MASTERS and update width/height where it is used).
 """
 from PIL import Image
 
@@ -24,10 +27,15 @@ SCENES = {
     'fx-foam': 'gallery/pena_00', 'fx-foam-2': 'video/IpYudCN1XI4',
     'fx-smoke': 'gallery/tazelyj-dym_02', 'fx-smoke-2': 'video/ZV9-TIAr2Hc',
     'fx-snow': 'gallery/iskusstvennyj-sneg_23', 'fx-snow-2': 'gallery/iskusstvennyj-sneg_21',
-    'hero-confetti-arena': 'gallery/konfetti_15', 'hero-confetti-crowd': 'video/riW-qHDaWJI',
-    'hero-cryo-columns': 'video/M1PK8_DuwHI', 'hero-cryo-stadium': 'video/AXmYWZ8KnxI',
-    'story-effect': 'gallery/konfetti_04', 'story-result': 'gallery/konfetti_22',
+    'story-result': 'gallery/konfetti_22',
 }
+MASTERS = ['hero-confetti-arena', 'hero-confetti-crowd', 'hero-cryo-columns', 'story-effect']
+
+
+def save_small(large, target):
+    small_w = min(720, large.width)
+    large.resize((small_w, round(large.height * small_w / large.width)), Image.LANCZOS).save(target.replace('.webp', '-sm.webp'), 'WEBP', quality=78, method=6)
+
 
 for name, source in SCENES.items():
     target = f'{MEDIA}/scenes/{name}.webp'
@@ -36,6 +44,10 @@ for name, source in SCENES.items():
     assert abs(photo.width / photo.height - size[0] / size[1]) < 0.02, f'{name}: aspect differs from {source}'
     large = photo.resize(size, Image.LANCZOS)
     large.save(target, 'WEBP', quality=80, method=6)
-    small_w = min(720, size[0])
-    large.resize((small_w, round(size[1] * small_w / size[0])), Image.LANCZOS).save(target.replace('.webp', '-sm.webp'), 'WEBP', quality=78, method=6)
+    save_small(large, target)
     print(f'{name:22} <- {source}')
+
+for name in MASTERS:
+    target = f'{MEDIA}/scenes/{name}.webp'
+    save_small(Image.open(target).convert('RGB'), target)
+    print(f'{name:22} (master)')

@@ -524,13 +524,6 @@ body:has(.header[data-hidden="false"]) .toolbar {
   }
 }
 
-/* very narrow phones: ~115px per card — the button keeps its label, drops the arrow block */
-@media (max-width: 359px) {
-  .cat-results .pcard__actions .btn__icon {
-    display: none;
-  }
-}
-
 .empty {
   grid-column: 1 / -1;
   display: grid;
