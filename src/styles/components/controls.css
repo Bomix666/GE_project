@@ -643,6 +643,8 @@ a.lang__item:hover {
 
 /* ---------- Breadcrumbs ---------- */
 .crumbs {
+  font-family: var(--font-display);
+  font-weight: 300;
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 0.6rem;

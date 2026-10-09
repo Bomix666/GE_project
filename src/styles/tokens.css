@@ -5,6 +5,44 @@
    Contrast notes are measured against --bg (#050505).
    ========================================================================== */
 
+/* Brand typefaces of globaleffects.ru: the same files the live site serves from /fonts/.
+   FuturisC exists as one Regular (no kerning; no ₽ · → × — those glyphs fall through to Jost).
+   Its weight range stops the browser from faking a bold out of it.
+   The metric overrides repeat the faces used before (Jost, Onest): line boxes and baselines
+   stay exactly where the layout expects them, and nothing jumps when the fonts arrive. */
+@font-face {
+  font-family: "FuturisC";
+  src: url("/fonts/FuturisC.woff") format("woff");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 107%;
+  descent-override: 37.5%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "HelveticaNeueCyr";
+  src: url("/fonts/HelveticaNeueCyr-Roman.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 97%;
+  descent-override: 30.5%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "HelveticaNeueCyr";
+  src: url("/fonts/HelveticaNeueCyr-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 97%;
+  descent-override: 30.5%;
+  line-gap-override: 0%;
+}
+
 :root {
   color-scheme: dark;
 
@@ -57,9 +95,13 @@
   --focus-ring: var(--c-pure-white);
 
   /* ---------- Typography ---------- */
-  /* Jost: a geometric sans in the Futura tradition, like the Futuris the brand already uses */
-  --font-display: "Jost Variable", "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
-  --font-body: "Onest Variable", "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Display: FuturisC — headings, navigation, product names, prices, caps labels. It is one
+     Regular face; rules that use it say font-weight: 300 because that is the weight at which
+     Jost — the stand-in for ₽ · → × and for the moment before the file arrives — has the same stroke.
+     Text: HelveticaNeueCyr — Roman for copy, Bold for buttons and emphasis (500 → Roman, 600 → Bold);
+     Onest stands in for its missing glyphs. */
+  --font-display: "FuturisC", "Jost Variable", "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+  --font-body: "HelveticaNeueCyr", "Onest Variable", "Onest", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Site-wide scale = the approved home scale (sections/home.css pins the
      same values for the home page). Body copy stays at 16px.            */

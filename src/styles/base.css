@@ -191,7 +191,7 @@ html {
 .h2,
 .h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: var(--tracking-display);
   line-height: var(--lh-heading);
   text-wrap: balance;
@@ -242,8 +242,9 @@ html {
 }
 
 .label {
+  font-family: var(--font-display);
   font-size: var(--fs-xs);
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--text-3);
@@ -251,11 +252,12 @@ html {
 
 /* Eyebrow: short red rule + small-caps label (brand signature) */
 .eyebrow {
+  font-family: var(--font-display);
   display: inline-flex;
   flex-direction: column;
   gap: var(--s-4);
   font-size: var(--fs-xs);
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--text-2);
@@ -281,6 +283,8 @@ html {
 
 /* Chapter marker: "Эффекты  02 / 07" — shows position in the page film */
 .chapter {
+  font-family: var(--font-display);
+  font-weight: 300;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -296,13 +300,14 @@ html {
 
 .chapter__num {
   font-family: var(--font-display);
+  font-weight: 300;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
   color: var(--text-3);
 }
 
 .chapter__num b {
-  font-weight: 500;
+  font-weight: 300;
   color: var(--accent-text);
 }
 
