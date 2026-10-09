@@ -178,7 +178,8 @@
   margin: 0;
 }
 
-.line {
+/* scoped to the cart list: headings use .line for their text lines (base.css) */
+:where(.lines) > .line {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr) auto;
   gap: var(--s-4);
@@ -187,7 +188,7 @@
   transition: opacity var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
 }
 
-.line.is-removing {
+:where(.lines) > .line.is-removing {
   opacity: 0.3;
   transform: translateX(12px);
 }

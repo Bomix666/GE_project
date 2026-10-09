@@ -429,6 +429,7 @@ html {
 .js [data-reveal="mask"] .line {
   display: block;
   overflow: hidden;
+  padding-top: var(--s-5); /* the space above each heading line that the pages were approved with */
   padding-bottom: 0.06em;
   margin-bottom: -0.06em;
 }

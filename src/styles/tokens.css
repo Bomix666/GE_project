@@ -13,6 +13,7 @@
 @font-face {
   font-family: "FuturisC";
   src: url("/fonts/FuturisC.woff") format("woff");
+  unicode-range: U+0-3E, U+40-10FFFF; /* all but "?": Futura's hook-shaped question mark reads as a mistake in a big heading, Jost draws it instead */
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
