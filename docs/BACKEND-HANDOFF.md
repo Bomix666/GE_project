@@ -15,6 +15,7 @@ npm run build -- --base=/redesign/
 
 - Результат лежит в `dist/`, его целиком копируют в `web/redesign/`. Подпапка нужна, чтобы `dist/assets/` не пересёкся с `web/assets/`, куда Yii публикует свои ассеты. Имя подпапки может быть любым, но в `--base` и при копировании оно должно совпадать.
 - В подпапке лежат собранные JS и CSS (`assets/`), шрифты, медиа (`media/`) и данные (`data/`).
+- Фирменные шрифты подключаются по адресу `/fonts/FuturisC.woff`, `/fonts/HelveticaNeueCyr-Roman.woff`, `/fonts/HelveticaNeueCyr-Bold.woff` — это те же файлы, что уже лежат на сервере сайта; копия есть в `dist/fonts/`.
 - `dist/.vite/manifest.json` — список, по которому Yii подключает файлы страницы. Ключ — шаблон страницы (`catalog.html`, `product.html`, …):
 
 ```json

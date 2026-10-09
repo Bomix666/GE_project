@@ -80,6 +80,7 @@
 }
 
 .nav__link {
+  font-family: var(--font-display);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -87,7 +88,7 @@
   height: var(--header-h);
   padding: 0 0.5rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 300;
   color: var(--text-2);
   transition: color var(--dur-micro) var(--ease-out);
 }
@@ -266,7 +267,7 @@
   border-bottom: 1px solid var(--line);
   font-family: var(--font-display);
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -398,7 +399,7 @@
 .mega__preview-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 1.15;
 }
 
@@ -445,13 +446,15 @@
 .fxmenu__num {
   margin-top: var(--s-2);
   font-family: var(--font-display);
+  font-weight: 300;
   font-size: var(--fs-xs);
   color: var(--accent-text);
 }
 
 .fxmenu__name {
+  font-family: var(--font-display);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 300;
   color: var(--text-2);
   transition: color var(--dur-micro);
 }
@@ -520,7 +523,7 @@
   border-bottom: 1px solid var(--line);
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 5vw, 1.6rem);
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: var(--tracking-display);
   list-style: none;
 }
@@ -619,10 +622,13 @@
 
 .rail__num {
   font-family: var(--font-display);
+  font-weight: 300;
   letter-spacing: 0.04em;
 }
 
 .rail__name {
+  font-family: var(--font-display);
+  font-weight: 300;
   opacity: 0;
   transform: translateX(-6px);
   white-space: nowrap;
@@ -726,6 +732,7 @@
 .aboutmenu__num {
   margin-top: var(--s-2);
   font-family: var(--font-display);
+  font-weight: 300;
   font-size: var(--fs-xs);
   color: var(--accent-text);
 }
@@ -733,7 +740,7 @@
 .aboutmenu__name {
   font-family: var(--font-display);
   font-size: 1.05rem;
-  font-weight: 600;
+  font-weight: 300;
   color: var(--text);
 }
 

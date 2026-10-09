@@ -21,7 +21,7 @@ npm run preview  # http://127.0.0.1:4173
 этого превью: `GE_PREVIEW=1 npx vite build --base=/GE_project/ --outDir dist-pages`, затем
 `npx vite preview --base=/GE_project/ --outDir dist-pages`.
 
-Runtime-зависимостей нет: Vite используется только для сборки, шрифты — самохостинг `@fontsource-variable`.
+Runtime-зависимостей нет: Vite используется только для сборки. Шрифты — фирменные FuturisC и HelveticaNeueCyr из `public/fonts/` (те же файлы и тот же адрес `/fonts/…`, что на действующем сайте); запасные Jost и Onest — самохостинг `@fontsource-variable`.
 Стили подключены через `<link>` в `<head>` (`src/partials/head.html`), поэтому страница никогда не показывается без оформления.
 Запуск в Windows: двойной клик по `start.cmd`. В PowerShell 5.1 команды пишутся по одной строке (там нет `&&`).
 Сборка: JS приложения ≈ 11 КБ gzip, плюс чанки страниц по 1–4 КБ.

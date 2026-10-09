@@ -4,5 +4,8 @@
     <!-- Before first paint: mark JS so reveal states apply instantly (no flash), dark canvas -->
     <script>document.documentElement.classList.add('js');</script>
     <style>html,body{background:#050505;color:#f4f2ef}</style>
+    <!-- Brand fonts arrive with the first paint (same-origin, still need crossorigin for a font preload) -->
+    <link rel="preload" as="font" type="font/woff" href="/fonts/FuturisC.woff" crossorigin />
+    <link rel="preload" as="font" type="font/woff" href="/fonts/HelveticaNeueCyr-Roman.woff" crossorigin />
     <!-- Render-blocking stylesheet: the page never shows unstyled HTML -->
     <link rel="stylesheet" href="/src/styles/index.css" />
