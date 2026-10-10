@@ -43,31 +43,63 @@ export function initRail(root, { step: stepMode = 'items' } = {}) {
   track.addEventListener('scroll', update, { passive: true });
   window.addEventListener('resize', update, { passive: true });
 
-  // Mouse drag for desktop (with threshold so clicks still work)
+  // Mouse drag for desktop: the track follows the pointer 1:1 (a threshold keeps
+  // plain clicks working) and a flick carries on after release.
   let down = false;
+  let pointerId = 0;
   let startX = 0;
   let startLeft = 0;
   let moved = false;
+  let samples = []; // recent { t, left } while dragging → release velocity
+
+  const stopDrag = () => {
+    if (!down) return;
+    down = false;
+    if (!moved) return;
+    setTimeout(() => (moved = false), 0); // the click that ends the drag is swallowed; later ones (keyboard) are not
+    if (track.hasPointerCapture(pointerId)) track.releasePointerCapture(pointerId);
+    const released = track.scrollLeft;
+    track.classList.remove('is-dragging');
+    // px/ms over the last ~100 ms (zero when the pointer rested before release); a flick
+    // glides on from where it was released and the CSS snap, if any, picks the nearest stop
+    const now = performance.now();
+    const last = samples[samples.length - 1];
+    const from = samples.find((s) => last.t - s.t <= 100);
+    const speed = now - last.t < 80 && from && last.t > from.t ? (last.left - from.left) / (last.t - from.t) : 0;
+    const glide = Math.abs(speed) > 0.15 ? Math.max(-1, Math.min(1, speed / 3)) * track.clientWidth * 0.6 : 0;
+    track.scrollTo({ left: released + glide, behavior: env.reducedMotion ? 'auto' : 'smooth' });
+  };
+
   track.addEventListener('pointerdown', (e) => {
-    if (e.pointerType !== 'mouse' || e.target.closest('button, input')) return;
+    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('button, input')) return;
     down = true;
     moved = false;
+    pointerId = e.pointerId;
     startX = e.clientX;
     startLeft = track.scrollLeft;
+    samples = [];
+    track.scrollTo({ left: track.scrollLeft, behavior: 'auto' }); // grab a track that is still gliding
   });
   window.addEventListener('pointermove', (e) => {
-    if (!down) return;
+    if (!down || e.pointerId !== pointerId) return;
+    if (e.buttons === 0) return stopDrag(); // released where no pointerup reached us
     const dx = e.clientX - startX;
-    if (Math.abs(dx) > 6) {
+    if (!moved && Math.abs(dx) <= 6) return;
+    if (!moved) {
       moved = true;
       track.classList.add('is-dragging');
-      track.scrollLeft = startLeft - dx;
+      track.setPointerCapture(pointerId); // keeps the drag alive outside the track and the window
     }
+    track.scrollLeft = startLeft - dx;
+    samples.push({ t: e.timeStamp, left: track.scrollLeft });
+    if (samples.length > 8) samples.shift();
   });
-  window.addEventListener('pointerup', () => {
-    down = false;
-    track.classList.remove('is-dragging');
-  });
+  window.addEventListener('pointerup', stopDrag);
+  window.addEventListener('pointercancel', stopDrag);
+  window.addEventListener('blur', stopDrag);
+  // A drag must not turn into a native image/link drag or a text selection
+  track.addEventListener('dragstart', (e) => e.preventDefault());
+  track.addEventListener('selectstart', (e) => down && e.preventDefault());
   track.addEventListener(
     'click',
     (e) => {

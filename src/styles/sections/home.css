@@ -710,6 +710,15 @@ body[data-page="home"] .chapter {
   display: none;
 }
 
+/* A mouse or trackpad scrolls freely and stops where it is released: panels differ
+   in width, so snapping would pull the rail back to the nearest panel edge (a drag
+   shorter than half a panel returned to where it began). Touch keeps the snap. */
+@media (hover: hover) and (pointer: fine) {
+  .story__track {
+    scroll-snap-type: none;
+  }
+}
+
 .story__track.is-dragging {
   cursor: grabbing;
   scroll-snap-type: none;
@@ -935,6 +944,7 @@ body[data-page="home"] .chapter {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    pointer-events: none; /* a sign, not a control: it must not take clicks or drags from the panels */
     transform: translateY(-50%);
     background: var(--bg);
     box-shadow: inset 0 0 0 1px var(--accent);
@@ -1095,8 +1105,8 @@ body[data-page="home"] .chapter {
   top: 0;
   z-index: 3;
   width: clamp(200px, 17vw, 270px);
-  aspect-ratio: 570 / 500;
-  margin: -120px 0 0 32px;
+  aspect-ratio: 350 / 388; /* the card photo, uncropped */
+  margin: -140px 0 0; /* the pointer sits mid-height; the sideways offset is set in JS */
   border-radius: var(--r-3);
   overflow: hidden;
   background: #000;

@@ -57,12 +57,32 @@ function initLocaleSwitch() {
   });
 }
 
-/* Product photos are hotlinked from the CMS; a file missing there must not leave
-   a broken-image box: the image hides and its frame shows a neutral placeholder. */
+/* Product photos are hotlinked from the CMS, which resizes a photo on its first
+   request and can answer late or with an error. A failed image is asked for once
+   more; if that fails too it must not leave a broken-image box: the image hides
+   and its frame shows a neutral placeholder. */
 document.addEventListener(
   'error',
   (e) => {
-    if (e.target instanceof HTMLImageElement) e.target.classList.add('is-broken');
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement)) return;
+    if (!img.dataset.retried && img.currentSrc) {
+      img.dataset.retried = '1';
+      setTimeout(() => (img.src = img.currentSrc), 1500);
+      return;
+    }
+    img.classList.add('is-broken');
+  },
+  true,
+);
+document.addEventListener(
+  'load',
+  (e) => {
+    const img = e.target;
+    if (img instanceof HTMLImageElement && (img.dataset.retried || img.classList.contains('is-broken'))) {
+      delete img.dataset.retried; // a reused <img> (lightbox, quick view) starts clean
+      img.classList.remove('is-broken');
+    }
   },
   true,
 );
