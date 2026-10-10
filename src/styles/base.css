@@ -179,12 +179,6 @@ html {
   padding-block: var(--section-y);
 }
 
-.grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: clamp(1rem, 2vw, 2rem);
-}
-
 /* ---------- Typography ---------- */
 .display,
 .h1,
@@ -269,16 +263,6 @@ html {
   width: 32px;
   height: 2px;
   background: var(--accent);
-}
-
-.eyebrow--inline {
-  flex-direction: row;
-  align-items: center;
-  gap: var(--s-3);
-}
-
-.eyebrow--inline::before {
-  width: 20px;
 }
 
 /* Chapter marker: "Эффекты  02 / 07" — shows position in the page film */
@@ -381,13 +365,6 @@ html {
   max-width: 100%;
 }
 
-/* ---------- Media ---------- */
-.media-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* Grain: subtle film texture used on cinematic layers (static, no animation) */
 .grain::after {
   content: "";
@@ -432,6 +409,16 @@ html {
   padding-top: var(--s-5); /* the space above each heading line that the pages were approved with */
   padding-bottom: 0.06em;
   margin-bottom: -0.06em;
+}
+
+/* The same rhythm written as line-height where `lh` exists: a heading line that wraps
+   keeps the gap of the lines around it. One-row lines stay exactly where they were. */
+@supports (line-height: 1lh) {
+  .js [data-reveal="mask"] .line {
+    line-height: calc(1lh + var(--s-5));
+    padding-top: calc(var(--s-5) / 2);
+    margin-bottom: calc(-0.06em - var(--s-5) / 2);
+  }
 }
 
 .js [data-reveal="mask"] .line > span {

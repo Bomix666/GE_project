@@ -9,6 +9,8 @@ import { ytFacade, initYouTube } from '../components/youtube.js';
 
 // Size rhythm for the editorial mosaic (repeats every 9 tiles)
 const RHYTHM = ['xl', 's', 's', 'm', 'm', 'tall', 's', 'wide', 's'];
+// columns a tile spans (gallery.css): 4-column grid from 900px, 2 columns below
+const SIZES = { xl: '(min-width: 900px) 50vw, 100vw', wide: '(min-width: 900px) 50vw, 50vw', s: '(min-width: 900px) 25vw, 50vw' };
 
 ready(async () => {
   const galleries = await getGallery();
@@ -41,9 +43,9 @@ ready(async () => {
     qs('[data-mosaic]').innerHTML = photos.length
       ? photos
           .map(
-            (ph, i) => `<li class="mosaic__item mosaic__item--${ph.studio ? 's' : RHYTHM[i % RHYTHM.length]}">
+            (ph, i, _, shape = ph.studio ? 's' : RHYTHM[i % RHYTHM.length]) => `<li class="mosaic__item mosaic__item--${shape}">
               <button type="button" class="mosaic__btn" data-open="${i}" aria-label="Открыть фото ${i + 1}: ${esc(ph.cat)}">
-                <img src="${esc(ph.thumb)}" srcset="${esc(ph.thumb)} 520w, ${esc(ph.src)} ${Number(ph.w)}w" sizes="(min-width: 1024px) 40vw, 50vw" alt="" width="${Number(ph.w)}" height="${Number(ph.h)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
+                <img src="${esc(ph.thumb)}" srcset="${esc(ph.thumb)} 520w, ${esc(ph.src)} ${Number(ph.w)}w" sizes="${SIZES[shape] || SIZES.s}" alt="" width="${Number(ph.w)}" height="${Number(ph.h)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
                 <span class="mosaic__cap">${esc(ph.cat)}</span>
               </button>
             </li>`,

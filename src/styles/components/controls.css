@@ -540,17 +540,6 @@
   cursor: not-allowed;
 }
 
-.check--form {
-  align-items: start;
-  min-height: 0;
-  padding-block: var(--s-1);
-  line-height: 1.45;
-}
-
-.check--form .check__box {
-  margin-top: 2px;
-}
-
 /* ---------- Availability (text + shape, never colour alone) ---------- */
 .avail {
   display: inline-flex;
@@ -662,6 +651,16 @@ a.lang__item:hover {
 .crumbs li + li::before {
   content: "/";
   color: var(--line-3);
+}
+
+.crumbs a {
+  position: relative;
+}
+
+.crumbs a::after {
+  content: "";
+  position: absolute;
+  inset: -8px -4px; /* touch area */
 }
 
 .crumbs a:hover {

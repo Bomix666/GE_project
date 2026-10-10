@@ -1,8 +1,8 @@
 /**
  * Hero: video-first, photo-reel fallback, cinematic scroll-out.
  *
- *  1. Tries /media/hero-global-effects.mp4 (drop the real file in, done).
- *  2. Until then — or on mobile / reduced motion / save-data — plays a
+ *  1. Plays the video named in the <video data-src> (none yet: see README).
+ *  2. Without it — or on mobile / reduced motion / save-data — plays a
  *     slow crossfade of real event photos (auto-rotation has pause control).
  *  3. While pinned, --p (0→1) darkens and scales the media, lifts the
  *     headline away and draws the red line that leads into the next scene.

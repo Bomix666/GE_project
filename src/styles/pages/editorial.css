@@ -36,10 +36,6 @@
 }
 
 /* ---------------- Lists ---------------- */
-.ed-list {
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
-}
-
 .ed-lead {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -231,7 +227,8 @@
 }
 
 .art__body.prose img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
   margin-block: var(--s-5);
   border-radius: var(--r-2);

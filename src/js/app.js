@@ -25,7 +25,7 @@ function initSearchTriggers() {
     if (t) open(t);
   });
   document.addEventListener('keydown', (e) => {
-    const typing = e.target.closest('input, textarea, select, [contenteditable="true"]');
+    const typing = e.target.closest?.('input, textarea, select, [contenteditable="true"]'); // the target can be the document itself
     if (document.querySelector('dialog[open]')) return;
     if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();

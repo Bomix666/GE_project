@@ -241,9 +241,16 @@
 }
 
 .pd-service a {
+  position: relative;
   text-decoration: underline;
   text-decoration-color: var(--line-3);
   text-underline-offset: 3px;
+}
+
+.pd-service a::after {
+  content: "";
+  position: absolute;
+  inset: -4px 0; /* touch area */
 }
 
 .pd-service a:hover {

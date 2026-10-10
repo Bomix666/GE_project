@@ -40,6 +40,7 @@ body[data-page="home"] .chapter {
 
 .hero__stage {
   height: 190svh;
+  min-height: 600px; /* never shorter than the hero itself (.hero__sticky): on a landscape phone the next section would cover its bar */
 }
 
 .hero__sticky {
@@ -527,6 +528,11 @@ body[data-page="home"] .chapter {
   padding-top: 50svh;
   background: linear-gradient(to bottom, rgb(5 5 5 / 0) 0, rgb(5 5 5 / 0.72) 22svh, var(--bg) 52svh);
   scroll-margin-top: calc(var(--section-y) - 50svh); /* #effects lands on the heading, not on the transparent top */
+  pointer-events: none; /* on short and landscape screens the hero is taller than the viewport and lies under this padding */
+}
+
+.fx > * {
+  pointer-events: auto;
 }
 
 @media (max-width: 1023px) {

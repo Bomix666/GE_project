@@ -3,7 +3,7 @@
  * No third-party requests before interaction (performance + privacy).
  *   <button class="yt" data-yt="VIDEO_ID" data-title="…"><img …></button>
  */
-import { qsa, esc } from '../core/dom.js';
+import { esc } from '../core/dom.js';
 
 export function ytFacade(id, { thumb, title = 'Видео GLOBAL EFFECTS', label = '' } = {}) {
   return `<div class="yt" data-yt-wrap>
@@ -31,5 +31,3 @@ export function initYouTube(root = document) {
     iframe.focus();
   });
 }
-
-export const hydrateYouTube = (root = document) => qsa('[data-yt]', root);
