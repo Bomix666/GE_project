@@ -4,8 +4,8 @@
  * Production (served by Yii2)  → the site's existing routes, untouched.
  * Prototype (vite)             → the redesigned local pages. Only files and
  *                                backend-only features (PDF, documents,
- *                                captcha, locale switch, the confetti-machine
- *                                quiz) still live on globaleffects.ru.
+ *                                captcha, locale switch) still live on
+ *                                globaleffects.ru.
  */
 import { PRODUCTION, ORIGIN, withBase } from './env.js';
 import { qsa } from './dom.js';
