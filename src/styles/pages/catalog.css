@@ -536,6 +536,7 @@ body:has(.header[data-hidden="false"]) .toolbar {
   justify-items: start;
   padding: var(--s-8) var(--s-5);
   background: var(--bg);
+  box-shadow: inset 0 -1px 0 var(--line); /* closes the grid like the cards' own bottom line */
 }
 
 .cat-more {

@@ -218,17 +218,21 @@ body:not([data-page="home"]) .pcard__title {
   }
 }
 
-/* Grid: hairline matrix like an equipment spec sheet */
+/* Grid: hairline matrix like an equipment spec sheet. The hairlines belong to the
+   cards (not to a grid background showing through a gap), so an empty cell — the
+   short last row, a category with a few products — stays plain black. */
 .pgrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border-block: 1px solid var(--line);
+  align-content: start;
+  border-top: 1px solid var(--line);
 }
 
 .pgrid > .pcard {
   padding: var(--s-3);
+  box-shadow:
+    inset -1px 0 0 var(--line),
+    inset 0 -1px 0 var(--line);
 }
 
 @media (min-width: 900px) {
