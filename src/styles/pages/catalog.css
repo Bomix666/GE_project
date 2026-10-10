@@ -131,6 +131,7 @@
   --fade-r: 0px;
   flex: 1;
   min-width: 0;
+  min-height: 40px; /* one row of chips (36px + padding): nothing jumps when they render */
   display: flex;
   gap: var(--s-2);
   margin: 0;

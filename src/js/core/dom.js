@@ -25,12 +25,6 @@ function renderValue(v) {
 }
 export const toHTML = (tpl) => (tpl && tpl[RAW] ? tpl.html : esc(tpl));
 
-export function fromHTML(markup) {
-  const t = document.createElement('template');
-  t.innerHTML = toHTML(markup).trim();
-  return t.content.firstElementChild;
-}
-
 export const icon = (id, size = 20, cls = '') =>
   raw(`<svg class="${cls}" width="${size}" height="${size}" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`);
 

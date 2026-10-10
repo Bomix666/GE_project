@@ -143,13 +143,16 @@ export function applyRoutes(root = document) {
 /**
  * Links to products that are no longer in the catalog (they answer 404 on the
  * live site too) become plain text instead of leading to «Товар не найден».
+ * A link that only wraps a picture gets its product's name for screen readers.
  * `bySlug` is the catalog index (catalog.bySlug).
  */
 export function unlinkMissingProducts(root, bySlug) {
   qsa('a[href]', root).forEach((a) => {
     const url = new URL(a.getAttribute('href'), location.href);
     const slug = url.pathname.endsWith('/product.html') ? url.searchParams.get('p') : (url.pathname.match(/\/product\/([^/]+)$/) || [])[1];
-    if (slug && !bySlug.has(decodeURIComponent(slug))) a.replaceWith(...a.childNodes);
+    const product = slug && bySlug.get(decodeURIComponent(slug));
+    if (slug && !product) a.replaceWith(...a.childNodes);
+    else if (!a.textContent.trim() && !a.getAttribute('aria-label')) a.setAttribute('aria-label', product ? product.name : 'Открыть ссылку');
   });
 }
 

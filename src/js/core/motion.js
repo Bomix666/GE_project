@@ -147,5 +147,3 @@ if ('ResizeObserver' in window) {
   }).observe(document.documentElement);
 }
 onMotionPreferenceChange(measureAll);
-
-export const refreshScenes = measureAll;
