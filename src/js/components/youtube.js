@@ -26,6 +26,7 @@ export function initYouTube(root = document) {
     iframe.title = btn.dataset.title || 'Видео';
     iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
     iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin'; // YouTube refuses an embed that arrives without a referrer
     wrap.classList.add('is-playing');
     wrap.replaceChildren(iframe);
     iframe.focus();

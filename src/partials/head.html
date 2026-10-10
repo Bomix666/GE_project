@@ -1,4 +1,6 @@
 <meta name="theme-color" content="#050505" />
+    <!-- Photos are hotlinked from the CMS: cross-origin requests go without a Referer (it may refuse images asked for from another site); same-origin ones keep it -->
+    <meta name="referrer" content="same-origin" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/media/brand/apple-touch-icon.png" />
     <!-- Before first paint: mark JS so reveal states apply instantly (no flash), dark canvas -->

@@ -31,7 +31,7 @@ export async function initCatalogIndex() {
         ${cats.map((c, i) => {
           const cover = catalog.byId.get(c.products[0]);
           return html`<li>
-            <a class="crow" href="${routes.category(c.slug)}" data-cover="${cover ? cover.image : ''}">
+            <a class="crow" href="${routes.category(c.slug)}" data-cover="${cover ? cover.thumb : ''}">
               <span class="crow__num tabular">${String(i + 1).padStart(2, '0')}</span>
               ${cover ? html`<img class="crow__thumb" src="${cover.thumb}" alt="" width="350" height="388" loading="lazy" />` : ''}
               <span class="crow__name">${c.title}</span>
@@ -47,17 +47,24 @@ export async function initCatalogIndex() {
   qs('[data-cindex-cols]', root).innerHTML =
     toHTML(col('equipment', 'Оборудование')) + toHTML(col('consumables', 'Расходные материалы'));
 
-  // Cursor-following preview (fine pointers only; transform-only)
+  // Cursor-following preview (fine pointers only; transform-only).
+  // It shows the 350×388 card photo — the file the catalog lists already use, so it is
+  // warm on the CMS — and only once the file is in the browser: no empty box while a
+  // photo loads, and none at all when it cannot load.
   if (!env.finePointer) return;
   const preview = document.createElement('div');
   preview.className = 'cindex__preview';
   preview.setAttribute('aria-hidden', 'true');
-  preview.innerHTML = '<img alt="" width="570" height="500">';
+  preview.innerHTML = '<img alt="" width="350" height="388" decoding="async">';
   root.append(preview);
   const img = preview.querySelector('img');
+  const GAP = 32; // pointer → preview
   const bounds = { x: 0, y: 0 };
   const move = rafThrottle((x, y) => {
-    preview.style.transform = `translate3d(${x - bounds.x}px, ${y - bounds.y}px, 0)`;
+    // beside the pointer, flipped to its left near the right edge of the window
+    const flip = x + GAP + preview.offsetWidth > document.documentElement.clientWidth - 16;
+    const dx = flip ? -(GAP + preview.offsetWidth) : GAP;
+    preview.style.transform = `translate3d(${x - bounds.x + dx}px, ${y - bounds.y}px, 0)`;
   });
   root.addEventListener('pointermove', (e) => {
     const r = root.getBoundingClientRect();
@@ -65,13 +72,56 @@ export async function initCatalogIndex() {
     bounds.y = r.top;
     move(e.clientX, e.clientY);
   });
+
+  const loads = new Map(); // src → Promise<boolean>
+  const load = (src) => {
+    if (!loads.has(src)) {
+      loads.set(
+        src,
+        new Promise((resolve) => {
+          const probe = new Image();
+          probe.onload = () => resolve(true);
+          probe.onerror = () => {
+            loads.delete(src); // a failed file is tried again on the next hover
+            resolve(false);
+          };
+          probe.src = src;
+        }),
+      );
+    }
+    return loads.get(src);
+  };
+
+  // Warm every cover just before the block scrolls into view
+  const warm = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      warm.disconnect();
+      qsa('.crow[data-cover]', root).forEach((row) => row.dataset.cover && load(row.dataset.cover));
+    },
+    { rootMargin: '600px 0px' },
+  );
+  warm.observe(root);
+
+  let current = null;
   qsa('.crow', root).forEach((row) => {
-    row.addEventListener('pointerenter', () => {
-      if (!row.dataset.cover) return;
-      if (img.getAttribute('src') !== row.dataset.cover) img.src = row.dataset.cover;
+    row.addEventListener('pointerenter', async () => {
+      current = row;
+      const src = row.dataset.cover;
+      const ok = src ? await load(src) : false;
+      if (current !== row) return; // the pointer has moved on while it loaded
+      if (!ok) return preview.classList.remove('is-on');
+      if (img.getAttribute('src') !== src) {
+        img.src = src;
+        await img.decode().catch(() => {}); // never fade in on the previous row's photo
+        if (current !== row) return;
+      }
       preview.classList.add('is-on');
     });
-    row.addEventListener('pointerleave', () => preview.classList.remove('is-on'));
+    row.addEventListener('pointerleave', () => {
+      if (current === row) current = null;
+      preview.classList.remove('is-on');
+    });
   });
 }
 
