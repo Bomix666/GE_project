@@ -432,9 +432,14 @@ html {
   transform: none;
 }
 
-.reduce-motion [data-reveal],
+/* Reduced motion means less movement, not a dead interface: nothing slides, zooms,
+   loops or follows the scroll, but short fades stay (durations: tokens.css), so
+   menus, dialogs and content do not snap. */
+.reduce-motion [data-reveal] {
+  transform: none !important;
+}
+
 .reduce-motion [data-reveal="mask"] .line > span {
-  opacity: 1 !important;
   transform: none !important;
   transition: none !important;
 }
@@ -443,11 +448,29 @@ html {
   *,
   *::before,
   *::after {
-    animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* On paper nothing waits to be scrolled into view */
+@media print {
+  .js [data-reveal],
+  .js [data-reveal="mask"] .line > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Pages cross-fade into each other instead of cutting
+   (a plain navigation where the browser has no cross-document view transitions). */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-ui);
 }
 
 @keyframes fade-down {

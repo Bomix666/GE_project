@@ -6,6 +6,7 @@ import { qs, html, raw, toHTML, icon, esc, plural } from '../core/dom.js';
 import { localizeLinks, unlinkMissingProducts, routes } from '../core/routes.js';
 import { getCatalog } from '../data/api.js';
 import { cleanHTML } from '../core/sanitize.js';
+import { reveal } from '../core/motion.js';
 import { ytFacade, initYouTube } from './youtube.js';
 
 const iso = (d) => (d ? d.split('.').reverse().join('-') : '');
@@ -38,7 +39,7 @@ export function renderList(root, items, { href, label, pageSize = 12, level = 2,
           <a class="btn btn--ghost" href="${href(lead)}"><span class="btn__label">Читать</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
         </div>
       </article>`) +
-      `<h${level} class="visually-hidden">${esc(label)}</h${level}><ul class="ed-grid" role="list">${rest.slice(0, shown).map(card).join('')}</ul>` +
+      `<h${level} class="visually-hidden">${esc(label)}</h${level}><ul class="ed-grid" role="list" data-reveal-group>${rest.slice(0, shown).map(card).join('')}</ul>` +
       (rest.length > shown
         ? `<div class="ed-more"><p class="text-3 tabular">Показано ${shown + 1} из ${items.length}</p><button type="button" class="btn btn--secondary btn--lg" data-ed-more><span class="btn__label">Показать ещё</span><span class="btn__icon" aria-hidden="true">${toHTML(icon('i-plus', 18))}</span></button></div>`
         : '');
@@ -49,6 +50,9 @@ export function renderList(root, items, { href, label, pageSize = 12, level = 2,
     const before = shown;
     shown += pageSize;
     draw();
+    // the cards already on screen stay put, only the new ones enter
+    [...root.querySelectorAll('.ed-grid > li')].slice(0, before).forEach((li) => li.classList.add('is-in'));
+    reveal(root);
     root.querySelectorAll('.ed-card__link')[before]?.focus({ preventScroll: true });
   });
 }
@@ -131,7 +135,7 @@ export function renderBlogList(root, posts, { href, level = 2, indexLimit = Infi
     </article>
 
     ${hOpen('class="visually-hidden"')}Материалы блога${hClose}
-    <ul class="bl-mosaic" role="list">
+    <ul class="bl-mosaic" role="list" data-reveal-group>
       ${mosaic.map(
         (p, i) => html`<li class="bl-mosaic__item ${i === 0 ? 'bl-mosaic__item--wide' : ''}">
           <a class="bl-card" href="${href(p)}">

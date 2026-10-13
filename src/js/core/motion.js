@@ -14,10 +14,12 @@ import { qsa, clamp } from './dom.js';
 let revealIO;
 
 export function reveal(root = document) {
-  qsa('[data-reveal-group]', root).forEach((group) => {
+  const groups = qsa('[data-reveal-group]', root);
+  if (root.matches?.('[data-reveal-group]')) groups.push(root);
+  groups.forEach((group) => {
     Array.from(group.children).forEach((child, i) => {
       if (!child.hasAttribute('data-reveal')) child.setAttribute('data-reveal', group.dataset.revealGroup || '');
-      child.style.setProperty('--i', i);
+      child.style.setProperty('--i', i % 8); // the wave repeats: the last cards of a long grid do not wait
     });
   });
   qsa('[data-reveal="mask"]', root).forEach((el) => {

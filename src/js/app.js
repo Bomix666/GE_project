@@ -79,10 +79,13 @@ document.addEventListener(
   'load',
   (e) => {
     const img = e.target;
-    if (img instanceof HTMLImageElement && (img.dataset.retried || img.classList.contains('is-broken'))) {
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.dataset.retried || img.classList.contains('is-broken')) {
       delete img.dataset.retried; // a reused <img> (lightbox, quick view) starts clean
       img.classList.remove('is-broken');
     }
+    // a photo that arrives after the page fades in instead of popping (the end value is whatever CSS says)
+    if (img.loading === 'lazy') img.animate?.([{ opacity: 0, offset: 0 }], { duration: 420, easing: 'ease-out' });
   },
   true,
 );
