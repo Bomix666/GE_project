@@ -246,7 +246,7 @@
     max-height: calc(100dvh - var(--header-h) - 32px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding-right: var(--s-2);
+    padding-right: var(--s-5); /* counts and chevrons keep clear of the panel's scrollbar */
     scrollbar-width: thin;
   }
   .toolbar__filters-btn {
