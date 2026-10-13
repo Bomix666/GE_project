@@ -59,7 +59,7 @@ export function createDialog({ className = '', labelledBy, label, onClose } = {}
         closing = false;
         if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
         onClose?.();
-      }, document.documentElement.classList.contains('reduce-motion') ? 0 : dur);
+      }, document.documentElement.classList.contains('reduce-motion') ? 120 : dur); // reduced motion: the short fade of tokens.css
     },
     setContent(markup) {
       dlg.innerHTML = markup;

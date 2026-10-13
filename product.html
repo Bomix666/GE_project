@@ -17,7 +17,7 @@
         <div class="container">
           <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list" data-crumbs><li><a href="/">Главная</a></li></ol></nav>
           <div class="pd-grid">
-            <div class="pd-gallery" data-gallery>
+            <div class="pd-gallery" data-gallery data-reveal="fade">
               <div class="pd-stage">
                 <img class="pd-stage__img" data-stage-img alt="" width="570" height="500" fetchpriority="high" />
                 <span class="pd-stage__glow" aria-hidden="true"></span>
@@ -29,7 +29,7 @@
               <ul class="pd-thumbs" role="list" data-thumbs aria-label="Фотографии товара"></ul>
             </div>
 
-            <div class="pd-info">
+            <div class="pd-info" data-reveal>
               <p class="eyebrow" data-pd-type></p>
               <h1 class="pd-title" id="pd-title" data-pd-title>Загрузка…</h1>
               <div class="pd-price-row">
@@ -52,7 +52,7 @@
       <section class="section pd-details" aria-label="Подробная информация о товаре">
         <div class="container pd-details__grid">
           <nav class="pd-toc" aria-label="Разделы описания" data-toc></nav>
-          <div class="pd-sections" data-sections></div>
+          <div class="pd-sections" data-sections data-reveal></div>
         </div>
       </section>
 
@@ -66,7 +66,7 @@
             </div>
           </div>
         </div>
-        <ul class="rail-track" data-rail-track role="list"></ul>
+        <ul class="rail-track" data-rail-track data-reveal-group="fade" role="list"></ul>
       </section>
 
       <section class="section pd-rail" data-consumables hidden aria-labelledby="cons-title">
@@ -82,7 +82,7 @@
             </div>
           </div>
         </div>
-        <ul class="rail-track" data-rail-track role="list"></ul>
+        <ul class="rail-track" data-rail-track data-reveal-group="fade" role="list"></ul>
       </section>
 
       <div class="buybar" data-buybar hidden>

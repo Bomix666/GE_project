@@ -29,7 +29,7 @@ ready(() => {
     .map(
       ([city, list]) => `<section class="city" aria-labelledby="city-${esc(city)}">
         <header class="city__head"><h3 class="city__name" id="city-${esc(city)}">${esc(city)}</h3><span class="label tabular">${list.length} ${plural(list.length, ['точка', 'точки', 'точек'])}</span></header>
-        <ul class="dealers" role="list">${list
+        <ul class="dealers" role="list" data-reveal-group>${list
           .map(
             (d) => `<li class="dealer">
               <p class="dealer__name">${esc(d.name)}</p>

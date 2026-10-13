@@ -238,7 +238,11 @@ function renderGrid(results) {
   }
 
   const shown = results.slice(0, limit);
+  const before = qsa('.pcard', grid).map((c) => c.dataset.productId);
   grid.innerHTML = shown.map((p, i) => toHTML(productCard(p, { categoryTitle: cat ? cat.title : '', eager: i < 4 }))).join('');
+  // «Показать ещё»: the cards that were already on screen stay put, only the new ones enter
+  const cards = qsa('.pcard', grid);
+  if (before.length && before.every((id, i) => cards[i]?.dataset.productId === id)) cards.slice(0, before.length).forEach((c) => c.classList.add('is-in'));
   const more = qs('[data-more-wrap]');
   more.hidden = results.length <= limit;
   qs('[data-shown]').textContent = `Показано ${shown.length} из ${results.length}`;

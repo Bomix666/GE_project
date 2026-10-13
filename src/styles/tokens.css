@@ -190,12 +190,13 @@
   }
 }
 
+/* Reduced motion: short fades instead of none (movement itself is removed in base.css and in JS) */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --dur-micro: 1ms;
-    --dur-ui: 1ms;
-    --dur-ui-exit: 1ms;
-    --dur-content: 1ms;
-    --dur-cine: 1ms;
+    --dur-micro: 120ms;
+    --dur-ui: 180ms;
+    --dur-ui-exit: 120ms;
+    --dur-content: 240ms;
+    --dur-cine: 240ms;
   }
 }
