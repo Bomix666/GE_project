@@ -46,6 +46,7 @@ export function resolve(path) {
 function localPage(p, q) {
   let m;
   if (p === '/') return '/';
+  if (p === '/category/podbor-konfetti-mashin') return '/podbor.html';
   if ((m = p.match(/^\/category\/([^/]+)$/)) && CATEGORIES.has(m[1])) return `/catalog.html?c=${m[1]}`;
   if ((m = p.match(/^\/product\/([^/]+)$/))) return `/product.html?p=${encodeURIComponent(m[1])}`;
   // News and the blog are blocks of the single «О компании» page; articles keep their own URLs
@@ -59,6 +60,7 @@ function localPage(p, q) {
   if ((m = p.match(/^\/gallery\/images(?:\/([^/]+))?$/))) return `/gallery.html${m[1] ? `?cat=${m[1]}` : ''}`;
   if ((m = p.match(/^\/gallery\/videos(?:\/([^/]+))?$/))) return `/gallery.html${m[1] ? `?cat=${m[1]}` : ''}#videos`;
   if (p === '/cart' || p === '/cart/index') return '/cart.html';
+  if (p === '/offers/free-samples' || p === '/offers/free-samples-snow') return '/samples.html';
   return null;
 }
 
@@ -158,8 +160,9 @@ export function unlinkMissingProducts(root, bySlug) {
 
 /** Rewrite links inside CMS text (news, blog, product descriptions). */
 export function localizeLinks(root) {
-  // Promotions («Акции») were removed from the frontend: links to them become plain text
-  qsa('a[href^="/offers"], a[href*="globaleffects.ru/offers"]', root).forEach((a) => a.replaceWith(...a.childNodes));
+  // Promotions («Акции») were removed from the frontend: links to them become plain text, except the free samples
+  const kept = ':not([href*="/offers/free-samples"])';
+  qsa(`a[href^="/offers"]${kept}, a[href*="globaleffects.ru/offers"]${kept}`, root).forEach((a) => a.replaceWith(...a.childNodes));
   qsa('a[href^="/"]', root).forEach((a) => {
     const href = resolve(a.getAttribute('href'));
     a.setAttribute('href', href);

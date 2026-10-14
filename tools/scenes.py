@@ -14,6 +14,8 @@ ponytail: 6 scenes come from 960px video posters and are upscaled to the old
 1280px size so no markup changes; replace with original footage when the client
 provides it (move the name to MASTERS and update width/height where it is used).
 """
+import os
+
 from PIL import Image
 
 MEDIA = 'public/media'
@@ -25,7 +27,7 @@ SCENES = {
     'fx-cryo': 'video/lg6npuVNhyk', 'fx-cryo-2': 'gallery/krioeffekty_03',
     'fx-flame': 'video/vapbhhGwmtU', 'fx-flame-2': 'video/LglbvIROtd8',
     'fx-foam': 'gallery/pena_00', 'fx-foam-2': 'video/IpYudCN1XI4',
-    'fx-smoke': 'gallery/tazelyj-dym_02', 'fx-smoke-2': 'video/ZV9-TIAr2Hc',
+    'fx-smoke': 'video/Fff_IRTgucM', 'fx-smoke-2': 'video/ZV9-TIAr2Hc',
     'fx-snow': 'gallery/iskusstvennyj-sneg_23', 'fx-snow-2': 'gallery/iskusstvennyj-sneg_21',
     'story-result': 'gallery/konfetti_22',
 }
@@ -39,8 +41,8 @@ def save_small(large, target):
 
 for name, source in SCENES.items():
     target = f'{MEDIA}/scenes/{name}.webp'
-    size = Image.open(target).size  # keep the published dimensions
     photo = Image.open(f'{MEDIA}/{source}.webp').convert('RGB')
+    size = Image.open(target).size if os.path.exists(target) else photo.size  # keep the published size; a new scene starts at its source's
     assert abs(photo.width / photo.height - size[0] / size[1]) < 0.02, f'{name}: aspect differs from {source}'
     large = photo.resize(size, Image.LANCZOS)
     large.save(target, 'WEBP', quality=80, method=6)

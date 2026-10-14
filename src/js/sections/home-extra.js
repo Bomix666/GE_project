@@ -1,13 +1,13 @@
 /**
  * Remaining home scenes, all fed by real data:
  *  catalog index (with cursor-following preview), flagship rail,
- *  projects (clients, a drifting photo row, video).
+ *  projects (clients, a drifting photo row, video), announcements.
  */
 import { qs, qsa, html, toHTML, esc, icon, formatPrice, plural, rafThrottle } from '../core/dom.js';
 import { env } from '../core/env.js';
 import { scene } from '../core/motion.js';
-import { routes } from '../core/routes.js';
-import { getCatalog, getGallery } from '../data/api.js';
+import { routes, resolve } from '../core/routes.js';
+import { getCatalog, getGallery, getBanners } from '../data/api.js';
 import { clients, flagship } from '../data/content.js';
 import { productCard } from '../components/product-card.js';
 import { ytFacade, initYouTube } from '../components/youtube.js';
@@ -179,4 +179,25 @@ export async function initVideos() {
     .map((v) => `<li>${ytFacade(v.id, { thumb: v.thumb, title: `${v.cat} — видео GLOBAL EFFECTS`, label: v.cat })}</li>`)
     .join('');
   initYouTube(root);
+}
+
+/* ------------------------------------------------------- announcements */
+// The site's announcements are the slides of the CMS home slider (picture, title, text, link):
+// an exhibition, a promotion. No file or no slides — the block stays hidden.
+export async function initBanners() {
+  const root = qs('[data-banners]');
+  if (!root) return;
+  const banners = (await getBanners().catch(() => [])).filter((b) => b.title && b.image);
+  if (!banners.length) return;
+  const body = (b) => html`<div class="banner__copy">
+      <h3 class="banner__title">${b.title}</h3>
+      ${b.text ? html`<p class="banner__text">${b.text}</p>` : ''}
+      ${b.url ? html`<span class="banner__more">Подробнее${icon('i-arrow', 18)}</span>` : ''}
+    </div>
+    <img class="banner__img" src="${b.image}" alt="" loading="lazy" decoding="async" />`;
+  qs('[data-banners-track]', root).innerHTML = banners
+    .map((b) => toHTML(html`<li class="banners__item">${b.url ? html`<a class="banner" href="${resolve(b.url)}">${body(b)}</a>` : html`<div class="banner">${body(b)}</div>`}</li>`))
+    .join('');
+  root.hidden = false;
+  initRail(root);
 }

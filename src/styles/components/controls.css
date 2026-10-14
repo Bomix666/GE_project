@@ -512,6 +512,25 @@
   transform: rotate(45deg) scale(1);
 }
 
+/* a single-answer choice: round box, a dot instead of the tick */
+.check input[type="radio"] + .check__box {
+  border-radius: 50%;
+}
+
+.check input[type="radio"] + .check__box::after {
+  inset: 5px;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 50%;
+  background: var(--on-accent);
+  transform: scale(0);
+}
+
+.check input[type="radio"]:checked + .check__box::after {
+  transform: scale(1);
+}
+
 .check input:focus-visible + .check__box {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;

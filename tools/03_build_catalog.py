@@ -1,5 +1,6 @@
 import re,html,os,json
 def txt(x): return html.unescape(re.sub(r'\s+',' ',re.sub(r'<[^>]+>',' ',x))).strip()
+def num(x): f=float(x.replace(' ','')); return int(f) if f.is_integer() else f
 cats=json.load(open('cats_full.json',encoding='utf-8'))
 listinfo={}
 for c in cats.values():
@@ -28,7 +29,8 @@ for pid,li in listinfo.items():
     head=s[s.find('<section class="product-heading">'):]
     crumbs=re.findall(r'<a href="(?:https://globaleffects\.ru)?/category/([^"]+)" itemprop="item">',head[:4000])
     sub=re.search(r'<div class="striking-text">.*?<div class="text">(.*?)</div>',s,re.S)
-    price=re.search(r'itemprop="price" content="(\d+)"',s)
+    price=re.search(r'itemprop="price"\s+content="([\d.]+)"',s)
+    old=re.search(r'<div class="price striked"><span>([\d\s.]+)</span>',head)
     offer=head[head.find('class="offer"'):head.find('</section>')]
     if 'cart_add(' in offer: avail='in_stock'
     elif 'product_demand_click' in offer: avail='on_order'
@@ -47,7 +49,7 @@ for pid,li in listinfo.items():
     ext=s[s.find('<section class="extra-prods">'):]
     ext=ext[:ext.find('</section>')]
     rec=[slug2id.get(x) or x for x in dict.fromkeys(re.findall(r'href="/product/([^"]+)"',ext))]
-    products[pid]=dict(id=pid,slug=li['slug'],name=li['name'],price=int(price.group(1)) if price else li['price'],
+    products[pid]=dict(id=pid,slug=li['slug'],name=li['name'],price=num(price.group(1)) if price else li['price'],oldPrice=num(old.group(1)) if old else None,
         availability=avail,category=crumbs[-1] if crumbs else None,type=txt(sub.group(1)) if sub else '',
         image=html.unescape(img.group(1)) if img else li['img'],thumb=li['img'],
         gallery=[dict(full=a,thumb=b) for a,b in gal],files=files,specs=specs,description=desc,videos=yt,

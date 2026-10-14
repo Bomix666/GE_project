@@ -57,6 +57,7 @@ function deployBase() {
 function liveRoutes() {
   const map = [
     [/^\/product\/[^/?#]+/, 'product.html'],
+    [/^\/category\/podbor-konfetti-mashin(?=[/?#]|$)/, 'podbor.html'],
     [/^\/category\/[^/?#]+/, 'catalog.html'],
     [/^\/news\/view(?=[/?#]|$)/, 'news.html'],
     [/^\/blog\/[^/?#]+/, 'blog.html'],
@@ -65,6 +66,7 @@ function liveRoutes() {
     [/^\/gallery\/(?:images|videos)(?:\/[^/?#]+)?/, 'gallery.html'],
     [/^\/cart(?:\/index)?(?=[?#]|$)/, 'cart.html'],
     [/^\/contacts(?=[?#]|$)/, 'about.html'],
+    [/^\/offers\/free-samples(?:-snow)?(?=[?#]|$)/, 'samples.html'],
   ];
   const rewrite = (req, _res, next) => {
     const hit = map.find(([re]) => re.test(req.url));
@@ -81,7 +83,7 @@ function liveRoutes() {
   };
 }
 
-const PAGES = ['index', 'catalog', 'product', 'gallery', 'about', 'cart', 'news', 'blog', 'page', '404'];
+const PAGES = ['index', 'catalog', 'product', 'gallery', 'about', 'cart', 'news', 'blog', 'page', 'podbor', 'samples', '404'];
 
 export default defineConfig({
   plugins: [htmlPartials(), deployBase(), liveRoutes()],

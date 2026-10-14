@@ -122,7 +122,7 @@ export const effects = [
     slug: 'smoke',
     num: '03',
     title: 'Тяжелый дым',
-    image: { src: media('/media/scenes/fx-smoke.webp'), sm: media('/media/scenes/fx-smoke-sm.webp'), w: 660, h: 413, alt: 'Сцена спектакля в стелющемся тяжёлом дыме' },
+    image: { src: media('/media/scenes/fx-smoke.webp'), sm: media('/media/scenes/fx-smoke-sm.webp'), w: 960, h: 540, alt: 'Тяжёлый дым стелется по сцене концерта' },
     equipment: 'tazelyj-dym',
     consumables: ['zidkosti'],
     gallery: 'tazelyj-dym',
@@ -190,7 +190,7 @@ export const stories = [
         specs: [
           ['Дальность выдува', 'до 8–10 м'],
           ['Покрытие одной машиной', 'до 50 м²'],
-          ['Подключение', '220 В, установка 5 мин'],
+          ['Продолжительность', 'без ограничений'],
           ['Уровень звука', '63 дБ(А)'],
         ],
         note: 'Данные: EASY Confetti',
@@ -209,6 +209,18 @@ export const stories = [
         text: 'В короб EASY Confetti помещается 1–2 кг бумажного конфетти или снега, металлизированного — 3–4 кг.',
         products: [75, 136, 92],
         categories: ['konfetti', 'serpantin', 'stvoly'],
+      },
+      {
+        kind: 'how',
+        label: 'Подготовка и запуск',
+        title: 'Пять минут до первого залпа',
+        text: 'Машине нужна только розетка 220 В. Интенсивность подачи и угол наклона оператор регулирует вручную.',
+        specs: [
+          ['Установка', '5 мин'],
+          ['Подключение', '220 В'],
+          ['Расход', '≈ 1 кг за 2–3 мин'],
+        ],
+        note: 'Данные: EASY Confetti',
       },
       {
         kind: 'result',
@@ -237,7 +249,6 @@ export const stories = [
         text: 'Клапан высокого давления выпускает жидкую углекислоту через форсунку. Высота шлейфа зависит от влажности воздуха.',
         specs: [
           ['Шлейф CO2 JET', '8–10 м'],
-          ['Один баллон 40 л', '≈ 30 пусков по 2–3 с'],
           ['Управление', 'DMX (JET DMX/POWER)'],
           ['Гарантия', '3 года'],
         ],
@@ -260,11 +271,90 @@ export const stories = [
         categories: ['aksessuary'],
       },
       {
+        kind: 'how',
+        label: 'Подготовка и запуск',
+        title: 'Сертифицированный баллон и прочный шланг',
+        text: 'Баллоны — только с сифонной трубкой и от надёжной заправочной станции. На выходе до −70 °C: обычные резиновые шланги теряют эластичность и трескаются, нужен шланг высокого давления.',
+        specs: [
+          ['Один баллон 40 л', '≈ 30 пусков по 2–3 с'],
+          ['Температура на выходе', 'до −70 °C'],
+          ['Несколько криопушек', 'соединяются кабелем последовательно'],
+        ],
+        note: 'Данные: CO2 JET, блог GLOBAL EFFECTS',
+      },
+      {
         kind: 'result',
         label: 'Результат на сцене',
         title: 'Сцена в движении',
         image: { src: media('/media/scenes/hero-cryo-columns.webp'), w: 1672, h: 941, alt: 'Столбы криоэффектов на концерте' },
         gallery: 'krioeffekty',
+      },
+    ],
+  },
+  {
+    slug: 'smoke',
+    tab: 'Тяжёлый дым',
+    // No photo of the result yet (the gallery's theatre shots are of unconfirmed authorship): the chain ends
+    // with the client's own test from the FreezeFog Pro news, the gallery opens from the first panel.
+    steps: [
+      {
+        kind: 'effect',
+        label: 'Эффект',
+        title: 'Дым, который стелется по полу',
+        text: 'Плотный белый слой остаётся у поверхности сцены и не поднимается сразу вверх — для концертов, театральных постановок, свадеб и шоу.',
+        image: { src: media('/media/scenes/fx-smoke.webp'), w: 960, h: 540, alt: 'Тяжёлый дым стелется по сцене концерта' },
+        gallery: 'tazelyj-dym',
+      },
+      {
+        kind: 'how',
+        label: 'Как создаётся',
+        title: 'Дым, охлаждённый CO₂',
+        text: 'Дым из дым-машины проходит через охлаждение жидкой углекислотой, становится тяжелее воздуха и выходит через гофрированный рукав прямо у пола.',
+        specs: [
+          ['Заполнение', 'до 150 м² за 30 с'],
+          ['Расход жидкого CO₂', '≈ 6 л/мин'],
+          ['Мощность', '3 кВт, 220–240 В'],
+        ],
+        note: 'Данные: FreezeFog Pro. Результат зависит от движения воздуха, температуры и размеров зала',
+      },
+      {
+        kind: 'equipment',
+        label: 'Оборудование',
+        title: 'Генераторы и установки охлаждения',
+        products: [254, 25, 489],
+        category: 'tazelyj-dym',
+      },
+      {
+        kind: 'consumables',
+        label: 'Расходные материалы',
+        title: 'Жидкость и баллон CO₂',
+        text: 'Нужны сертифицированная жидкость для тяжёлого дыма и баллон жидкого CO₂ с сифонной трубкой (20 или 40 л). Баллоны продают заправочные станции.',
+        products: [179],
+        categories: ['zidkosti'],
+      },
+      {
+        kind: 'how',
+        label: 'Подготовка и запуск',
+        title: 'Всё в одном кофре',
+        text: 'Дым-машина, охлаждение, рукав, шланг CO₂ и коммутация уже в кофре на колёсах. На площадке — подключить питание и баллон, вывести рукав в нужную точку.',
+        specs: [
+          ['Рукав', '5 м'],
+          ['Шланг CO₂', '3 м'],
+          ['Кофр', '850 × 570 × 800 мм, 40 кг'],
+        ],
+        note: 'Данные: FreezeFog Pro',
+      },
+      {
+        kind: 'how',
+        label: 'Результат теста',
+        title: 'Зал 300 м² — меньше чем за 2 минуты',
+        text: 'После нагрева дым-машины первые 10 секунд — 100% интенсивности, затем 70%.',
+        specs: [
+          ['Площадь зала', '300 м²'],
+          ['Время заполнения', 'менее 2 мин'],
+          ['Баллон CO₂ 40 л', '≈ 6,5 мин работы'],
+        ],
+        note: 'Тест GLOBAL EFFECTS, новость от 21.09.2026',
       },
     ],
   },
@@ -284,6 +374,63 @@ export const dealers = [
   { city: 'Симферополь', name: 'Праздникмастер', address: 'ул. Москалёва, 9', phone: '+7 (989) 295-59-24', site: 'prazdnikmaster.ru', type: 'Продажа' },
   { city: 'Краснодар', name: 'Праздникмастер', address: 'ул. Васнецова, 39/1', phone: '+7 (988) 356-28-17', site: 'prazdnikmaster.ru', type: 'Продажа' },
 ];
+
+/** Categories whose `specs` are selection parameters (catalogue filters, equipment picker:
+ *  «Тип зала», «Дальность», «Высота потолков»…), not the model's technical data. They stay
+ *  in the data for filters and search but are not shown as «Характеристики»; the real
+ *  specifications of these products are in their descriptions. */
+export const specsAreSelectionOnly = ['konfetti-masiny'];
+
+/** /category/podbor-konfetti-mashin — «Подбор конфетти машин»: the five questions of the live quiz.
+ *  An answer is a value of the machine's selection parameter `key` (catalog specs hold every value
+ *  the live filter knows). Answers to one question combine with OR, the questions with AND — as on the site. */
+export const picker = {
+  category: 'konfetti-masiny',
+  lead: 'Не уверены, какую конфетти-машину выбрать? Ответьте на 5 вопросов — и мы порекомендуем вам тип конфетти-машины для вашего мероприятия.',
+  questions: [
+    {
+      key: 'Тип зала',
+      multiple: true,
+      text: 'В каком помещении планируете использовать конфетти-машину?',
+      hint: 'Вы можете выбрать несколько вариантов ответов. Если вашего варианта нет в списке — подберите наиболее близкий.',
+      options: ['Ночной клуб', 'Ресторан', 'Дворец культуры', 'Концертный зал', 'Актовый зал', 'Театр', 'Стадион или арена', 'Цирк', 'Улица'],
+    },
+    {
+      key: 'Эффект',
+      multiple: true,
+      text: 'Какой эффект вам нужен?',
+      hint: 'Вы можете выбрать несколько вариантов ответов.',
+      options: ['Выстрел конфетти', 'Плавный выдув конфетти', 'Выстрел серпантином', 'Мощный выброс конфетти', 'Выстрел футболками'],
+    },
+    {
+      key: 'Продолжительность',
+      multiple: true,
+      text: 'Сколько по времени должен длиться эффект?',
+      hint: 'Вы можете выбрать несколько вариантов ответов.',
+      options: ['Залп конфетти или серпантина', 'Непрерывно 2-5 минут', 'Непрерывно 5-10 минут', 'Непрерывно 10-30 минут', 'Более 30 минут'],
+    },
+    {
+      key: 'Управление',
+      multiple: false,
+      text: 'Какое управление конфетти-машиной вас устроит?',
+      hint: 'Нужно выбрать один вариант ответа.',
+      options: ['220В', 'DMX', 'Нет возможности подключения'],
+    },
+    {
+      key: 'Высота потолков',
+      multiple: false,
+      text: 'Высота потолков в вашем помещении?',
+      hint: 'Нужно выбрать один вариант ответа.',
+      options: ['До 5 метров', 'До 10 метров', 'До 25 метров'],
+    },
+  ],
+};
+
+/** Machines that fit the answers: { key: [values] }; an unanswered question does not narrow. */
+export const pickMachines = (products, answers) =>
+  products.filter((p) =>
+    Object.entries(answers).every(([key, values]) => !values.length || p.specs.some(([k, v]) => k === key && values.includes(v))),
+  );
 
 /** Flagship equipment shown in the home rail (ids from /data/catalog.json). */
 export const flagship = [8, 516, 449, 19, 254, 25, 253, 21, 433, 453, 12, 472];

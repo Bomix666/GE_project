@@ -108,6 +108,19 @@
         <ul class="fxgrid container" data-fx-grid data-reveal-group role="list"></ul>
       </section>
 
+      <!-- ======================= ANNOUNCEMENTS (CMS slider) =================== -->
+      <section class="banners container" data-banners aria-labelledby="banners-title" hidden>
+        <h2 class="visually-hidden" id="banners-title">Объявления</h2>
+        <ul class="banners__track" data-rail-track data-banners-track data-reveal="fade" role="list"></ul>
+        <div class="banners__foot">
+          <span class="rail-progress banners__progress" aria-hidden="true"><span data-rail-progress></span></span>
+          <div class="rail-controls">
+            <button type="button" class="icon-btn icon-btn--line" data-rail-prev aria-label="Предыдущее объявление"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>
+            <button type="button" class="icon-btn icon-btn--line" data-rail-next aria-label="Следующее объявление"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow" /></svg></button>
+          </div>
+        </div>
+      </section>
+
       <!-- ============================== STORY ============================= -->
       <section class="story" data-story data-chapter="Как это работает" aria-labelledby="story-title">
         <div class="story__head container">
@@ -117,6 +130,7 @@
             <div class="tabs" role="tablist" aria-label="Выберите эффект">
               <button type="button" class="tab" role="tab" aria-selected="true" aria-controls="story-track" id="story-tab-0">Конфетти</button>
               <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="story-track" id="story-tab-1" tabindex="-1">Криоэффекты</button>
+              <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="story-track" id="story-tab-2" tabindex="-1">Тяжёлый дым</button>
             </div>
             <div class="rail-controls story__arrows">
               <button type="button" class="icon-btn icon-btn--line" data-rail-prev aria-label="Предыдущий шаг"><svg width="22" height="22" aria-hidden="true"><use href="#i-arrow-left" /></svg></button>

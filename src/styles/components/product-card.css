@@ -146,6 +146,16 @@ body:not([data-page="home"]) .pcard__title {
   letter-spacing: var(--tracking-display);
 }
 
+/* the full price of a discounted product (card, quick view, product page): smaller, muted, struck */
+.price-old {
+  margin-left: 0.35em;
+  font-family: var(--font-body);
+  font-size: max(0.55em, 0.8125rem);
+  letter-spacing: 0;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
 .pcard__actions {
   position: relative;
   z-index: 2;

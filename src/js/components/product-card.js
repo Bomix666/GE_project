@@ -6,6 +6,7 @@
 import { html, raw, icon, formatPrice } from '../core/dom.js';
 import { routes } from '../core/routes.js';
 import { AVAILABILITY } from '../data/api.js';
+import { specsAreSelectionOnly } from '../data/content.js';
 
 export function availabilityBadge(p) {
   const a = AVAILABILITY[p.availability] || AVAILABILITY.in_stock;
@@ -39,6 +40,15 @@ export function buyAction(p, { size = 'sm', withQty = true, label } = {}) {
     </button>`;
 }
 
+/** Price line: a discounted product also shows its full price struck through, as the live site does. */
+export const priceHTML = (p) =>
+  p.price
+    ? html`${formatPrice(p.price)}${p.oldPrice ? html` <s class="price-old"><span class="visually-hidden">без скидки </span>${formatPrice(p.oldPrice)}</s>` : ''}`
+    : 'Цена по запросу';
+
+/** Specs shown as «Характеристики»: none where the category's specs are only selection parameters. */
+export const displaySpecs = (p) => (specsAreSelectionOnly.includes(p.category) ? [] : p.specs || []);
+
 export function productCard(p, { categoryTitle = '', variant = 'grid', eager = false } = {}) {
   const url = routes.product(p.slug);
   const type = p.type || categoryTitle;
@@ -54,7 +64,7 @@ export function productCard(p, { categoryTitle = '', variant = 'grid', eager = f
       ${type ? html`<p class="pcard__type">${type}</p>` : ''}
       <h3 class="pcard__title"><a class="pcard__link" href="${url}">${p.name}</a></h3>
       <div class="pcard__meta">
-        <p class="pcard__price tabular">${p.price ? formatPrice(p.price) : 'Цена по запросу'}</p>
+        <p class="pcard__price tabular">${priceHTML(p)}</p>
         ${availabilityBadge(p)}
       </div>
       <div class="pcard__actions" data-qty-scope>${buyAction(p)}</div>
