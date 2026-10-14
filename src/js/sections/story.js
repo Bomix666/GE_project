@@ -1,8 +1,8 @@
 /**
- * "Как рождается эффект": Effect → How → Equipment → Consumables → Result.
+ * "Как рождается эффект": Effect → How → Equipment → Consumables → Preparation → Result.
  * A horizontal rail (the shared rail component): swiped on phones, scrolled
  * sideways or paged with the arrows on desktop.
- * Tabs switch between real chains (confetti, cryo).
+ * Tabs switch between real chains (confetti, cryo, heavy smoke).
  */
 import { qs, qsa, html, toHTML, icon, formatPrice } from '../core/dom.js';
 import { env } from '../core/env.js';
@@ -74,7 +74,7 @@ function panel(s, k, story, catalog) {
         ${head}
         <h3 class="spanel__title">${s.title}</h3>
         ${s.text ? html`<p class="spanel__text">${s.text}</p>` : ''}
-        ${s.kind === 'result'
+        ${s.gallery
           ? html`<div class="spanel__actions">
               <a class="btn btn--primary btn--md" href="${routes.gallery(s.gallery)}"><span class="btn__label">Смотреть галерею</span><span class="btn__icon" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
               <a class="btn btn--ghost" href="${routes.effect(story.slug)}"><span class="btn__label">К эффекту</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>

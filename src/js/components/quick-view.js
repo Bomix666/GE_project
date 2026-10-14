@@ -1,9 +1,9 @@
 /** Quick product preview from any card — loaded lazily on first use. */
-import { html, toHTML, icon, formatPrice } from '../core/dom.js';
+import { html, toHTML, icon } from '../core/dom.js';
 import { routes } from '../core/routes.js';
 import { getCatalog, getProduct } from '../data/api.js';
 import { createDialog } from './dialog.js';
-import { availabilityBadge, buyAction } from './product-card.js';
+import { availabilityBadge, buyAction, displaySpecs, priceHTML } from './product-card.js';
 
 let dialog;
 
@@ -25,11 +25,11 @@ export async function openQuickView(slug, trigger) {
         <p class="label">${p.type || (cat ? cat.title : '')}</p>
         <h2 class="qv__title h3" id="qv-title">${p.name}</h2>
         <div class="qv__price-row">
-          <p class="qv__price tabular">${p.price ? formatPrice(p.price) : 'Цена по запросу'}</p>
+          <p class="qv__price tabular">${priceHTML(p)}</p>
           ${availabilityBadge(p)}
         </div>
-        ${p.specs && p.specs.length
-          ? html`<dl class="specs specs--compact">${p.specs.slice(0, 4).map(([k, v]) => html`<div><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>`
+        ${displaySpecs(p).length
+          ? html`<dl class="specs specs--compact">${displaySpecs(p).slice(0, 4).map(([k, v]) => html`<div><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>`
           : ''}
         ${excerpt ? html`<p class="qv__excerpt text-2">${excerpt}…</p>` : ''}
         <div class="qv__actions" data-qty-scope>${buyAction(p, { size: 'md' })}</div>

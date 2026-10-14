@@ -58,6 +58,8 @@ export function getCatalog() {
 export const getProduct = (slug) => fetchJSON(`/data/products/${encodeURIComponent(slug)}.json`);
 export const getGallery = () => fetchJSON('/data/gallery.json');
 export const getNews = () => fetchJSON('/data/news.json');
+/** Slides of the CMS home slider: { title, text, image, url } in their order. */
+export const getBanners = () => fetchJSON('/data/banners.json');
 export const getBlog = () => fetchJSON('/data/blog.json');
 export const getPages = () => fetchJSON('/data/pages.json');
 

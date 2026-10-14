@@ -122,12 +122,15 @@ const MESSAGES = {
   name: 'Укажите имя — так менеджер поймёт, к кому обращаться.',
   phone: 'Укажите телефон в формате +7 900 000-00-00.',
   email: 'Укажите e-mail, например name@company.ru.',
+  organization: 'Укажите организацию — образцы отправляются с документами на неё.',
+  city: 'Укажите город — так менеджер выберет доставку.',
+  agreement: 'Без согласия на обработку персональных данных заявку не отправить.',
   verifycode: 'Введите символы с картинки. Если их не видно — нажмите «Обновить код».',
 };
 
 function validateField(input) {
   const key = input.id.split('-').pop();
-  let ok = input.value.trim().length > 0 && (input.maxLength < 0 || input.value.length <= input.maxLength);
+  let ok = input.type === 'checkbox' ? input.checked : input.value.trim().length > 0 && (input.maxLength < 0 || input.value.length <= input.maxLength);
   if (ok && input.type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
   // a phone is digits with the usual separators, 10–15 digits (E.164); no words
   if (ok && input.type === 'tel') {
@@ -140,10 +143,11 @@ function validateField(input) {
   return ok;
 }
 
-function wireValidation(form, summary, onValid) {
+export function wireValidation(form, summary, onValid) {
   const required = qsa('[required]', form);
   required.forEach((input) => {
-    input.addEventListener('blur', () => input.value && validateField(input));
+    input.addEventListener('blur', () => input.value && input.type !== 'checkbox' && validateField(input));
+    input.addEventListener('change', () => input.type === 'checkbox' && validateField(input));
     input.addEventListener('input', () => input.getAttribute('aria-invalid') === 'true' && validateField(input));
   });
   form.addEventListener('submit', (e) => {
@@ -152,7 +156,10 @@ function wireValidation(form, summary, onValid) {
     if (invalid.length) {
       summary.hidden = false;
       summary.innerHTML = `<p>Проверьте ${invalid.length === 1 ? 'поле' : 'поля'}:</p><ul>${invalid
-        .map((i) => `<li><a href="#${i.id}">${esc(form.querySelector(`label[for="${i.id}"]`).firstChild.textContent.trim())}</a></li>`)
+        .map((i) => {
+          const label = form.querySelector(`label[for="${i.id}"]`);
+          return `<li><a href="#${i.id}">${esc((qs('.check__label', label) || label.firstChild).textContent.trim())}</a></li>`;
+        })
         .join('')}</ul>`;
       summary.focus();
       return;

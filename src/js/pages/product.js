@@ -9,7 +9,7 @@ import { reveal } from '../core/motion.js';
 import { routes, localizeLinks, unlinkMissingProducts, pageParams } from '../core/routes.js';
 import { getCatalog, getProduct, GROUP_TITLES } from '../data/api.js';
 import { consumablesFor } from '../data/content.js';
-import { availabilityBadge, buyAction, productCard } from '../components/product-card.js';
+import { availabilityBadge, buyAction, productCard, displaySpecs, priceHTML } from '../components/product-card.js';
 import { ytFacade, initYouTube } from '../components/youtube.js';
 import { initRail } from '../components/rail.js';
 import { cleanHTML } from '../core/sanitize.js';
@@ -54,7 +54,7 @@ function renderHero(p, cat) {
 
   qs('[data-pd-type]').textContent = p.type || (cat ? cat.title : '');
   qs('[data-pd-title]').textContent = p.name;
-  qs('[data-pd-price]').textContent = p.price ? formatPrice(p.price) : 'Цена по запросу';
+  qs('[data-pd-price]').innerHTML = toHTML(priceHTML(p));
   qs('[data-pd-avail]').innerHTML = toHTML(availabilityBadge(p));
 
   const buy = qs('[data-pd-buy]');
@@ -83,7 +83,7 @@ function renderHero(p, cat) {
   if (p.files && p.files.length) badges.push(['i-file', `${p.files.length} ${plural(p.files.length, ['документ', 'документа', 'документов'])}`]);
   qs('[data-pd-badges]').innerHTML = badges.map(([i, t]) => `<li>${toHTML(icon(i, 18))}<span>${t}</span></li>`).join('');
 
-  const specs = (p.specs || []).slice(0, 6);
+  const specs = displaySpecs(p).slice(0, 6);
   qs('[data-pd-keyspecs]').innerHTML = specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   if (!specs.length) qs('[data-pd-keyspecs]').remove();
 }
@@ -144,13 +144,14 @@ function renderGallery(p) {
 function renderSections(p, catalog) {
   const sections = [];
   if (p.description) sections.push({ id: 'desc', title: 'Описание', open: true, body: `<div class="prose">${cleanHTML(p.description)}</div>` }); // CMS HTML → allowlist
-  if (p.specs && p.specs.length)
+  const specs = displaySpecs(p);
+  if (specs.length)
     sections.push({
       id: 'specs',
       title: 'Характеристики',
-      count: p.specs.length,
+      count: specs.length,
       open: true,
-      body: `<dl class="specs">${p.specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`,
+      body: `<dl class="specs">${specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`,
     });
   if (p.files && p.files.length)
     sections.push({

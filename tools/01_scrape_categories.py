@@ -11,6 +11,7 @@ def get(url,fn):
     print('FAIL',url,err); return ''
 equip=["komplekty","konfetti-masiny","krioeffekty-2","sistema-sbrosa-zanavesa","imitacia-plameni-2","pena-2","tazelyj-dym","linejka-easyfx","linejka-power-550","aksessuary"]
 cons=["konfetti","serpantin","iskusstvennyj-sneg","stvoly","zidkosti","iskusstvennyj-pepel","effekty-v-balloncikah"]
+def num(x): f=float(x.replace(' ','')); return int(f) if f.is_integer() else f
 def txt(x): return html.unescape(re.sub(r'\s+',' ',re.sub(r'<[^>]+>',' ',x))).strip()
 def parse_list(s):
     items=[]
@@ -18,9 +19,11 @@ def parse_list(s):
         pid=re.search(r'data-key="(\d+)"',blk)
         url=re.search(r'href="(/product/[^"]+)"',blk); img=re.search(r'<img src="([^"]+)"',blk)
         name=re.search(r'<div class="title">\s*<a[^>]*>(.*?)</a>',blk,re.S)
-        price=re.search(r'<div class="price[^"]*">\s*<span>([\d\s]+)</span>',blk)
+        # a discounted item lists the struck full price first, then the price it sells for (kopecks possible)
+        price=re.search(r'<div class="price price_discount">\s*<span>([\d\s.]+)</span>',blk) or re.search(r'<div class="price[^"]*">\s*<span>([\d\s.]+)</span>',blk)
+        old=re.search(r'<div class="price striked">\s*<span>([\d\s.]+)</span>',blk) if 'price_discount' in blk else None
         items.append(dict(id=int(pid.group(1)),slug=url.group(1).split('/product/')[1] if url else None,name=txt(name.group(1)) if name else None,
-            img=html.unescape(img.group(1)) if img else None,price=int(price.group(1).replace(' ','')) if price else None,
+            img=html.unescape(img.group(1)) if img else None,price=num(price.group(1)) if price else None,oldPrice=num(old.group(1)) if old else None,
             available=('cart_add(' in blk)))
     return items
 cats={}

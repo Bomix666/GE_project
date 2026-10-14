@@ -95,7 +95,7 @@ async function fromCatalog(items) {
     const catalog = await getCatalog();
     return items.flatMap((i) => {
       const p = catalog.byId.get(i.product_id);
-      return p ? [{ ...i, slug: p.slug, name: p.name, discountPrice: p.price || 0, price: p.price || 0 }] : [];
+      return p ? [{ ...i, slug: p.slug, name: p.name, discountPrice: p.price || 0, price: p.oldPrice || p.price || 0 }] : [];
     });
   } catch {
     return items;
@@ -105,7 +105,8 @@ async function fromCatalog(items) {
 function totals(items) {
   const count = items.reduce((n, i) => n + i.quantity, 0);
   const cost = items.reduce((n, i) => n + i.quantity * (i.discountPrice || 0), 0);
-  return { items, count, cost, cost_full: cost };
+  const full = items.reduce((n, i) => n + i.quantity * (i.price || i.discountPrice || 0), 0);
+  return { items, count, cost, cost_full: full };
 }
 
 const LocalDriver = {
@@ -131,7 +132,7 @@ const LocalDriver = {
           name: product.name,
           quantity: clampQty(body.qty),
           discountPrice: product.price || 0,
-          price: product.price || 0,
+          price: product.oldPrice || product.price || 0, // the full price: the drawer shows the saving, as the backend cart does
           images: { thumbnails: { cart: product.thumb } },
           is_rent: false,
         });

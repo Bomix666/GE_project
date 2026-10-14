@@ -29,7 +29,8 @@ export const icon = (id, size = 20, cls = '') =>
   raw(`<svg class="${cls}" width="${size}" height="${size}" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`);
 
 const priceFmt = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
-export const formatPrice = (n) => (n == null ? '' : `${priceFmt.format(n)} ₽`);
+const kopecksFmt = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // a discount can leave kopecks: 95 450,60 ₽
+export const formatPrice = (n) => (n == null ? '' : `${(Number.isInteger(n) ? priceFmt : kopecksFmt).format(n)} ₽`);
 
 /** Russian plural: plural(5, ['товар', 'товара', 'товаров']) */
 export function plural(n, forms) {

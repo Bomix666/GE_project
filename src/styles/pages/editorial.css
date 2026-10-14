@@ -656,3 +656,124 @@
     height: 54px;
   }
 }
+
+/* ---------------- Подбор конфетти-машин ---------------- */
+.pick {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-8);
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) var(--section-y);
+}
+
+.pick__form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 64rem;
+}
+
+.pick__q {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-2);
+  margin: 0;
+  padding: var(--s-6) 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pick__legend {
+  display: flex;
+  gap: var(--s-4);
+  float: left; /* lets the legend sit inside the fieldset's grid */
+  width: 100%;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 300;
+  line-height: var(--lh-heading);
+}
+
+.pick__num {
+  color: var(--accent-text);
+}
+
+.pick__hint {
+  font-size: var(--fs-sm);
+}
+
+.pick__opts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  gap: 0 var(--s-5);
+  margin-top: var(--s-2);
+}
+
+.pick__opts .check {
+  min-height: var(--tap);
+  font-size: var(--fs-body);
+}
+
+.pick__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  padding-top: var(--s-6);
+}
+
+.pick__result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5);
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.pick__result h2:focus {
+  outline: none;
+}
+
+.pick__note {
+  max-width: 60ch;
+}
+
+.pick__note a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------- Бесплатные образцы ---------------- */
+.samples {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-7);
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) var(--section-y);
+}
+
+@media (min-width: 1024px) {
+  .samples {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 6rem);
+  }
+  .samples__about {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    align-self: start;
+  }
+}
+
+.samples__about .prose {
+  margin-top: var(--s-3);
+}
+
+.samples__form {
+  max-width: 44rem;
+}
+
+.samples .field__hint {
+  font-size: var(--fs-xs);
+}
+
+.samples__submit {
+  justify-self: start;
+}
+

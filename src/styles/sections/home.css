@@ -672,6 +672,144 @@ body[data-page="home"] .chapter {
   inset: 0;
 }
 
+/* ============================ ANNOUNCEMENTS ============================= */
+/* Slides of the CMS home slider, one per view: text on the left, the picture on the right
+   (any uploaded picture works: the text never sits on it). */
+.banners {
+  padding-top: var(--section-y);
+}
+
+.banners__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: var(--s-4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.banners__track::-webkit-scrollbar {
+  display: none;
+}
+
+.banners__item {
+  display: grid;
+  scroll-snap-align: start;
+}
+
+.banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  min-height: clamp(260px, 22vw, 380px);
+  overflow: hidden;
+  border-radius: var(--r-3);
+  background: var(--bg); /* the slider pictures are drawn on black: no seam where they start */
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+/* the picture melts into the text side */
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 calc(100% * 5 / 12);
+  width: 16%;
+  background: linear-gradient(to right, var(--bg), transparent);
+  pointer-events: none;
+}
+
+.banner__copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--s-4);
+  padding: clamp(1.5rem, 0.8rem + 2.4vw, 3.5rem);
+}
+
+.banner__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: var(--lh-heading);
+}
+
+.banner__text {
+  max-width: 46ch;
+  color: var(--text-2);
+}
+
+.banner__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--tap);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+.banner__more svg {
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.banner__img {
+  contain: size; /* the copy and min-height set the height, not the picture's proportions */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  transition: transform var(--dur-cine) var(--ease-out);
+}
+
+a.banner:hover .banner__img {
+  transform: scale(1.03);
+}
+
+a.banner:hover .banner__more svg {
+  transform: translateX(4px);
+}
+
+a.banner:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.banners__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  margin-top: var(--s-4);
+}
+
+.banners__progress {
+  flex: 1;
+}
+
+/* a single announcement needs neither arrows nor progress */
+.banners:not(.is-scrollable) .banners__foot {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .banner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .banner::after {
+    display: none;
+  }
+  .banner__img {
+    contain: none;
+    order: -1;
+    aspect-ratio: 16 / 9;
+    height: auto;
+  }
+}
+
 /* ================================ STORY ================================= */
 .story {
   position: relative;
@@ -689,6 +827,11 @@ body[data-page="home"] .chapter {
   justify-content: space-between;
   align-items: flex-end;
   gap: var(--s-5);
+}
+
+/* three chains fit a 320px phone: the tabs' side padding gives way first (desktop keeps 1.1rem) */
+.story__bar .tab {
+  padding-inline: clamp(0.5rem, 4vw - 0.4rem, 1.1rem);
 }
 
 /* a horizontal rail: swipe on phones, scroll or page with the arrows on desktop */
