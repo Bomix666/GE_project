@@ -47,7 +47,7 @@ ready(async () => {
       </form>
       <section class="pick__result" data-pick-result aria-labelledby="pick-result-title" hidden>
         <h2 class="h2" id="pick-result-title" data-pick-count tabindex="-1"></h2>
-        <div class="pgrid" data-pick-grid></div>
+        <div class="pgrid" data-pick-grid data-reveal-group></div>
         <p class="pick__note text-2" data-pick-note></p>
       </section>
     </div>`;
@@ -69,9 +69,12 @@ ready(async () => {
     qs('[data-pick-count]', result).textContent = fit.length
       ? `Подходят ${fit.length} ${plural(fit.length, ['машина', 'машины', 'машин'])}`
       : 'Под эти ответы нет машины';
-    qs('[data-pick-grid]', result).innerHTML = fit.map((p) => toHTML(productCard(p, { categoryTitle: cat.title }))).join('');
+    const grid = qs('[data-pick-grid]', result);
+    const shown = new Set(qsa('.pcard.is-in', grid).map((c) => c.dataset.productId)); // already on screen: stays put
+    grid.innerHTML = fit.map((p) => toHTML(productCard(p, { categoryTitle: cat.title }))).join('');
+    qsa('.pcard', grid).forEach((c) => shown.has(c.dataset.productId) && c.classList.add('is-in'));
     qs('[data-pick-note]', result).innerHTML = fit.length ? consult : `Уберите часть ответов или позвоните — подберём вместе. ${consult}`;
-    reveal();
+    reveal(grid);
     return fit.length;
   };
 

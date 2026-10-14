@@ -62,13 +62,13 @@ export function renderArticle(root, item, { eyebrow, back, siblings = [], siblin
   root.innerHTML = toHTML(html`<article class="art" aria-labelledby="art-title">
     <div class="container">
       <nav aria-label="Хлебные крошки"><ol class="crumbs" role="list"><li><a href="${routes.home()}">Главная</a></li><li><a href="${routes.about()}">О компании</a></li><li><a href="${back.href}">${back.label}</a></li><li><span aria-current="page">${item.title}</span></li></ol></nav>
-      <header class="art__head">
+      <header class="art__head" data-reveal>
         <p class="eyebrow"><span>${eyebrow}${item.date ? html` · <time datetime="${iso(item.date)}">${item.date}</time>` : ''}</span></p>
         <h1 class="art__title" id="art-title" data-fit>${item.title}</h1>
       </header>
-      ${item.image ? html`<figure class="art__media"><img src="${item.image}" alt="" decoding="async" fetchpriority="high" /></figure>` : ''}
+      ${item.image ? html`<figure class="art__media" data-reveal="fade" style="--delay: 120ms"><img src="${item.image}" alt="" decoding="async" fetchpriority="high" /></figure>` : ''}
       <div class="art__grid">
-        <div>
+        <div data-reveal style="--delay: 200ms">
           <div class="art__body prose" data-art-body></div>
           ${item.videos && item.videos.length
             ? html`<ul class="art__videos" role="list">${item.videos.map((id) =>
@@ -76,7 +76,7 @@ export function renderArticle(root, item, { eyebrow, back, siblings = [], siblin
               )}</ul>`
             : ''}
         </div>
-        <aside class="art__aside" aria-label="Ещё материалы">
+        <aside class="art__aside" aria-label="Ещё материалы" data-reveal style="--delay: 280ms">
           ${siblings.length
             ? html`<div><p class="label">Читайте также</p><ul class="art__nav" role="list">${siblings.map(
                 (s) => html`<li><a href="${siblingHref(s)}">${s.date ? html`<time class="ed-date tabular" datetime="${iso(s.date)}">${s.date}</time>` : ''}<span>${s.title}</span></a></li>`,
@@ -151,7 +151,7 @@ export function renderBlogList(root, posts, { href, level = 2, indexLimit = Infi
     ${index.length
       ? html`<section class="bl-index" aria-labelledby="bl-index-title">
           <div class="bl-index__head">${hOpen('class="bl-index__title" id="bl-index-title"')}Все материалы${hClose}<span class="label tabular">${n} ${plural(n, ['материал', 'материала', 'материалов'])}</span></div>
-          <ol class="bl-index__list" role="list" id="bl-index-list">
+          <ol class="bl-index__list" role="list" id="bl-index-list" data-reveal-group>
             ${index.map(
               (p, i) => html`<li ${raw(i >= indexLimit ? 'hidden data-bl-folded' : '')}><a class="bl-row" href="${href(p)}">
                 <span class="bl-row__num tabular">${num(i + 1 + mosaic.length)}</span>

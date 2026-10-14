@@ -267,6 +267,8 @@ function renderChips() {
   qs('[data-filters-badge]').textContent = n ? `· ${n}` : '';
 }
 
+const expanded = new Set(); // facets whose «Показать ещё» is open: re-rendering the filters keeps them open
+
 function renderFilters() {
   const root = qs('[data-filters]');
   const cat = state.slug ? catalog.categories.get(state.slug) : null;
@@ -304,19 +306,21 @@ function renderFilters() {
     }));
     const isColor = facet.key === 'Цвет';
     const visible = 8;
+    const more = options.length - visible;
+    const open = expanded.has(facet.key);
     const body = `<ul class="fopts ${isColor ? 'fopts--color' : ''}" role="list">${options
       .map((o, i) => {
         const id = `f-${fi}-${i}`;
         const checked = selected.includes(o.value);
         const disabled = !o.live && !checked;
-        return `<li ${i >= visible ? 'data-extra hidden' : ''}><label class="check ${disabled ? 'is-disabled' : ''}" for="${id}">
+        return `<li ${i >= visible ? `data-extra ${open || checked ? '' : 'hidden'}` : ''}><label class="check ${disabled ? 'is-disabled' : ''}" for="${id}">
           <input type="checkbox" id="${id}" data-facet="${esc(facet.key)}" value="${esc(o.value)}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
           <span class="check__box" aria-hidden="true"></span>
           ${isColor ? `<span class="swatch" style="background:${swatches[o.value] || 'var(--surface-4)'}" aria-hidden="true"></span>` : ''}
           <span class="check__label">${esc(o.value)}</span><em class="tabular">${o.live}</em>
         </label></li>`;
       })
-      .join('')}</ul>${options.length > visible ? `<button type="button" class="fmore" data-fmore aria-expanded="false">Показать ещё ${options.length - visible}</button>` : ''}`;
+      .join('')}</ul>${more > 0 ? `<button type="button" class="fmore" data-fmore="${esc(facet.key)}" data-more-count="${more}" aria-expanded="${open}">${open ? 'Скрыть' : `Показать ещё ${more}`}</button>` : ''}`;
     groups.push(fgroup(facet.label, body, { open: true, id: `f-${fi}`, count: selected.length }));
   });
 
@@ -356,9 +360,11 @@ function bind() {
     const more = e.target.closest('[data-fmore]');
     if (more) {
       const open = more.getAttribute('aria-expanded') === 'true';
-      qsa('[data-extra]', more.parentElement).forEach((li) => (li.hidden = open));
+      qsa('[data-extra]', more.parentElement).forEach((li) => (li.hidden = open && !qs('input:checked', li)));
       more.setAttribute('aria-expanded', String(!open));
-      more.textContent = open ? more.textContent.replace('Скрыть', 'Показать ещё') : 'Скрыть';
+      more.textContent = open ? `Показать ещё ${more.dataset.moreCount}` : 'Скрыть';
+      if (open) expanded.delete(more.dataset.fmore);
+      else expanded.add(more.dataset.fmore);
     }
   });
 
