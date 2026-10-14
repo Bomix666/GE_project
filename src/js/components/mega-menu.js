@@ -22,6 +22,13 @@ export function initMegaMenu() {
   let openTimer;
   let closeTimer;
 
+  // the pictures of a menu are fetched on intent (hover or focus on its trigger), not with the page:
+  // menus stay closed on most visits, and by the time the panel opens the files are in the cache
+  const warm = (panel) =>
+    qsa('img[data-src]', panel).forEach((img) => {
+      if (img.dataset.src && !img.dataset.warm) new Image().src = img.dataset.warm = img.dataset.src;
+    });
+
   const setOpen = (name, { focusFirst = false } = {}) => {
     if (current === name) return;
     const prev = current;
@@ -31,7 +38,6 @@ export function initMegaMenu() {
     panels.forEach((panel, key) => {
       if (key === name) {
         if (key === 'about') hydrateAboutPanel(panel);
-        // images load on first open only (menus are closed on most visits)
         qsa('img[data-src]', panel).forEach((img) => {
           if (!img.dataset.src) return; // filled from data (about panel)
           img.src = img.dataset.src;
@@ -77,6 +83,8 @@ export function initMegaMenu() {
 
   triggers.forEach((trigger) => {
     const name = trigger.dataset.megaTrigger;
+    trigger.addEventListener('pointerenter', () => warm(panels.get(name)), { once: true });
+    trigger.addEventListener('focus', () => warm(panels.get(name)), { once: true });
     trigger.addEventListener('click', () => (current === name ? close() : setOpen(name)));
     trigger.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown') {

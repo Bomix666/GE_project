@@ -4,7 +4,10 @@
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/media/brand/apple-touch-icon.png" />
     <!-- Before first paint: mark JS so reveal states apply instantly (no flash), dark canvas -->
-    <script>document.documentElement.classList.add('js');</script>
+    <!-- A page transition (@view-transition, base.css) is skipped when the tab is hidden or the visitor clicks again
+         mid-way; the browser then rejects its promises. Nothing waits on them, so they must not surface as errors -->
+    <script>document.documentElement.classList.add('js');
+      ['pageswap', 'pagereveal'].forEach(function (type) { addEventListener(type, function (e) { var t = e.viewTransition; if (t) [t.ready, t.finished, t.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); }); });</script>
     <style>html,body{background:#050505;color:#f4f2ef}</style>
     <!-- Brand fonts arrive with the first paint (same-origin, still need crossorigin for a font preload) -->
     <link rel="preload" as="font" type="font/woff" href="/fonts/FuturisC.woff" crossorigin />
