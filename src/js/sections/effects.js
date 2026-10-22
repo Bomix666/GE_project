@@ -1,8 +1,10 @@
 /**
  * Effects: a grid of cards, 01 → 07. A card leads to the effect's equipment
- * and consumables in the catalogue; deep links (#fx-cryo) land on the card.
+ * and consumables in the catalogue; deep links (#fx-cryo) land on the card,
+ * links to #effects bring the whole block into view.
  */
 import { qs, html, toHTML, icon } from '../core/dom.js';
+import { env } from '../core/env.js';
 import { routes } from '../core/routes.js';
 import { getCatalog } from '../data/api.js';
 import { effects } from '../data/content.js';
@@ -23,6 +25,30 @@ export async function initEffects() {
   // the cards did not exist yet when the browser looked for the #fx-… anchor
   const target = document.getElementById(location.hash.slice(1));
   if (grid.contains(target)) target.scrollIntoView();
+  else if (location.hash === '#effects') showEffects('auto');
+
+  // «Смотреть эффекты» and the menu's «Эффекты» on this page
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href*="#effects"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const url = new URL(a.href);
+    if (url.pathname !== location.pathname || url.hash !== '#effects') return;
+    e.preventDefault();
+    history.pushState(null, '', '#effects');
+    showEffects(env.reducedMotion ? 'auto' : 'smooth');
+  });
+}
+
+/* The section rises over the hero with a long transparent top, so the anchor alone left a screen
+   of black above the heading. The heading and the seven cards come to the middle of the screen,
+   or to its top when they are taller than it; scrolling up, the header comes back, so it gets room. */
+function showEffects(behavior) {
+  const section = qs('#effects');
+  const top = qs('.chapter', section).getBoundingClientRect().top + window.scrollY;
+  const bottom = qs('[data-fx-grid]', section).getBoundingClientRect().bottom + window.scrollY;
+  const header = qs('[data-header]');
+  const room = 16 + (top < window.scrollY && header ? header.offsetHeight : 0);
+  window.scrollTo({ top: top - Math.max(room, (window.innerHeight - (bottom - top)) / 2), behavior });
 }
 
 function card(fx, catalog) {

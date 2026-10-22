@@ -1,6 +1,6 @@
-/** Gallery: real photo/video galleries of globaleffects.ru, filterable by effect. */
+/** Gallery: real photo/video galleries of globaleffects.ru — photos or videos (a switch on top), filterable by effect. */
 import { ready } from '../app.js';
-import { qs, esc, plural, announce } from '../core/dom.js';
+import { qs, qsa, esc, plural, announce } from '../core/dom.js';
 import { reveal } from '../core/motion.js';
 import { routes, pageParams } from '../core/routes.js';
 import { getGallery } from '../data/api.js';
@@ -18,16 +18,40 @@ ready(async () => {
   let current = pageParams().get('cat') || 'all';
   if (current !== 'all' && !galleries.some((g) => g.slug === current)) current = 'all';
 
+  // the live site has two pages, /gallery/images and /gallery/videos: here one switch, #videos opens the videos
+  let mode = location.hash === '#videos' || /\/gallery\/videos(\/|$)/.test(location.pathname) ? 'videos' : 'photos';
+  const tabs = qsa('[data-mode]');
+  const words = { photos: ['фотография', 'фотографии', 'фотографий'], videos: ['видео', 'видео', 'видео'] };
+
+  // the counts on the effect chips are of what is shown: photos or videos
   const total = (key) => galleries.reduce((s, g) => s + g[key].length, 0);
-  filter.innerHTML = [
-    `<button type="button" class="chip" data-cat="all" aria-pressed="${current === 'all'}">Все <span class="tabular">${total('photos')}</span></button>`,
-    ...galleries
-      .filter((g) => g.photos.length || g.videos.length)
-      .map(
-        (g) =>
-          `<button type="button" class="chip" data-cat="${esc(g.slug)}" aria-pressed="${current === g.slug}">${esc(g.title)} <span class="tabular">${g.photos.length || g.videos.length}</span></button>`,
-      ),
-  ].join('');
+  const drawFilter = () => {
+    filter.innerHTML = [
+      `<button type="button" class="chip" data-cat="all" aria-pressed="${current === 'all'}">Все <span class="tabular">${total(mode)}</span></button>`,
+      ...galleries
+        .filter((g) => g.photos.length || g.videos.length)
+        .map(
+          (g) =>
+            `<button type="button" class="chip" data-cat="${esc(g.slug)}" aria-pressed="${current === g.slug}">${esc(g.title)} <span class="tabular">${g[mode].length}</span></button>`,
+        ),
+    ].join('');
+  };
+
+  const setMode = (m, { focus = false } = {}) => {
+    mode = m;
+    tabs.forEach((t) => {
+      const on = t.dataset.mode === m;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    qs('#photos').hidden = m !== 'photos';
+    qs('#videos').hidden = m !== 'videos';
+    const url = new URL(location.href);
+    url.hash = m === 'videos' ? 'videos' : '';
+    history.replaceState(null, '', url);
+    drawFilter();
+  };
 
   const render = () => {
     const list = current === 'all' ? galleries : galleries.filter((g) => g.slug === current);
@@ -39,6 +63,8 @@ ready(async () => {
 
     qs('[data-photo-count]').textContent = photos.length || '';
     qs('[data-video-count]').textContent = videos.length || '';
+    qs('[data-mode-count="photos"]').textContent = photos.length;
+    qs('[data-mode-count="videos"]').textContent = videos.length;
 
     qs('[data-mosaic]').innerHTML = photos.length
       ? photos
@@ -51,11 +77,11 @@ ready(async () => {
             </li>`,
           )
           .join('')
-      : `<li class="empty"><p class="text-2">Для этого эффекта в галерее пока только видео.</p></li>`;
+      : `<li class="empty"><p class="text-2">Для этого эффекта в галерее пока только видео.</p><button type="button" class="btn btn--secondary btn--md" data-mode-go="videos"><span class="btn__label">Смотреть видео</span></button></li>`;
 
     qs('[data-vlist]').innerHTML = videos.length
       ? videos.map((v) => `<li>${ytFacade(v.id, { thumb: v.thumb, title: `${v.cat} — видео GLOBAL EFFECTS`, label: v.cat })}</li>`).join('')
-      : `<li class="empty"><p class="text-2">Видео для этого раздела нет.</p></li>`;
+      : `<li class="empty"><p class="text-2">Видео для этого раздела нет.</p><button type="button" class="btn btn--secondary btn--md" data-mode-go="photos"><span class="btn__label">Смотреть фото</span></button></li>`;
 
     // Link from the gallery back into the catalog (effect → equipment)
     const fx = effects.find((e) => e.gallery === current);
@@ -74,7 +100,7 @@ ready(async () => {
       );
     };
     reveal();
-    return photos.length;
+    return mode === 'photos' ? photos.length : videos.length;
   };
 
   filter.addEventListener('click', (e) => {
@@ -87,9 +113,24 @@ ready(async () => {
     else url.searchParams.set('cat', current);
     history.replaceState(null, '', url);
     const n = render();
-    announce(`${n} ${plural(n, ['фотография', 'фотографии', 'фотографий'])}`);
+    announce(`${n} ${plural(n, words[mode])}`);
   });
 
+  tabs.forEach((t, k) => {
+    t.addEventListener('click', () => setMode(t.dataset.mode));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      setMode(tabs[(k + 1) % tabs.length].dataset.mode, { focus: true });
+    });
+  });
+  // an empty effect offers the other kind
+  qs('[data-gallery-page]').addEventListener('click', (e) => {
+    const go = e.target.closest('[data-mode-go]');
+    if (go) setMode(go.dataset.modeGo, { focus: true });
+  });
+
+  setMode(mode);
   render();
   initYouTube(qs('[data-vlist]'));
 });

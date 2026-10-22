@@ -86,3 +86,62 @@
   padding-block: var(--s-7);
   border-top: 1px solid var(--line-2);
 }
+
+/* Desktop: the list and the checkout on the left, the order summary beside both.
+   Phones keep the source order: list, summary, checkout — the total is read before the form. */
+@media (min-width: 1024px) {
+  .cart-page__grid > section:first-child,
+  .checkout {
+    grid-column: 1;
+  }
+  .cart-summary {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+/* ---------- Checkout (the form of /checkout/index) ---------- */
+.checkout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--line-2);
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.checkout__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: var(--lh-heading);
+}
+
+.checkout .form {
+  max-width: 52rem;
+  margin-top: var(--s-2);
+}
+
+.checkout .field__hint {
+  font-size: var(--fs-xs);
+}
+
+.checkout__submit {
+  justify-self: start;
+}
+
+.field__select {
+  padding-right: 2.6rem;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'><path d='m6 9 6 6 6-6' fill='none' stroke='%23f4f2ef' stroke-width='2'/></svg>")
+      no-repeat right 1rem center,
+    var(--surface-2);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.field__select option {
+  background: var(--surface-2);
+  color: var(--text);
+}

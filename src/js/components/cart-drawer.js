@@ -114,7 +114,7 @@ function render(state) {
     ${saving ? `<p class="drawer__row"><span>Скидка</span><span class="tabular">−${formatPrice(saving)}</span></p>` : ''}
     <p class="drawer__row drawer__row--total"><span>Итого</span><span class="tabular">${formatPrice(state.cost)}</span></p>
     <p class="drawer__note text-3">Стоимость доставки рассчитает менеджер при подтверждении заказа.</p>
-    <a class="btn btn--primary btn--lg btn--block" href="${routes.cart()}"><span class="btn__label">Оформить заказ</span><span class="btn__icon" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+    <a class="btn btn--primary btn--lg btn--block" href="${routes.cart()}#checkout"><span class="btn__label">Оформить заказ</span><span class="btn__icon" aria-hidden="true"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
     <button type="button" class="btn btn--ghost btn--center" data-dialog-close><span class="btn__label">Продолжить покупки</span></button>`;
 }
 

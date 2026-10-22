@@ -93,7 +93,7 @@ function redesignTags(string $page): string
 | `/page/about`, `/contacts` | `about.html` | — (новости, блог и дилеры — блоки этой страницы; `/contacts` → якорь `#contacts`) |
 | `/page/<slug>` (delivery, politika-konfidencialnosti, pravila-prodazi-tovarov) | `page.html` | `<slug>` из пути |
 | `/gallery/images/<slug>`, `/gallery/videos/<slug>` | `gallery.html` | `<slug>` из пути (выбранный раздел) |
-| `/cart`, `/cart/index` | `cart.html` | — (блок оформления — существующая форма Yii) |
+| `/cart`, `/cart/index`, `/checkout/index` | `cart.html` | — (товары и форма оформления `CheckoutForm` на одной странице; `/checkout/index` открывается на форме, якорь `#checkout`) |
 | `/category/podbor-konfetti-mashin` | `podbor.html` | — (пять вопросов квиза; машины подбираются в браузере по `specs` конфетти-машин) |
 | `/offers/free-samples`, `/offers/free-samples-snow` | `samples.html` | — (описание акции и форма `FreeSamplesOfferForm` на одной странице) |
 
@@ -271,6 +271,7 @@ Dev-сервер отдаёт на них нужный шаблон так же,
 | Поиск, все результаты | `POST /search/results`, поле `ProductSearch[query]` + CSRF | — |
 | Под заказ | `POST /product/demand`, `DemandProductForm[...]`, капча `/site/demand-captcha` | — |
 | Запросить цену | `POST /product/price-request`, `PriceRequestForm[...]`, капча `/site/price-request-captcha` | — |
+| Оформление заказа | `POST /checkout/process`, `CheckoutForm[...]`: promocode, registration_form, city, delivery_method, transport_company, name, organisation, phone, email, time, address, comment, agreement — те же поля и значения, что сейчас. Заказ — корзина текущей сессии | ответ на POST: страница с сообщением об успехе или ошибками формы; поля, которые скрыты для выбранного варианта, приходят пустыми, как сейчас |
 | Бесплатные образцы | `POST /offers/free-samples`, `FreeSamplesOfferForm[...]` (те же поля, что сейчас), токен Яндекс SmartCaptcha в `FreeSamplesOfferForm[yaCaptcha]` | ответ на POST: страница `samples.html` с сообщением об успехе или ошибками формы |
 | Язык | `/site/set-locale?locale=en-US` | — |
 | Документы | `/document/get?id=…`, `/catalog/catalog.pdf`, `/price/price.pdf` | — |

@@ -23,13 +23,90 @@
           <aside class="cart-summary" aria-labelledby="summary-title" data-cart-summary>
             <h2 class="cart-summary__title" id="summary-title">Ваш заказ</h2>
             <div data-cart-summary-body></div>
-            <!--
-              INTEGRATION POINT: the existing Yii checkout form of /cart/index
-              (customer fields, delivery, promocode, submit) is rendered here
-              unchanged. The redesign only restyles it.
-            -->
-            <p class="proto-note" role="note" data-proto-only>Прототип: на сайте здесь выводится существующая форма оформления заказа со страницы <code>/cart/index</code> — поля, доставка и отправка обрабатываются текущим backend без изменений.</p>
+            <a class="btn btn--primary btn--lg btn--block" href="#checkout"><span class="btn__label">К оформлению</span><span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg></span></a>
           </aside>
+
+          <!-- The form of /checkout/index, field for field (CheckoutForm → POST /checkout/process).
+               The order itself is the session cart; the form carries the buyer and the delivery. -->
+          <section class="checkout" id="checkout" aria-labelledby="checkout-title" data-checkout>
+            <h2 class="checkout__title" id="checkout-title">Оформление заказа</h2>
+            <p class="text-2">Дождитесь письма со ссылкой на оплату.</p>
+            <div class="form-summary" role="alert" tabindex="-1" hidden></div>
+            <form class="form" id="checkout-form" action="/checkout/process" method="post" novalidate data-checkout-form>
+              <div class="form__row">
+                <div class="field">
+                  <label class="field__label" for="checkoutform-promocode">Промокод</label>
+                  <input class="field__input" id="checkoutform-promocode" name="CheckoutForm[promocode]" type="text" autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label class="field__label" for="checkoutform-registration_form">Покупатель</label>
+                  <select class="field__input field__select" id="checkoutform-registration_form" name="CheckoutForm[registration_form]" data-co-reg>
+                    <option value="0">Физическое лицо</option>
+                    <option value="1">Юридическое лицо</option>
+                  </select>
+                </div>
+                <div class="field" data-co-show="person">
+                  <label class="field__label" for="checkoutform-city">Город</label>
+                  <select class="field__input field__select" id="checkoutform-city" name="CheckoutForm[city]" data-co-city>
+                    <option value="0">Москва</option>
+                    <option value="1">Другой город</option>
+                  </select>
+                </div>
+                <div class="field" data-co-show="person">
+                  <label class="field__label" for="checkoutform-delivery_method">Доставка</label>
+                  <select class="field__input field__select" id="checkoutform-delivery_method" name="CheckoutForm[delivery_method]" data-co-delivery>
+                    <option value="0" data-city="0">Курьер</option>
+                    <option value="1" data-city="0">Самовывоз</option>
+                    <option value="2" data-city="1">Транспортная компания</option>
+                  </select>
+                </div>
+                <div class="field" data-co-show="carrier">
+                  <label class="field__label" for="checkoutform-transport_company">Название транспортной компании</label>
+                  <input class="field__input" id="checkoutform-transport_company" name="CheckoutForm[transport_company]" type="text" />
+                </div>
+                <div class="field" data-co-show="person">
+                  <label class="field__label" for="checkoutform-name">ФИО</label>
+                  <input class="field__input" id="checkoutform-name" name="CheckoutForm[name]" type="text" autocomplete="name" maxlength="255" />
+                </div>
+                <div class="field" data-co-show="legal">
+                  <label class="field__label" for="checkoutform-organisation">ИНН и наименование контрагента</label>
+                  <input class="field__input" id="checkoutform-organisation" name="CheckoutForm[organisation]" type="text" autocomplete="organization" maxlength="255" />
+                </div>
+                <div class="field">
+                  <label class="field__label" for="checkoutform-phone">Телефон <span aria-hidden="true">*</span></label>
+                  <input class="field__input" id="checkoutform-phone" name="CheckoutForm[phone]" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" aria-describedby="checkoutform-phone-err" />
+                  <p class="field__error" id="checkoutform-phone-err"></p>
+                </div>
+                <div class="field">
+                  <label class="field__label" for="checkoutform-email">Email <span aria-hidden="true">*</span></label>
+                  <input class="field__input" id="checkoutform-email" name="CheckoutForm[email]" type="email" autocomplete="email" required maxlength="254" aria-describedby="checkoutform-email-err" />
+                  <p class="field__error" id="checkoutform-email-err"></p>
+                </div>
+                <div class="field" data-co-show="courier">
+                  <label class="field__label" for="checkoutform-time">Дата и время доставки</label>
+                  <input class="field__input" id="checkoutform-time" name="CheckoutForm[time]" type="text" />
+                </div>
+              </div>
+              <div class="field" data-co-show="address">
+                <label class="field__label" for="checkoutform-address">Адрес доставки</label>
+                <textarea class="field__input field__input--area" id="checkoutform-address" name="CheckoutForm[address]" rows="3" autocomplete="street-address"></textarea>
+              </div>
+              <div class="field" data-co-show="carrier">
+                <label class="field__label" for="checkoutform-comment">Комментарий или сопроводительное письмо</label>
+                <p class="field__hint text-3" id="checkoutform-comment-hint">Пожалуйста, оставьте свои паспортные данные в комментарии к заказу для транспортной компании.</p>
+                <textarea class="field__input field__input--area" id="checkoutform-comment" name="CheckoutForm[comment]" rows="3" aria-describedby="checkoutform-comment-hint"></textarea>
+              </div>
+              <div class="field">
+                <input type="hidden" name="CheckoutForm[agreement]" value="0" />
+                <label class="check" for="checkoutform-agreement"><input type="checkbox" id="checkoutform-agreement" name="CheckoutForm[agreement]" value="1" required aria-describedby="checkoutform-agreement-err" /><span class="check__box" aria-hidden="true"></span><span class="check__label">Я согласен на обработку персональных данных</span></label>
+                <p class="field__error" id="checkoutform-agreement-err"></p>
+              </div>
+              <p class="form__legal text-3">Ваши данные нужны для оформления необходимых документов по отгрузке товара и не будут передаваться третьим лицам или использоваться каким-либо иным образом, кроме как для оформления данной сделки.</p>
+              <p class="form__legal text-3"><a href="/page.html?p=politika-konfidencialnosti" data-route="page" data-path="/page/politika-konfidencialnosti" target="_blank" rel="noopener">Политика конфиденциальности</a>&nbsp;&nbsp; <a href="/page.html?p=pravila-prodazi-tovarov" data-route="page" data-path="/page/pravila-prodazi-tovarov" target="_blank" rel="noopener">Правила продажи</a></p>
+              <button type="submit" class="btn btn--primary btn--lg checkout__submit"><span class="btn__label">Оформить заказ</span><span class="btn__icon" aria-hidden="true"><svg width="20" height="20"><use href="#i-arrow" /></svg></span></button>
+              <p class="proto-note" role="note" data-proto-only>Прототип: на сайте форма уходит в существующий обработчик <code>/checkout/process</code>, а заказ — это корзина текущей сессии.</p>
+            </form>
+          </section>
         </div>
       </div>
     </main>
