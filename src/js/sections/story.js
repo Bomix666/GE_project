@@ -1,8 +1,9 @@
 /**
  * "Как рождается эффект": Effect → How → Equipment → Consumables → Preparation → Result.
- * A horizontal rail (the shared rail component): swiped on phones, scrolled
- * sideways or paged with the arrows on desktop.
- * Tabs switch between real chains (confetti, cryo, heavy smoke).
+ * A horizontal rail (the shared rail component): swiped on phones, scrolled or dragged
+ * sideways on desktop; the red arrow on a panel brings the next step in.
+ * The arrows by the tabs go to the previous / next effect.
+ * Tabs switch between real chains (confetti, cryo, heavy smoke, snow, serpentine, curtain drop).
  */
 import { qs, qsa, html, toHTML, icon, formatPrice } from '../core/dom.js';
 import { env } from '../core/env.js';
@@ -26,8 +27,13 @@ export async function initStory() {
   }
 
   let active = 0;
+  const prev = qs('[data-story-prev]', root);
+  const next = qs('[data-story-next]', root);
+
   const render = (i) => {
     active = i;
+    prev.disabled = i === 0;
+    next.disabled = i === stories.length - 1;
     const story = stories[i];
     track.classList.add('is-swapping');
     const apply = () => {
@@ -43,6 +49,10 @@ export async function initStory() {
       t.setAttribute('aria-selected', String(k === i));
       t.tabIndex = k === i ? 0 : -1;
     });
+    // on a phone the tab row scrolls: the chosen tab comes to its middle (the row only, never the page)
+    const row = tabs[i].parentElement;
+    const shift = tabs[i].getBoundingClientRect().left - row.getBoundingClientRect().left - (row.clientWidth - tabs[i].offsetWidth) / 2;
+    row.scrollLeft += shift; // instant: a smooth scroll here is cut off by the panels being swapped
   };
 
   // Tabs (roving tabindex, arrow keys)
@@ -57,13 +67,24 @@ export async function initStory() {
     });
   });
 
+  prev.addEventListener('click', () => active > 0 && render(active - 1));
+  next.addEventListener('click', () => active < stories.length - 1 && render(active + 1));
+
+  // the red arrow of a panel: the next step comes to the start of the rail
+  track.addEventListener('click', (e) => {
+    const step = e.target.closest('[data-story-step]');
+    if (!step) return;
+    step.closest('.spanel').nextElementSibling?.scrollIntoView({ behavior: env.reducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'start' });
+  });
+
   render(0);
 }
 
 function panel(s, k, story, catalog) {
   const num = String(k + 1).padStart(2, '0');
   const head = html`<p class="spanel__label"><span class="tabular">${num}</span>${s.label}</p>`;
-  const connector = k < story.steps.length - 1 ? html`<span class="spanel__next" aria-hidden="true">${icon('i-arrow', 22)}</span>` : '';
+  const after = story.steps[k + 1];
+  const connector = after ? html`<button type="button" class="spanel__next" data-story-step aria-label="Дальше: ${after.label}">${icon('i-arrow', 22)}</button>` : '';
 
   if (s.kind === 'effect' || s.kind === 'result') {
     return html`<article class="spanel spanel--${s.kind}" aria-label="${s.label}: ${s.title}">
@@ -77,7 +98,7 @@ function panel(s, k, story, catalog) {
         ${s.gallery
           ? html`<div class="spanel__actions">
               <a class="btn btn--primary btn--md" href="${routes.gallery(s.gallery)}"><span class="btn__label">Смотреть галерею</span><span class="btn__icon" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
-              <a class="btn btn--ghost" href="${routes.effect(story.slug)}"><span class="btn__label">К эффекту</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
+              <a class="btn btn--ghost" href="${routes.effect(story.effect || story.slug)}"><span class="btn__label">К эффекту</span><span class="btn__arrow" aria-hidden="true">${icon('i-arrow', 18)}</span></a>
             </div>`
           : ''}
       </div>

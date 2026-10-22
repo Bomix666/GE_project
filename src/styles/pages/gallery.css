@@ -34,6 +34,34 @@
   color: var(--accent);
 }
 
+/* photos or videos: the first choice of the page, a size up from the effect chips */
+.gal-modes {
+  margin-bottom: var(--s-4);
+}
+
+.gal-modes .tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 48px;
+  padding-inline: 1.4rem;
+  font-size: var(--fs-body);
+}
+
+.gal-modes .tab span {
+  opacity: 0.6;
+}
+
+@media (max-width: 559px) {
+  .gal-modes {
+    display: flex;
+  }
+  .gal-modes .tab {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 .gal-filter {
   display: flex;
   flex-wrap: wrap;

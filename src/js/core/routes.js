@@ -60,6 +60,7 @@ function localPage(p, q) {
   if ((m = p.match(/^\/gallery\/images(?:\/([^/]+))?$/))) return `/gallery.html${m[1] ? `?cat=${m[1]}` : ''}`;
   if ((m = p.match(/^\/gallery\/videos(?:\/([^/]+))?$/))) return `/gallery.html${m[1] ? `?cat=${m[1]}` : ''}#videos`;
   if (p === '/cart' || p === '/cart/index') return '/cart.html';
+  if (p === '/checkout/index') return '/cart.html#checkout';
   if (p === '/offers/free-samples' || p === '/offers/free-samples-snow') return '/samples.html';
   return null;
 }
@@ -99,10 +100,12 @@ export const routes = {
   home: () => (PRODUCTION ? '/' : withBase('/')),
   category: (slug) => (PRODUCTION ? `/category/${encodeURIComponent(slug)}` : withBase(`/catalog.html?c=${encodeURIComponent(slug)}`)),
   /** Deep link with facet filters (prototype catalog). The live site filters via POST, so production links the category. */
+  // the catalogue reads its filters from the query on both: /category/<slug>?type=… and catalog.html?c=<slug>&type=…
   categoryFiltered: (slug, filters) => {
-    if (PRODUCTION || !filters) return routes.category(slug);
-    const q = new URLSearchParams({ c: slug, ...filters });
-    return withBase(`/catalog.html?${q}`);
+    if (!filters) return routes.category(slug);
+    return PRODUCTION
+      ? `${routes.category(slug)}?${new URLSearchParams(filters)}`
+      : withBase(`/catalog.html?${new URLSearchParams({ c: slug, ...filters })}`);
   },
   product: (slug) => (PRODUCTION ? `/product/${encodeURIComponent(slug)}` : withBase(`/product.html?p=${encodeURIComponent(slug)}`)),
   cart: () => (PRODUCTION ? '/cart/index' : withBase('/cart.html')),
@@ -133,11 +136,12 @@ export const routes = {
  */
 export function applyRoutes(root = document) {
   qsa('a[data-route]', root).forEach((a) => {
-    const { route, slug, path, locale } = a.dataset;
+    const { route, slug, path, locale, filter } = a.dataset;
     const fn = routes[route];
     if (!fn) return;
     const arg = slug ?? path ?? locale;
-    const href = fn(arg);
+    // data-filter="type=…": a category opened with a facet already chosen
+    const href = filter && route === 'category' ? routes.categoryFiltered(slug, Object.fromEntries(new URLSearchParams(filter))) : fn(arg);
     if (typeof href === 'string') a.setAttribute('href', href);
   });
 }

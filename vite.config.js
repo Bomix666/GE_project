@@ -65,6 +65,7 @@ function liveRoutes() {
     [/^\/page\/[^/?#]+/, 'page.html'],
     [/^\/gallery\/(?:images|videos)(?:\/[^/?#]+)?/, 'gallery.html'],
     [/^\/cart(?:\/index)?(?=[?#]|$)/, 'cart.html'],
+    [/^\/checkout\/index(?=[?#]|$)/, 'cart.html'],
     [/^\/contacts(?=[?#]|$)/, 'about.html'],
     [/^\/offers\/free-samples(?:-snow)?(?=[?#]|$)/, 'samples.html'],
   ];
